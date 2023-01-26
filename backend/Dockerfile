@@ -1,4 +1,4 @@
-FROM        python
+FROM        python:3.9.16
 ENV         PYTHONBUFFERED 1 
 ENV         PYTHONDONTWRITEBYTECODE 1
 
