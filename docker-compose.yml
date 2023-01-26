@@ -32,9 +32,9 @@ services:
     db:
         image: postgres
         environment:
-            POSTGRES_USER: admin
-            POSTGRES_PASSWORD: mypass
-            POSTGRES_DB: cleancash
+            POSTGRES_USER: $DB_USER
+            POSTGRES_PASSWORD: $DB_PASSWORD
+            POSTGRES_DB: $DB_NAME
         volumes:
             - cleancash:/var/lib/postgresql/data
 
