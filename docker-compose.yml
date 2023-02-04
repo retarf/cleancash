@@ -20,9 +20,11 @@ services:
         environment:
             - DEBUG=${BE_DEBUG}
             - SECRET_KEY=${BE_SECRET_KEY}
+            - DB_HOST=${DB_HOST}
             - DB_NAME=${DB_NAME}
             - DB_USER=${DB_USER}
             - DB_PASSWORD=${DB_PASSWORD}
+            - DB_PORT=${DB_PORT}
         volumes:
             - ./backend:/app/backend
         ports:
@@ -38,9 +40,9 @@ services:
     db:
         image: postgres
         environment:
-            POSTGRES_USER: $DB_USER
-            POSTGRES_PASSWORD: $DB_PASSWORD
-            POSTGRES_DB: $DB_NAME
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
         volumes:
             - cleancash:/var/lib/postgresql/data
 
