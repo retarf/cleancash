@@ -17,7 +17,13 @@ services:
         depends_on:
             - db
         build: ./backend
-        volumes: 
+        environment:
+            - DEBUG=${BE_DEBUG}
+            - SECRET_KEY=${BE_SECRET_KEY}
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_USER}
+            - DB_PASSWORD=${DB_PASSWORD}
+        volumes:
             - ./backend:/app/backend
         ports:
             - "8000:8000"
