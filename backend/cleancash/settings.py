@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'cleaningfields.apps.CleaningfieldsConfig',
+    'fields.apps.FieldsConfig',
     'children.apps.ChildrenConfig',
     'django.contrib.admin',
     'django.contrib.auth',
