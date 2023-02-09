@@ -4,3 +4,4 @@ djangorestframework==3.14.0
 ipython
 ipdb
 gunicorn==20.1.0
+django-cors-headers==3.13.0

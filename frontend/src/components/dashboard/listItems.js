@@ -22,7 +22,7 @@ export const mainListItems = (
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Cleaning" />
+      <ListItemText primary="Cleanings" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
