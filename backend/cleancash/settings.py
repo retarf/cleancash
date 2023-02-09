@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'cleaningups.apps.CleaningUpsConfig',
     'cleaningfields.apps.CleaningfieldsConfig',
     'fields.apps.FieldsConfig',
     'children.apps.ChildrenConfig',

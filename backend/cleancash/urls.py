@@ -21,4 +21,5 @@ urlpatterns = [
     path('children/', include('children.urls')),
     path('fields/', include('fields.urls')),
     path('cleaningfields/', include('cleaningfields.urls')),
+    path('cleaningups/', include('cleaningups.urls')),
 ]
