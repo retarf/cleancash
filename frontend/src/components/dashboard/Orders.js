@@ -55,7 +55,7 @@ function preventDefault(event) {
 
 export default function Orders() {
 
-  const [cleanUpList, SetCleanUpList] = useState();
+  const [cleanUpList, SetCleanUpList] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:8000/cleaningups/")
@@ -64,39 +64,30 @@ export default function Orders() {
         });
   }, []);
 
-  console.log(cleanUpList);
-
-  };
-
-
-//  return (
-//    <React.Fragment>
-//      <Title>Recent Clean Ups</Title>
-//      <Table size="small">
-//        <TableHead>
-//          <TableRow>
-//            <TableCell>Date</TableCell>
-//            <TableCell>Name</TableCell>
-//            <TableCell>Ship To</TableCell>
-//            <TableCell>Payment Method</TableCell>
-//            <TableCell align="right">Sale Amount</TableCell>
-//          </TableRow>
-//        </TableHead>
-//        <TableBody>
-//          {rows.map((row) => (
-//            <TableRow key={row.id}>
-//              <TableCell>{row.date}</TableCell>
-//              <TableCell>{row.name}</TableCell>
-//              <TableCell>{row.shipTo}</TableCell>
-//              <TableCell>{row.paymentMethod}</TableCell>
-//              <TableCell align="right">{`$${row.amount}`}</TableCell>
-//            </TableRow>
-//          ))}
-//        </TableBody>
-//      </Table>
-//      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-//        See more orders
-//      </Link>
-//    </React.Fragment>
-//  );
-//}
+  return (
+    <React.Fragment>
+      <Title>Recent Clean Ups</Title>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Date</TableCell>
+            <TableCell>Child</TableCell>
+            <TableCell>Fields</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {cleanUpList.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell>{row.date}</TableCell>
+              <TableCell>{row.child}</TableCell>
+              <TableCell>{row.field}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+        See more orders
+      </Link>
+    </React.Fragment>
+  );
+}
