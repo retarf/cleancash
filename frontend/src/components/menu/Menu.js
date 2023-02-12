@@ -10,21 +10,22 @@ import LayersIcon from '@mui/icons-material/Layers';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-export const mainMenu = (
-  <React.Fragment>
-    <ListItemButton>
+export default function MainMenu(props) {
+
+  return <React.Fragment>
+    <ListItemButton onClick={props.onDashboardClick}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton >
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Cleanings" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={props.onChildrenClick}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
@@ -43,10 +44,10 @@ export const mainMenu = (
       <ListItemText primary="Fields" />
     </ListItemButton>
   </React.Fragment>
-);
+};
 
-export const secondaryMenu = (
-  <React.Fragment>
+export function SecondaryMenu(props) {
+  return <React.Fragment>
     <ListItemButton>
       <ListItemIcon>
         <SettingsIcon />
@@ -54,4 +55,4 @@ export const secondaryMenu = (
       <ListItemText primary="Settings" />
     </ListItemButton>
   </React.Fragment>
-);
+};

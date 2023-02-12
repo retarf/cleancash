@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,8 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainMenu, secondaryMenu } from '../menu/Menu';
+import MainMenu, { SecondaryMenu } from '../menu/Menu';
 import Dashboard from '../dashboard/Dashboard'
+import ChildrenList from '../children/childrenList';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -87,6 +89,43 @@ function MainContainer() {
     setOpen(!open);
   };
 
+  const [containerState, setContainerState] = useState(<Dashboard />);
+  const [childrenListState, setChildrenListState] = useState([]);
+
+  const setChildrenListHandler = (newList) => {
+    setContainerState(newList);
+  };
+
+  const getDashboardHandler = () => {
+    setContainerState(<Dashboard />);
+  };
+
+  const getCleaningsHandler = () => {
+  };
+
+  const getChildrenHandler = () => {
+    setContainerState(
+        <ChildrenList
+            childrenState={ childrenListState }
+            setChildrenStat={ setChildrenListHandler }
+        />
+        );
+  };
+
+  const getSalaryHandler = () => {
+  };
+
+  const getFieldsHandler = () => {
+  };
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/children/")
+    .then(response => {
+        setChildrenListState(response.data)
+    })
+  }, []
+  );
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -140,9 +179,15 @@ function MainContainer() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainMenu}
+            <MainMenu
+                onDashboardClick={getDashboardHandler}
+                onCleaningsClick={getCleaningsHandler}
+                onChildrenClick={getChildrenHandler}
+                onSalaryClick={getSalaryHandler}
+                onFieldsClick={getFieldsHandler}
+            />
             <Divider sx={{ my: 1 }} />
-            {secondaryMenu}
+            <SecondaryMenu />
           </List>
         </Drawer>
         <Box
@@ -158,7 +203,25 @@ function MainContainer() {
           }}
         >
           <Toolbar />
-          <Dashboard />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+          { containerState }
+            </Grid>
+          </Container>
+        </Box>
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Copyright sx={{ pt: 4 }} />
           </Container>
