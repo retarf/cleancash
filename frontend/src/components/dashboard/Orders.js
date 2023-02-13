@@ -53,7 +53,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
+export default function Orders(props) {
 
   const [cleanUpList, SetCleanUpList] = useState([]);
 

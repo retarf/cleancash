@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Title from '../Title';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,15 +9,30 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import axios from 'axios';
 
 
 function ChildrenList(props) {
+
+    const newChildName = useRef("");
+    const [editOnState, setEditOnState] = useState(false);
+
+    const toggleEditOnStateHandler = () => {
+        setEditOnState(true);
+    };
+
+    const addChild = () => {
+        console.log("TEST");
+        props.onAddChild(newChildName.current.value);
+        setEditOnState(false);
+    };
 
     return <React.Fragment>
               <Grid item xs={12}>
 
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <Title>Recent Clean Ups</Title>
+      <Title>Children List</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -30,12 +45,16 @@ function ChildrenList(props) {
               <TableCell>{row.name}</TableCell>
             </TableRow>
           ))}
+          {editOnState ? <Grid item xs={12}>
+                <TextField id="name" label="name" variant="outlined" inputRef={newChildName}/>
+                <Button onClick={addChild}>save</Button>
+            </Grid> : null }
         </TableBody>
       </Table>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-              <Button variant="contained" >Add</Button>
+              <Button variant="contained" onClick={toggleEditOnStateHandler}>Add</Button>
               </Grid>
               <Grid item xs={12}>
               <Button variant="outlined">Delete</Button>

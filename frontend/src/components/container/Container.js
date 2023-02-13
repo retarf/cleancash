@@ -92,9 +92,18 @@ function MainContainer() {
   const [containerState, setContainerState] = useState(<Dashboard />);
   const [childrenListState, setChildrenListState] = useState([]);
 
-  const setChildrenListHandler = (newList) => {
-    setContainerState(newList);
-  };
+  const addChildHandler = (name) => {
+        axios.post("http://localhost:8000/children/", {
+            "name": name
+        }).then(response => {
+            let id = response.data.id;
+            let name = response.data.name;
+            console.log(response.data);
+            setChildrenListState((prevChildrenList) => {return [...prevChildrenList, {"id": id, "name": name} ]});
+        }).catch((error) => { // add exception handling
+            console.log(error);
+        });
+    };
 
   const getDashboardHandler = () => {
     setContainerState(<Dashboard />);
@@ -107,7 +116,7 @@ function MainContainer() {
     setContainerState(
         <ChildrenList
             childrenState={ childrenListState }
-            setChildrenStat={ setChildrenListHandler }
+            onAddChild={ addChildHandler }
         />
         );
   };
