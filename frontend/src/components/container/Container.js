@@ -21,7 +21,7 @@ import MainMenu, { SecondaryMenu } from '../menu/Menu';
 import Dashboard from '../dashboard/Dashboard'
 import ChildrenList from '../children/childrenList';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -213,7 +213,10 @@ function MainContainer() {
               <Routes>
                 <Route path="/" element={<Dashboard/>} />
                 <Route path="/cleanings" element={<h1>cleanings</h1>} />
-                <Route path="/children" element={<ChildrenList/>} />
+                <Route path="/children" >
+                    <Route index path="/children" element={<ChildrenList  childrenState={ childrenListState }  onAddChild={ addChildHandler }/> } />
+                    <Route path=":id" element={<ChildrenList/>} />
+                </Route>
                 <Route path="/salary" element={<h1>salary</h1>} />
                 <Route path="/fields" element={<h1>fields</h1>} />
                 <Route path="/settings" element={<h1>settings</h1>} />
