@@ -21,6 +21,7 @@ import MainMenu, { SecondaryMenu } from '../menu/Menu';
 import Dashboard from '../dashboard/Dashboard'
 import ChildrenList from '../children/childrenList';
 import axios from 'axios';
+import { Routes, Route } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -61,7 +62,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       position: 'relative',
       whiteSpace: 'nowrap',
       width: drawerWidth,
-      transition: theme.transitions.create('width', {
+      transition: theme.transitions.create('width',                 onDashboardClick={getDashboardHandler}
+                onCleaningsClick={getCleaningsHandler}
+                onChildrenClick={getChildrenHandler}
+                onSalaryClick={getSalaryHandler}
+                onFieldsClick={getFieldsHandler}
+{
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
@@ -89,7 +95,6 @@ function MainContainer() {
     setOpen(!open);
   };
 
-  const [containerState, setContainerState] = useState(<Dashboard />);
   const [childrenListState, setChildrenListState] = useState([]);
 
   const addChildHandler = (name) => {
@@ -105,12 +110,6 @@ function MainContainer() {
         });
     };
 
-  const getDashboardHandler = () => {
-    setContainerState(<Dashboard />);
-  };
-
-  const getCleaningsHandler = () => {
-  };
 
   const getChildrenHandler = () => {
     setContainerState(
@@ -119,12 +118,6 @@ function MainContainer() {
             onAddChild={ addChildHandler }
         />
         );
-  };
-
-  const getSalaryHandler = () => {
-  };
-
-  const getFieldsHandler = () => {
   };
 
   useEffect(() => {
@@ -188,13 +181,7 @@ function MainContainer() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <MainMenu
-                onDashboardClick={getDashboardHandler}
-                onCleaningsClick={getCleaningsHandler}
-                onChildrenClick={getChildrenHandler}
-                onSalaryClick={getSalaryHandler}
-                onFieldsClick={getFieldsHandler}
-            />
+            <MainMenu />
             <Divider sx={{ my: 1 }} />
             <SecondaryMenu />
           </List>
@@ -227,7 +214,14 @@ function MainContainer() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-          { containerState }
+              <Routes>
+                <Route path="/" element={<Dashboard/>} />
+                <Route path="/cleanings" element={<h1>cleanings</h1>} />
+                <Route path="/children" element={<ChildrenList/>} />
+                <Route path="/salary" element={<h1>salary</h1>} />
+                <Route path="/fields" element={<h1>fields</h1>} />
+                <Route path="/settings" element={<h1>settings</h1>} />
+              </Routes>
             </Grid>
           </Container>
         </Box>
