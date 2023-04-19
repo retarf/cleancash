@@ -62,11 +62,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       position: 'relative',
       whiteSpace: 'nowrap',
       width: drawerWidth,
-      transition: theme.transitions.create('width',                 onDashboardClick={getDashboardHandler}
-                onCleaningsClick={getCleaningsHandler}
-                onChildrenClick={getChildrenHandler}
-                onSalaryClick={getSalaryHandler}
-                onFieldsClick={getFieldsHandler}
+      transition: theme.transitions.create('width',
 {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
