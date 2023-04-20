@@ -106,21 +106,13 @@ function MainContainer() {
         });
     };
 
-
-  const getChildrenHandler = () => {
-    setContainerState(
-        <ChildrenList
-            childrenState={ childrenListState }
-            onAddChild={ addChildHandler }
-        />
-        );
-  };
-
   useEffect(() => {
     axios.get("http://localhost:8000/children/")
     .then(response => {
         setChildrenListState(response.data)
-    })
+    }).catch((error)) => {
+        console.log(error);
+    });
   }, []
   );
 
