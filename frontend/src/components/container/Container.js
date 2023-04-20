@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -21,8 +20,9 @@ import MainMenu, { SecondaryMenu } from '../menu/Menu';
 import Dashboard from '../dashboard/Dashboard'
 import ChildrenList from '../children/childrenList';
 import CleaningList from '../cleanings/cleaningList';
+import FieldList from '../fields/fieldList';
 import axios from 'axios';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -94,6 +94,7 @@ function MainContainer() {
 
   const [childrenListState, setChildrenListState] = useState([]);
   const [cleaningListState, setCleaningListState] = useState([]);
+  const [fieldListState, setFieldListState] = useState([]);
 
   const addChildHandler = (name) => {
         axios.post("http://localhost:8000/children/", {
@@ -103,6 +104,19 @@ function MainContainer() {
             let name = response.data.name;
             console.log(response.data);
             setChildrenListState((prevChildrenList) => {return [...prevChildrenList, {"id": id, "name": name}]});
+        }).catch(error => { // add exception handling
+            console.log(error);
+        });
+    };
+
+  const addFieldHandler = (name) => {
+        axios.post("http://localhost:8000/fields/", {
+            "name": name
+        }).then(response => {
+            let id = response.data.id;
+            let name = response.data.name;
+            console.log(response.data);
+            setFieldListState((prevFieldList) => {return [...prevFieldList, {"id": id, "name": name}]});
         }).catch(error => { // add exception handling
             console.log(error);
         });
@@ -144,6 +158,13 @@ function MainContainer() {
     axios.get("http://localhost:8000/cleaningups/")
     .then(response => {
         setCleaningListState(response.data);
+    }).catch(error => {
+        console.log(error);
+    });
+
+    axios.get("http://localhost:8000/fields/")
+    .then(response => {
+        setFieldListState(response.data);
     }).catch(error => {
         console.log(error);
     });
@@ -244,7 +265,7 @@ function MainContainer() {
                     <Route path=":id" element={<ChildrenList/>} />
                 </Route>
                 <Route path="/salary" element={<h1>salary</h1>} />
-                <Route path="/fields" element={<h1>fields</h1>} />
+                <Route path="/fields" element={<FieldList fieldState={ fieldListState } onAddField={ addFieldHandler } />} />
                 <Route path="/settings" element={<h1>settings</h1>} />
               </Routes>
             </Grid>
