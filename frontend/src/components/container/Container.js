@@ -20,6 +20,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MainMenu, { SecondaryMenu } from '../menu/Menu';
 import Dashboard from '../dashboard/Dashboard'
 import ChildrenList from '../children/childrenList';
+import CleaningList from '../cleanings/cleaningList';
 import axios from 'axios';
 import { Routes, Route, Outlet } from 'react-router-dom';
 
@@ -92,6 +93,7 @@ function MainContainer() {
   };
 
   const [childrenListState, setChildrenListState] = useState([]);
+  const [cleaningListState, setCleaningListState] = useState([]);
 
   const addChildHandler = (name) => {
         axios.post("http://localhost:8000/children/", {
@@ -100,8 +102,33 @@ function MainContainer() {
             let id = response.data.id;
             let name = response.data.name;
             console.log(response.data);
-            setChildrenListState((prevChildrenList) => {return [...prevChildrenList, {"id": id, "name": name} ]});
-        }).catch((error) => { // add exception handling
+            setChildrenListState((prevChildrenList) => {return [...prevChildrenList, {"id": id, "name": name}]});
+        }).catch(error => { // add exception handling
+            console.log(error);
+        });
+    };
+
+  const addCleaningHandler = (date, child, field) => {
+        axios.post("http://localhost:8000/cleaningups/", {
+            "date": date,
+            "child": child,
+            "field": field
+        }).then(response => {
+            let id = response.data.id;
+            let date = response.data.date;
+            let child = response.data.child;
+            let field = response.data.field;
+            console.log(response.data);
+            setCleaningListState((prevCleaningList) => {return [
+                ...prevCleaningList,
+                {
+                    "id": id,
+                    "date": date,
+                    "child": child,
+                    "field": field
+                }
+                ]});
+        }).catch(error => { // add exception handling
             console.log(error);
         });
     };
@@ -109,8 +136,15 @@ function MainContainer() {
   useEffect(() => {
     axios.get("http://localhost:8000/children/")
     .then(response => {
-        setChildrenListState(response.data)
-    }).catch((error)) => {
+        setChildrenListState(response.data);
+    }).catch(error => {
+        console.log(error);
+    });
+
+    axios.get("http://localhost:8000/cleaningups/")
+    .then(response => {
+        setCleaningListState(response.data);
+    }).catch(error => {
         console.log(error);
     });
   }, []
@@ -204,7 +238,7 @@ function MainContainer() {
             <Grid container spacing={3}>
               <Routes>
                 <Route path="/" element={<Dashboard/>} />
-                <Route path="/cleanings" element={<h1>cleanings</h1>} />
+                <Route path="/cleanings" element={<CleaningList cleaningsState={ cleaningListState } onAddCleaning={ addCleaningHandler } />} />
                 <Route path="/children" >
                     <Route index path="/children" element={<ChildrenList  childrenState={ childrenListState }  onAddChild={ addChildHandler }/> } />
                     <Route path=":id" element={<ChildrenList/>} />
