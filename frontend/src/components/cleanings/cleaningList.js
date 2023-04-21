@@ -40,7 +40,7 @@ function cleaningList(props) {
     return <React.Fragment>
   <Grid item xs={12}>
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <Title>Children List</Title>
+      <Title>Cleanings List</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
