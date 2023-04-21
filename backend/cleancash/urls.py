@@ -22,4 +22,5 @@ urlpatterns = [
     path('fields/', include('fields.urls')),
     path('cleaningfields/', include('cleaningfields.urls')),
     path('cleaningups/', include('cleaningups.urls')),
+    path('salary/', include('salary.urls')),
 ]

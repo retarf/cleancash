@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'salary.apps.SalaryConfig',
     'cleaningups.apps.CleaningUpsConfig',
     'cleaningfields.apps.CleaningfieldsConfig',
     'fields.apps.FieldsConfig',
