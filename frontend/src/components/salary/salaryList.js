@@ -15,7 +15,6 @@ function SalaryList(props) {
 
     const salaryDate = useRef();
     const salaryValue = useRef();
-    const salaryChild = useRef();
     const [editOnState, setEditOnState] = useState(false);
 
     const toggleEditOnStateHandler = () => {
@@ -26,7 +25,6 @@ function SalaryList(props) {
         props.onAddSalary(
             salaryDate.current.value,
             salaryValue.current.value,
-            salaryChild.current.value
         );
         setEditOnState(false);
     };
@@ -40,7 +38,6 @@ function SalaryList(props) {
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Value</TableCell>
-            <TableCell>Child</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -48,13 +45,11 @@ function SalaryList(props) {
             <TableRow key={row.id}>
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.value}</TableCell>
-              <TableCell>{row.child}</TableCell>
             </TableRow>
           ))}
           {editOnState ? <Grid item xs={12}>
                 <TextField id="date" label="date" variant="outlined" inputRef={salaryDate}/>
                 <TextField id="value" label="value" variant="outlined" inputRef={salaryValue}/>
-                <TextField id="child" label="child" variant="outlined" inputRef={salaryChild}/>
                 <Button onClick={addSalary}>save</Button>
             </Grid> : null }
         </TableBody>
