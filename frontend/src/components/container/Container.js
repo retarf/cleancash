@@ -21,6 +21,7 @@ import Dashboard from '../dashboard/Dashboard'
 import ChildrenList from '../children/childrenList';
 import CleaningList from '../cleanings/cleaningList';
 import FieldList from '../fields/fieldList';
+import SalaryList from '../salary/salaryList';
 import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 
@@ -95,6 +96,7 @@ function MainContainer() {
   const [childrenListState, setChildrenListState] = useState([]);
   const [cleaningListState, setCleaningListState] = useState([]);
   const [fieldListState, setFieldListState] = useState([]);
+  const [salaryListState, setSalaryListState] = useState([]);
 
   const addChildHandler = (name) => {
         axios.post("http://localhost:8000/children/", {
@@ -117,6 +119,23 @@ function MainContainer() {
             let name = response.data.name;
             console.log(response.data);
             setFieldListState((prevFieldList) => {return [...prevFieldList, {"id": id, "name": name}]});
+        }).catch(error => { // add exception handling
+            console.log(error);
+        });
+    };
+
+  const addSalaryHandler = (date, value, child) => {
+        axios.post("http://localhost:8000/salary/", {
+            "date": date,
+            "value": value,
+            "child": child
+        }).then(response => {
+            let id = response.data.id;
+            let date = response.data.date;
+            let value = response.data.value;
+            let child = response.data.child;
+            console.log(response.data);
+            setSalaryListState((prevSalaryList) => {return [...prevSalaryList, {"id": id, "date": date, "value": value, "child": child}]});
         }).catch(error => { // add exception handling
             console.log(error);
         });
@@ -165,6 +184,13 @@ function MainContainer() {
     axios.get("http://localhost:8000/fields/")
     .then(response => {
         setFieldListState(response.data);
+    }).catch(error => {
+        console.log(error);
+    });
+
+    axios.get("http://localhost:8000/salary/")
+    .then(response => {
+        setSalaryListState(response.data);
     }).catch(error => {
         console.log(error);
     });
@@ -264,7 +290,7 @@ function MainContainer() {
                     <Route index path="/children" element={<ChildrenList  childrenState={ childrenListState }  onAddChild={ addChildHandler }/> } />
                     <Route path=":id" element={<ChildrenList/>} />
                 </Route>
-                <Route path="/salary" element={<h1>salary</h1>} />
+                <Route path="/salary" element={<SalaryList salaryState={ salaryListState } onAddSalary={ addSalaryHandler } />} />
                 <Route path="/fields" element={<FieldList fieldState={ fieldListState } onAddField={ addFieldHandler } />} />
                 <Route path="/settings" element={<h1>settings</h1>} />
               </Routes>

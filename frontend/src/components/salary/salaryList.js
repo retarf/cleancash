@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Title from '../Title';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,30 +8,25 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import axios from 'axios';
-import { useParams, Outlet } from 'react-router-dom';
 
 
-function cleaningList(props) {
+function SalaryList(props) {
 
-    const newCleaningDate = useRef();
-    const newCleaningChild = useRef();
-    const newCleaningFields = useRef();
+    const salaryDate = useRef();
+    const salaryValue = useRef();
+    const salaryChild = useRef();
     const [editOnState, setEditOnState] = useState(false);
 
     const toggleEditOnStateHandler = () => {
         setEditOnState(true);
     };
 
-    const addCleaning = () => {
-        console.log("TEST");
-        console.log({"date": newCleaningDate.current.value, "child": newCleaningChild.current.value, "Fields": newCleaningFields.current.value.split(",")});
-        props.onAddCleaning(
-            newCleaningDate.current.value,
-            newCleaningChild.current.value,
-            newCleaningFields.current.value.split(",")
+    const addSalary = () => {
+        props.onAddSalary(
+            salaryDate.current.value,
+            salaryValue.current.value,
+            salaryChild.current.value
         );
         setEditOnState(false);
     };
@@ -40,28 +34,28 @@ function cleaningList(props) {
     return <React.Fragment>
   <Grid item xs={12}>
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <Title>Children List</Title>
+      <Title>Salary List</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
+            <TableCell>Value</TableCell>
             <TableCell>Child</TableCell>
-            <TableCell>Fields</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.cleaningsState.map((row) => (
+          {props.salaryState.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.date}</TableCell>
+              <TableCell>{row.value}</TableCell>
               <TableCell>{row.child}</TableCell>
-              <TableCell>{row.field}</TableCell>
             </TableRow>
           ))}
           {editOnState ? <Grid item xs={12}>
-                <TextField id="date" label="Date" variant="outlined" inputRef={newCleaningDate}/>
-                <TextField id="child" label="Child" variant="outlined" inputRef={newCleaningChild}/>
-                <TextField id="fields" label="Fields" variant="outlined" inputRef={newCleaningFields}/>
-                <Button onClick={addCleaning}>save</Button>
+                <TextField id="date" label="date" variant="outlined" inputRef={salaryDate}/>
+                <TextField id="value" label="value" variant="outlined" inputRef={salaryValue}/>
+                <TextField id="child" label="child" variant="outlined" inputRef={salaryChild}/>
+                <Button onClick={addSalary}>save</Button>
             </Grid> : null }
         </TableBody>
       </Table>
@@ -76,4 +70,4 @@ function cleaningList(props) {
     </React.Fragment>
 };
 
-export default cleaningList;
+export default SalaryList;
