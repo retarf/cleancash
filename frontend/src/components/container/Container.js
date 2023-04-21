@@ -24,6 +24,7 @@ import FieldList from '../fields/fieldList';
 import SalaryList from '../salary/salaryList';
 import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
+import Request from '../../core/api/client';
 
 function Copyright(props) {
   return (
@@ -99,7 +100,7 @@ function MainContainer() {
   const [salaryListState, setSalaryListState] = useState([]);
 
   const addChildHandler = (name) => {
-        axios.post("http://localhost:8000/children/", {
+        Request("post", "/children/", {
             "name": name
         }).then(response => {
             let id = response.data.id;
@@ -112,7 +113,7 @@ function MainContainer() {
     };
 
   const addFieldHandler = (name) => {
-        axios.post("http://localhost:8000/fields/", {
+        Request("post", "/fields/", {
             "name": name
         }).then(response => {
             let id = response.data.id;
@@ -125,7 +126,7 @@ function MainContainer() {
     };
 
   const addSalaryHandler = (date, value, child) => {
-        axios.post("http://localhost:8000/salary/", {
+        Request("post", "/salary/", {
             "date": date,
             "value": value,
             "child": child
@@ -142,7 +143,7 @@ function MainContainer() {
     };
 
   const addCleaningHandler = (date, child, field) => {
-        axios.post("http://localhost:8000/cleaningups/", {
+        Request("post","/cleaningups/", {
             "date": date,
             "child": child,
             "field": field
@@ -167,28 +168,28 @@ function MainContainer() {
     };
 
   useEffect(() => {
-    axios.get("http://localhost:8000/children/")
+    Request("get", "/children/")
     .then(response => {
         setChildrenListState(response.data);
     }).catch(error => {
         console.log(error);
     });
 
-    axios.get("http://localhost:8000/cleaningups/")
+    Request("get", "/cleaningups/")
     .then(response => {
         setCleaningListState(response.data);
     }).catch(error => {
         console.log(error);
     });
 
-    axios.get("http://localhost:8000/fields/")
+    Request("get", "/fields/")
     .then(response => {
         setFieldListState(response.data);
     }).catch(error => {
         console.log(error);
     });
 
-    axios.get("http://localhost:8000/salary/")
+    Request("get", "/salary/")
     .then(response => {
         setSalaryListState(response.data);
     }).catch(error => {

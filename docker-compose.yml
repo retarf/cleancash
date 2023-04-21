@@ -12,6 +12,7 @@ services:
             - "80:3000"
         environment:
             - NODE_ENV=development
+            - REACT_APP_BASE_URL=${FE_BASE_URL}
         command: npm start
     backend:
         depends_on:
