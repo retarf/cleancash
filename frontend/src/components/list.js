@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import Title from "../Title";
+import React, { useState, useEffect, useRef, createRef } from "react";
+import Title from "./Title";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,45 +13,51 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useParams, Outlet } from "react-router-dom";
 
-function FieldList(props) {
-  const newField = useRef();
+function List(props) {
+  const newElement = useRef([]);
   const [editOnState, setEditOnState] = useState(false);
 
   const toggleEditOnStateHandler = () => {
     setEditOnState(true);
   };
 
-  const addField = () => {
-    props.onAddField(newField.current.value);
-    setEditOnState(false);
+  const getColumnCells = () => {
+    return props.columns.map((column) => {
+      return <TableCell key={column}>{column}</TableCell>;
+    });
   };
+
+  const getElementRows = () => {
+    return props.elements.map((element) => {
+      return (
+        <TableRow key={element.id}>
+          {props.columns.map((column) => {
+            return (
+              <TableCell key={element[column]}>{element[column]}</TableCell>
+            );
+          })}
+        </TableRow>
+      );
+    });
+  };
+
+  const elementRows = getElementRows();
+  const columnCells = getColumnCells();
 
   return (
     <React.Fragment>
       <Grid item xs={12}>
         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          <Title>Fields List</Title>
+          <Title>Children List</Title>
           <Table size="small">
             <TableHead>
-              <TableRow>
-                <TableCell>Field Name</TableCell>
-              </TableRow>
+              <TableRow>{columnCells}</TableRow>
             </TableHead>
             <TableBody>
-              {props.fieldState.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.name}</TableCell>
-                </TableRow>
-              ))}
+              {elementRows}
               {editOnState ? (
                 <Grid item xs={12}>
-                  <TextField
-                    id="name"
-                    label="name"
-                    variant="outlined"
-                    inputRef={newField}
-                  />
-                  <Button onClick={addField}>save</Button>
+                  {props.addElement}
                 </Grid>
               ) : null}
             </TableBody>
@@ -70,4 +76,4 @@ function FieldList(props) {
   );
 }
 
-export default FieldList;
+export default List;
