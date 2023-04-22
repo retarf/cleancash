@@ -7,3 +7,5 @@ class ChildrenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Children
         fields = '__all__'
+        extra_kwargs = {'fields': {'required': False}}
+
