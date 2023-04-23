@@ -17,6 +17,8 @@ function ChildList () {
 
     const addChild = () => { console.log(elementList)};
 
+    console.log(elementList);
+
     // ARGS: { title: string, createElement: func, deleteElement: func, columns: array(string), elements: array(object) }
     return <List title={ listTitle } columns={ model.columns } elements={ elementList } addElement={addChild} />;
 }

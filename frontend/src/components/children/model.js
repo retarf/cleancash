@@ -1,6 +1,6 @@
 import { create, get, list, update } from '../../core/api/requests';
 
-const request = () => {
+const Request = () => {
     const url = "/children";
 
     return {
@@ -22,7 +22,7 @@ const request = () => {
 const useModel = () => {
 
     const columns = ["name", "fields"];
-    const request = request();
+    const request = Request();
 
     return {
         columns,
