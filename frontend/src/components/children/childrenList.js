@@ -28,6 +28,10 @@ function ChildrenList(props) {
     setEditOnState(false);
   };
 
+  const deleteChild = (childIds) => {
+
+  };
+
   const columns = ["name"];
   const elements = props.childrenState;
 

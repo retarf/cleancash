@@ -31,9 +31,9 @@ const get = (baseUrl, id) => {
       .catch((error) => {
         console.log(error);
       });
-}
+};
 
-const update = (baseUrl, id, data)
+const update = (baseUrl, id, data) => {
     let url = baseUrl + "/" + id;
     Request("patch", url)
       .then((response) => {
@@ -42,5 +42,6 @@ const update = (baseUrl, id, data)
       .catch((error) => {
         console.log(error);
       });
+      };
 
 export { create, list, get, update };

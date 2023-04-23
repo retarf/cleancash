@@ -17,14 +17,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MainMenu, { SecondaryMenu } from "../menu/Menu";
-import Dashboard from "../dashboard/Dashboard";
-import ChildrenList from "../children/childrenList";
-import CleaningList from "../cleanings/cleaningList";
-import FieldList from "../fields/fieldList";
-import SalaryList from "../salary/salaryList";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Request from "../../core/api/client";
+import MainRoutes from "./MainRoutes";
+
 
 function Copyright(props) {
   return (
@@ -98,28 +95,7 @@ function MainContainer() {
     setOpen(!open);
   };
 
-  const [childrenListState, setChildrenListState] = useState([]);
-  const [cleaningListState, setCleaningListState] = useState([]);
-  const [fieldListState, setFieldListState] = useState([]);
-  const [salaryListState, setSalaryListState] = useState([]);
 
-  const addChildHandler = (name) => {
-    Request("post", "/children/", {
-      name: name,
-    })
-      .then((response) => {
-        let id = response.data.id;
-        let name = response.data.name;
-        console.log(response.data);
-        setChildrenListState((prevChildrenList) => {
-          return [...prevChildrenList, { id: id, name: name }];
-        });
-      })
-      .catch((error) => {
-        // add exception handling
-        console.log(error);
-      });
-  };
 
   const addFieldHandler = (name) => {
     Request("post", "/fields/", {
@@ -195,13 +171,6 @@ function MainContainer() {
   };
 
   useEffect(() => {
-    Request("get", "/children/")
-      .then((response) => {
-        setChildrenListState(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
     Request("get", "/cleaningups/")
       .then((response) => {
@@ -314,50 +283,7 @@ function MainContainer() {
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route
-                    path="/cleanings"
-                    element={
-                      <CleaningList
-                        cleaningsState={cleaningListState}
-                        onAddCleaning={addCleaningHandler}
-                      />
-                    }
-                  />
-                  <Route path="/children">
-                    <Route
-                      index
-                      path="/children"
-                      element={
-                        <ChildrenList
-                          childrenState={childrenListState}
-                          onAddChild={addChildHandler}
-                        />
-                      }
-                    />
-                    <Route path=":id" element={<ChildrenList />} />
-                  </Route>
-                  <Route
-                    path="/salary"
-                    element={
-                      <SalaryList
-                        salaryState={salaryListState}
-                        onAddSalary={addSalaryHandler}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/fields"
-                    element={
-                      <FieldList
-                        fieldState={fieldListState}
-                        onAddField={addFieldHandler}
-                      />
-                    }
-                  />
-                  <Route path="/settings" element={<h1>settings</h1>} />
-                </Routes>
+              <MainRoutes />
               </Grid>
             </Container>
           </Box>
