@@ -15,16 +15,19 @@ import axios from "axios";
 import { useParams, Outlet } from "react-router-dom";
 
 function List(props) {
+  // ARGS: { title: string, createElement: func, deleteElement: func, columns: array(string), elements: array(object) }
+
   const [deleteList, setDeleteList] = useState([]);
 
   const changeDeleteList = (event) => {
     let id = event.target.id;
+    let list = [...deleteList];
     if (event.target.checked) {
-      setDeleteList([...deleteList, id]);
-    } else if (deleteList.includes(id)) {
-      setDeleteList([...deleteList].pop(id));
+      list = [...deleteList, id];
+    } else {
+      list.splice(deleteList.indexOf(id), 1);
     }
-    console.log(deleteList);
+    setDeleteList(list);
   };
 
   const getColumnCells = () => {
@@ -55,15 +58,19 @@ function List(props) {
     });
   };
 
+  const deleteElement = () => {
+    props.deleteElement(deleteList);
+  };
+
   const elementRows = getElementRows();
   const columnCells = getColumnCells();
+
 
   return (
     <React.Fragment>
       <Grid item xs={12}>
         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          <Title>Children List</Title>
-
+          <Title>{ props.title }</Title>
           <Table size="small">
             <TableHead>
               <TableRow>{columnCells}</TableRow>
@@ -73,10 +80,10 @@ function List(props) {
         </Paper>
       </Grid>
       <Grid item xs={1}>
-        <Button variant="contained">Add</Button>
+        <Button variant="contained" onClick= { props.createElement }>Create</Button>
       </Grid>
       <Grid item xs={1}>
-        <Button variant="outlined">Delete</Button>
+        <Button onClick={ deleteElement } variant="outlined">Delete</Button>
       </Grid>
     </React.Fragment>
   );
