@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Title from '../Title';
+import React, { useState, useRef } from 'react';
+import { Title } from '/app/src/shared';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,48 +8,49 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import axios from 'axios';
-import { useParams, Outlet } from 'react-router-dom';
 
 
-function ChildrenList(props) {
+function SalaryList(props) {
 
-    const { id } = useParams;
-    const newChildName = useRef("");
+    const salaryDate = useRef();
+    const salaryValue = useRef();
     const [editOnState, setEditOnState] = useState(false);
 
     const toggleEditOnStateHandler = () => {
         setEditOnState(true);
     };
 
-    const addChild = () => {
-        console.log("TEST");
-        props.onAddChild(newChildName.current.value);
+    const addSalary = () => {
+        props.onAddSalary(
+            salaryDate.current.value,
+            salaryValue.current.value,
+        );
         setEditOnState(false);
     };
 
     return <React.Fragment>
-              <Grid item xs={12}>
-
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <Title>Children List</Title>
+  <Grid item xs={12}>
+    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+      <Title>Salary List</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Value</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.childrenState.map((row) => (
+          {props.salaryState.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.name}</TableCell>
+              <TableCell>{row.date}</TableCell>
+              <TableCell>{row.value}</TableCell>
             </TableRow>
           ))}
           {editOnState ? <Grid item xs={12}>
-                <TextField id="name" label="name" variant="outlined" inputRef={newChildName}/>
-                <Button onClick={addChild}>save</Button>
+                <TextField id="date" label="date" variant="outlined" inputRef={salaryDate}/>
+                <TextField id="value" label="value" variant="outlined" inputRef={salaryValue}/>
+                <Button onClick={addSalary}>save</Button>
             </Grid> : null }
         </TableBody>
       </Table>
@@ -64,4 +65,4 @@ function ChildrenList(props) {
     </React.Fragment>
 };
 
-export default ChildrenList;
+export default SalaryList;

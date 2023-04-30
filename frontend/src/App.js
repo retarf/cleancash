@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import '@fontsource/roboto/400.css';
-
-import Dashboard from './components/dashboard/Dashboard';
-import MainContainer from './components/container/Container';
 import { BrowserRouter } from 'react-router-dom';
+
+import { Dashboard } from './apps'
+import { MainContainer } from './apps';
 
 function App() {
   return (

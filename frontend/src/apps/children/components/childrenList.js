@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import Title from '../Title';
+import { Title } from '/app/src/shared';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,53 +14,42 @@ import axios from 'axios';
 import { useParams, Outlet } from 'react-router-dom';
 
 
-function cleaningList(props) {
+function ChildrenList(props) {
 
-    const newCleaningDate = useRef();
-    const newCleaningChild = useRef();
-    const newCleaningFields = useRef();
+    const { id } = useParams;
+    const newChildName = useRef("");
     const [editOnState, setEditOnState] = useState(false);
 
     const toggleEditOnStateHandler = () => {
         setEditOnState(true);
     };
 
-    const addCleaning = () => {
+    const addChild = () => {
         console.log("TEST");
-        console.log({"date": newCleaningDate.current.value, "child": newCleaningChild.current.value, "Fields": newCleaningFields.current.value.split(",")});
-        props.onAddCleaning(
-            newCleaningDate.current.value,
-            newCleaningChild.current.value,
-            newCleaningFields.current.value.split(",")
-        );
+        props.onAddChild(newChildName.current.value);
         setEditOnState(false);
     };
 
     return <React.Fragment>
-  <Grid item xs={12}>
-    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <Title>Cleanings List</Title>
+              <Grid item xs={12}>
+
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+      <Title>Children List</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Child</TableCell>
-            <TableCell>Fields</TableCell>
+            <TableCell>Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.cleaningsState.map((row) => (
+          {props.childrenState.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.child}</TableCell>
-              <TableCell>{row.field}</TableCell>
+              <TableCell>{row.name}</TableCell>
             </TableRow>
           ))}
           {editOnState ? <Grid item xs={12}>
-                <TextField id="date" label="Date" variant="outlined" inputRef={newCleaningDate}/>
-                <TextField id="child" label="Child" variant="outlined" inputRef={newCleaningChild}/>
-                <TextField id="fields" label="Fields" variant="outlined" inputRef={newCleaningFields}/>
-                <Button onClick={addCleaning}>save</Button>
+                <TextField id="name" label="name" variant="outlined" inputRef={newChildName}/>
+                <Button onClick={addChild}>save</Button>
             </Grid> : null }
         </TableBody>
       </Table>
@@ -76,4 +64,4 @@ function cleaningList(props) {
     </React.Fragment>
 };
 
-export default cleaningList;
+export default ChildrenList;

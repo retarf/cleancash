@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import Title from '../Title';
+import React, { useState, useEffect, useRef } from 'react';
+import { Title } from '/app/src/shared';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,49 +8,45 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { useParams, Outlet } from 'react-router-dom';
 
 
-function SalaryList(props) {
+function FieldList(props) {
 
-    const salaryDate = useRef();
-    const salaryValue = useRef();
+    const newField = useRef();
     const [editOnState, setEditOnState] = useState(false);
 
     const toggleEditOnStateHandler = () => {
         setEditOnState(true);
     };
 
-    const addSalary = () => {
-        props.onAddSalary(
-            salaryDate.current.value,
-            salaryValue.current.value,
-        );
+    const addField = () => {
+        props.onAddField(newField.current.value);
         setEditOnState(false);
     };
 
     return <React.Fragment>
   <Grid item xs={12}>
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <Title>Salary List</Title>
+      <Title>Fields List</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Value</TableCell>
+            <TableCell>Field Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.salaryState.map((row) => (
+          {props.fieldState.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.value}</TableCell>
+              <TableCell>{row.name}</TableCell>
             </TableRow>
           ))}
           {editOnState ? <Grid item xs={12}>
-                <TextField id="date" label="date" variant="outlined" inputRef={salaryDate}/>
-                <TextField id="value" label="value" variant="outlined" inputRef={salaryValue}/>
-                <Button onClick={addSalary}>save</Button>
+                <TextField id="name" label="name" variant="outlined" inputRef={newField}/>
+                <Button onClick={addField}>save</Button>
             </Grid> : null }
         </TableBody>
       </Table>
@@ -65,4 +61,4 @@ function SalaryList(props) {
     </React.Fragment>
 };
 
-export default SalaryList;
+export default FieldList;

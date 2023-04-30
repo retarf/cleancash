@@ -16,15 +16,14 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MainMenu, { SecondaryMenu } from '../menu/Menu';
-import Dashboard from '../dashboard/Dashboard'
-import ChildrenList from '../children/childrenList';
-import CleaningList from '../cleanings/cleaningList';
-import FieldList from '../fields/fieldList';
-import SalaryList from '../salary/salaryList';
-import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
-import Request from '../../core/api/client';
+import { MainMenu, SecondaryMenu } from '/app/src/apps/menu';
+import { Dashboard } from '/app/src/apps/dashboard'
+import { ChildrenList } from '/app/src/apps/children';
+import { CleaningList } from '/app/src/apps/cleanings';
+import { FieldList } from '/app/src/apps/fields';
+import { SalaryList } from '/app/src/apps/salary';
+import { Request } from '/app/src/core';
 
 function Copyright(props) {
   return (
