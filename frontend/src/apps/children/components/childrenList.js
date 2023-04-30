@@ -10,8 +10,8 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import axios from 'axios';
 import { useParams, Outlet } from 'react-router-dom';
+import { useChildrenListQuery } from '../queries'
 
 
 function ChildrenList(props) {
@@ -19,6 +19,12 @@ function ChildrenList(props) {
     const { id } = useParams;
     const newChildName = useRef("");
     const [editOnState, setEditOnState] = useState(false);
+
+    //const { data, isLoading } = useChildrenListQuery();
+    const { data, isLoading } = useChildrenListQuery();
+    console.log(isLoading);
+    console.log(data);
+    const tdata = [{id: 1, name: "test"}];
 
     const toggleEditOnStateHandler = () => {
         setEditOnState(true);
@@ -42,7 +48,7 @@ function ChildrenList(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.childrenState.map((row) => (
+          { data.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.name}</TableCell>
             </TableRow>
