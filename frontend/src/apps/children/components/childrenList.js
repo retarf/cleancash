@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Title } from '/app/src/shared';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,34 +11,16 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useParams, Outlet } from 'react-router-dom';
-import { useChildrenListQuery } from '../queries'
+import { useChildren } from '../queries'
 
 
-function ChildrenList(props) {
 
-    const { id } = useParams;
-    const newChildName = useRef("");
-    const [editOnState, setEditOnState] = useState(false);
+const Children = ({ setChildId }) => {
 
-    //const { data, isLoading } = useChildrenListQuery();
-    const { data, isLoading } = useChildrenListQuery();
-    console.log(isLoading);
-    console.log(data);
-    const tdata = [{id: 1, name: "test"}];
-
-    const toggleEditOnStateHandler = () => {
-        setEditOnState(true);
-    };
-
-    const addChild = () => {
-        console.log("TEST");
-        props.onAddChild(newChildName.current.value);
-        setEditOnState(false);
-    };
+    const { status, data, error, isFetching } = useChildren();
 
     return <React.Fragment>
               <Grid item xs={12}>
-
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
       <Title>Children List</Title>
       <Table size="small">
@@ -48,26 +30,33 @@ function ChildrenList(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          { data.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.name}</TableCell>
-            </TableRow>
-          ))}
-          {editOnState ? <Grid item xs={12}>
-                <TextField id="name" label="name" variant="outlined" inputRef={newChildName}/>
-                <Button onClick={addChild}>save</Button>
-            </Grid> : null }
+            {status === "loading" ? (
+                    <TableRow key={"loading"}>
+                        <h2>Loading...</h2>
+                    </TableRow>
+                ) : status === "error" ? (
+                    <TableRow key={"error"}>
+                        <TableCell>Error: {error.message}</TableCell>
+                    </TableRow>
+                ) : (
+                    data.map((child) =>
+                        <TableRow key={child.id}>
+                            <TableCell>{child.name}</TableCell>
+                        </TableRow>
+                    )
+                )
+            }
         </TableBody>
       </Table>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-              <Button variant="contained" onClick={toggleEditOnStateHandler}>Add</Button>
+              <Button variant="contained" >Add</Button>
               </Grid>
               <Grid item xs={12}>
               <Button variant="outlined">Delete</Button>
               </Grid>
     </React.Fragment>
-};
+}
 
-export default ChildrenList;
+export default Children;

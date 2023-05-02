@@ -1,1 +1,1 @@
-export { default as SalaryList } from './salaryList'
+export { default as SalaryList } from "./salaryList";

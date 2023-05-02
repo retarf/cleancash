@@ -1,1 +1,1 @@
-export { default as ChildrenList } from './childrenList'
+export { default as Children } from "./childrenList";

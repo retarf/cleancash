@@ -1,1 +1,1 @@
-export { default as Request } from './client'
+export { default as Request } from "./client";

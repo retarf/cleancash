@@ -1,1 +1,1 @@
-export { default as MainContainer } from './Container'
+export { default as MainContainer } from "./Container";

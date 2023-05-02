@@ -1,1 +1,1 @@
-export { default as CleaningList } from './cleaningList'
+export { default as CleaningList } from "./cleaningList";

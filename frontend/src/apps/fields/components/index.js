@@ -1,1 +1,1 @@
-export { default as FieldList } from './fieldList'
+export { default as FieldList } from "./fieldList";
