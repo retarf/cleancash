@@ -14,7 +14,7 @@ export const useChildren = () => {
 };
 
 const getChildById = async (id) => {
-    const { data } = await Request("get", "/children/${id}");
+    const { data } = await Request("get", `/children/${id}`);
     return data;
 }
 

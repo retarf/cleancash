@@ -25,7 +25,7 @@ import { FieldList } from "/app/src/apps/fields";
 import { SalaryList } from "/app/src/apps/salary";
 import { Request } from "/app/src/core";
 //import { useChildrenListQuery } from "/app/src/apps/children/queries";
-import { Children } from "/app/src/apps/children"
+import { Child, Children } from "/app/src/apps/children"
 
 function Copyright(props) {
   return (
@@ -103,7 +103,7 @@ function MainContainer() {
   const [cleaningListState, setCleaningListState] = useState([]);
   const [fieldListState, setFieldListState] = useState([]);
   const [salaryListState, setSalaryListState] = useState([]);
-  const [childId, setChildId] = useState();
+  const [childId, setChildId] = useState(-1);
 
   const addChildHandler = (name) => {
     // Request("post", "/children/", {
@@ -319,7 +319,7 @@ function MainContainer() {
                     <Route
                       index
                       path="/children"
-                      element={<Children setChildId={ setChildId } />}
+                      element={ childId > -1 ? ( <Child childId={ childId } setChildId={ setChildId } />) : ( <Children setChildId={ setChildId } /> )}
                     />
                   </Route>
                   <Route

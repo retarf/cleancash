@@ -11,11 +11,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useParams, Outlet } from 'react-router-dom';
-import { useChildren } from '../queries'
+import { useChildren, useChild } from './queries'
 
 
 
-const Children = ({ setChildId }) => {
+export const Children = ({ setChildId }) => {
 
     const { status, data, error, isFetching } = useChildren();
 
@@ -32,7 +32,7 @@ const Children = ({ setChildId }) => {
         <TableBody>
             {status === "loading" ? (
                     <TableRow key={"loading"}>
-                        <h2>Loading...</h2>
+                        <TableCell>Loading...</TableCell>
                     </TableRow>
                 ) : status === "error" ? (
                     <TableRow key={"error"}>
@@ -40,7 +40,7 @@ const Children = ({ setChildId }) => {
                     </TableRow>
                 ) : (
                     data.map((child) =>
-                        <TableRow key={child.id}>
+                        <TableRow key={child.id} onClick={ () => { setChildId(child.id) }} hover={ true }>
                             <TableCell>{child.name}</TableCell>
                         </TableRow>
                     )
@@ -59,4 +59,24 @@ const Children = ({ setChildId }) => {
     </React.Fragment>
 }
 
-export default Children;
+export const Child = ({ childId, setChildId }) => {
+    const { status, data, error, isFetching } = useChild(childId);
+
+    return (<React.Fragment>
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                     {!childId || status === "loading" ? (
+                        "Loading..."
+                      ) : status === "error" ? (
+                        <span>Error: {error.message}</span>
+                      ) : (
+                        <>
+                          <h1>{data.name}</h1>
+                          <div>{isFetching ? "Background Updating..." : " "}</div>
+                        </>
+                      )}
+      <button onClick={ () => { setChildId(-1) } }>back</button>
+                </Paper>
+                </Grid>
+    </React.Fragment>)
+}
