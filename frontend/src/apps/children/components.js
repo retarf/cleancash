@@ -71,29 +71,26 @@ export const Children = ({ setChildId }) => {
 
 export const Child = ({ childId, setChildId }) => {
     const child = useChild(childId);
-    const [ checked, setChecked ] = useState([0]);
+    const [ checked, setChecked ] = useState([]);
     const fields = useFields();
 
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-          newChecked.push(value);
+    const handleToggle = (event) => {
+        let value = event.target.tabIndex;
+        if (!checked.includes(value)) {
+          setChecked((preChecked) => [...preChecked, value])
         } else {
+          const currentIndex = checked.indexOf(value);
+          let newChecked = [...checked];
           newChecked.splice(currentIndex, 1);
+          setChecked(newChecked);
         }
-
-        console.log(newChecked);
-        setChecked([...newChecked]);
-        console.log(checked);
     };
 
     useEffect(() => {
         if (child.status === "success") {
             setChecked(child.data.fields);
         }
-    },[child, checked, setChecked])
+    },[child.status])
 
     return (<React.Fragment>
                      {!childId || child.status === "loading" ? (
@@ -127,15 +124,15 @@ export const Child = ({ childId, setChildId }) => {
                                         key={field.id}
                                         disablePadding
                                       >
-                                        <ListItemButton role={undefined} onClick={ handleToggle(field.id) } dense>
-                                          <ListItemIcon>
-                                            <Checkbox
-                                              checked={ checked.includes(field.id) }
-                                              tabIndex={-1}
-                                              inputProps={{ 'aria-labelledby': labelId }}
-                                            />
-                                          </ListItemIcon>
-                                          <ListItemText id={labelId} primary={ field.name } />
+                                        <ListItemButton role={undefined} htmlfor={ labelId } dense>
+                                          <Checkbox
+                                            id={ labelId }
+                                            checked={ checked.includes(field.id) }
+                                            tabIndex={ field.id }
+                                            inputProps={{ 'aria-labelledby': labelId }}
+                                            onChange={ handleToggle }
+                                          />
+                                          <ListItemText htmlfor={labelId} primary={ field.name } />
                                         </ListItemButton>
                                       </ListItem>
                                     );
