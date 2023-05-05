@@ -5,6 +5,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import Paper from '@mui/material/Paper';
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -104,6 +105,7 @@ function MainContainer() {
   const [fieldListState, setFieldListState] = useState([]);
   const [salaryListState, setSalaryListState] = useState([]);
   const [childId, setChildId] = useState(-1);
+  const [fieldId, setFieldId] = useState(-1);
 
   const addChildHandler = (name) => {
     // Request("post", "/children/", {
@@ -191,33 +193,6 @@ function MainContainer() {
       });
   };
 
-  useEffect(() => {
-    // Request("get", "/children/")
-    // .then(response => {
-    //     setChildrenListState(response.data);
-    // }).catch(error => {
-    //     console.log(error);
-    // });
-    // Request("get", "/cleaningups/")
-    // .then(response => {
-    //     setCleaningListState(response.data);
-    // }).catch(error => {
-    //     console.log(error);
-    // });
-    // Request("get", "/fields/")
-    // .then(response => {
-    //     setFieldListState(response.data);
-    // }).catch(error => {
-    //     console.log(error);
-    // });
-    // Request("get", "/salary/")
-    // .then(response => {
-    //     setSalaryListState(response.data);
-    // }).catch(error => {
-    //     console.log(error);
-    // });
-  }, []);
-
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -304,6 +279,8 @@ function MainContainer() {
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route
@@ -342,6 +319,8 @@ function MainContainer() {
                   />
                   <Route path="/settings" element={<h1>settings</h1>} />
                 </Routes>
+                </Paper>
+                </Grid>
               </Grid>
             </Container>
           </Box>

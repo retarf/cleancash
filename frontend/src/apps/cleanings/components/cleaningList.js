@@ -40,8 +40,6 @@ function CleaningList(props) {
 
   return (
     <React.Fragment>
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
           <Title>Cleanings List</Title>
           <Table size="small">
             <TableHead>
@@ -84,8 +82,6 @@ function CleaningList(props) {
               ) : null}
             </TableBody>
           </Table>
-        </Paper>
-      </Grid>
       <Grid item xs={12}>
         <Button variant="contained" onClick={toggleEditOnStateHandler}>
           Add
