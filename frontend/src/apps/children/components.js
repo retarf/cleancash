@@ -27,6 +27,7 @@ import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import AddIcon from '@mui/icons-material/Add';
 
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -40,7 +41,12 @@ export const Children = ({ setChildId }) => {
     const childList = query.useList();
 
     return <React.Fragment>
-      <Title>Children</Title>
+      <Stack direction="row" spacing={1}>
+          <Title>Children</Title>
+          <IconButton aria-label="add" >
+              <AddIcon />
+          </IconButton>
+      </Stack>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -67,12 +73,6 @@ export const Children = ({ setChildId }) => {
             }
         </TableBody>
       </Table>
-              <Grid item xs={12}>
-              <Button variant="contained" >Add</Button>
-              </Grid>
-              <Grid item xs={12}>
-              <Button variant="outlined">Delete</Button>
-              </Grid>
     </React.Fragment>
 }
 
