@@ -3,47 +3,36 @@ import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/rea
 import { Request } from "/app/src/core";
 
 
-export const ChildrenQuery = () => {
-    const useRead = () => {
+export const ChildQuery = () => {
+    const queryClient = useQueryClient();
+    const request = Request("/children/")
+
+    const useList = () => {
           return useQuery({
             queryKey: ["children"],
-            queryFn: async () => {
-              const { data } = await Request("get", "/children/");
-              return data;
-            },
+            queryFn: request.list
           });
     };
-    return {
-        useRead,
+
+    const useCreate = async () => {
+        return useMutation({mutationFn: request.post, mutationKey: ["children"], onSuccess:async () => {
+            await queryClient.cancelQueries({queryKey: ["children"]});
+            queryClient.invalidateQueries({ queryKey: ["children"] });
+        }})
     }
 
-}
-
-
-export const ChildQuery = (childId) => {
-    const queryClient = useQueryClient();
-
-    const getChildById = async (id) => {
-        const { data } = await Request("get", `/children/${id}/`);
-        return data;
-    }
 
     const useRead = (childId) => {
-      // THAT IS EVEN CREEPIER ;)
       return useQuery({
         queryKey: ["children", childId],
-        queryFn: () => getChildById(childId),
+        queryFn: () => request.get(childId),
         enabled: !!childId,
       });
     }
 
-    const patch = async (child) => {
-        console.log(child);
-        return await Request("patch", `/children/${child.id}/`, child);
-    }
 
     const useUpdate = (childId) => {
-        return useMutation({mutationFn: patch, mutationKey: ["children", childId], onSuccess: async () => {
+        return useMutation({mutationFn: request.patch, mutationKey: ["children", childId], onSuccess: async () => {
             await queryClient.cancelQueries({queryKey: ["children", childId]});
             await queryClient.cancelQueries({queryKey: ["children"]});
             queryClient.invalidateQueries({ queryKey: ["children"] });
@@ -51,11 +40,11 @@ export const ChildQuery = (childId) => {
         }});
     }
 
-    const useCreate = () => {}
 
     const useDelete = () => {}
 
     return {
+        useList,
         useCreate,
         useRead,
         useUpdate,

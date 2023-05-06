@@ -36,8 +36,8 @@ import { Request } from "/app/src/core";
 
 export const Children = ({ setChildId }) => {
 
-    const query = ChildrenQuery()
-    const { status, data, error, isFetching } = query.useRead();
+    const query = ChildQuery()
+    const childList = query.useList();
 
     return <React.Fragment>
       <Title>Children</Title>
@@ -48,16 +48,17 @@ export const Children = ({ setChildId }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-            {status === "loading" ? (
+            {childList.status === "loading" ? (
                     <TableRow key={"loading"}>
                         <TableCell>Loading...</TableCell>
                     </TableRow>
-                ) : status === "error" ? (
+                ) : childList.status === "error" ? (
                     <TableRow key={"error"}>
-                        <TableCell>Error: {error.message}</TableCell>
+                        <TableCell>Error: {childList.error.message}</TableCell>
                     </TableRow>
                 ) : (
-                    data.map((child) =>
+                    // TODO: Remove unnecessary data attribute
+                    childList.data.data.map((child) =>
                         <TableRow key={child.id} onClick={ () => { setChildId(child.id) }} hover={ true }>
                             <TableCell>{child.name}</TableCell>
                         </TableRow>
@@ -76,14 +77,14 @@ export const Children = ({ setChildId }) => {
 }
 
 export const Child = ({ childId, setChildId }) => {
-    const query = ChildQuery(childId);
+    const query = ChildQuery();
     const child = query.useRead(childId);
+    const updateMutation = query.useUpdate(childId);
     const [ checked, setChecked ] = useState([]);
     const [ name, setName ] = useState();
     const [ editState, setEditState ] = useState(false);
     const fields = useFields();
     const nameRef = useRef();
-    const updateMutation = query.useUpdate(childId);
 
     const enableEditState = (event) => {
         setEditState(true);
@@ -119,10 +120,8 @@ export const Child = ({ childId, setChildId }) => {
 
     useEffect(() => {
         if (child.status === "success") {
-            setChecked(child.data.fields);
-            setName(child.data.name);
-            console.log(child.data);
-            console.log('ttt');
+            setChecked(child.data.data.fields);
+            setName(child.data.data.name);
         }
     },[child.status])
 
@@ -151,7 +150,7 @@ export const Child = ({ childId, setChildId }) => {
                               ): fields.status === "error" ? (
                                 <span>Error: {fields.error.message}</span>
                               ) : (
-                                  fields.data.map((field) => {
+                                  fields.data.data.map((field) => {
                                   const labelId = `checkbox-list-label-${field.id}`;
                                   return (
                                       <ListItem
