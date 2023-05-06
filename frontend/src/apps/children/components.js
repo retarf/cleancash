@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useParams, Outlet } from 'react-router-dom';
-import { useChildren, useChild, useSaveChild } from './queries'
+import { ChildrenQuery, ChildQuery } from './queries'
 import { useFields } from '/app/src/apps/fields/queries'
 
 import List from '@mui/material/List';
@@ -36,7 +36,8 @@ import { Request } from "/app/src/core";
 
 export const Children = ({ setChildId }) => {
 
-    const { status, data, error, isFetching } = useChildren();
+    const query = ChildrenQuery()
+    const { status, data, error, isFetching } = query.useRead();
 
     return <React.Fragment>
       <Title>Children</Title>
@@ -75,14 +76,14 @@ export const Children = ({ setChildId }) => {
 }
 
 export const Child = ({ childId, setChildId }) => {
-    const queryClient = useQueryClient();
-    const child = useChild(childId);
+    const query = ChildQuery(childId);
+    const child = query.useRead(childId);
     const [ checked, setChecked ] = useState([]);
     const [ name, setName ] = useState();
     const [ editState, setEditState ] = useState(false);
     const fields = useFields();
     const nameRef = useRef();
-    const saveMutation = useSaveChild(childId);
+    const updateMutation = query.useUpdate(childId);
 
     const enableEditState = (event) => {
         setEditState(true);
@@ -107,17 +108,13 @@ export const Child = ({ childId, setChildId }) => {
         }
     };
 
-    const save = async () => {
+    const save = () => {
         let child = {
             id: childId,
             name: name,
             fields: checked
         }
-        await queryClient.cancelQueries({queryKey: ["children", child.id]});
-        await queryClient.cancelQueries({queryKey: ["children"]});
-        saveMutation.mutate(child);
-        queryClient.invalidateQueries({ queryKey: ["children"] });
-        queryClient.setQueryData(["children", child.id], child);
+        updateMutation.mutate(child);
     }
 
     useEffect(() => {
