@@ -107,19 +107,6 @@ function MainContainer() {
   const [childId, setChildId] = useState(-1);
   const [fieldId, setFieldId] = useState(-1);
 
-  const addChildHandler = (name) => {
-    // Request("post", "/children/", {
-    //     "name": name
-    // }).then(response => {
-    //     let id = response.data.id;
-    //     let name = response.data.name;
-    //     console.log(response.data);
-    //     //setChildrenListState((prevChildrenList) => {return [...prevChildrenList, {"id": id, "name": name}]});
-    // }).catch(error => { // add exception handling
-    //     console.log(error);
-    // });
-  };
-
   const addFieldHandler = (name) => {
     Request("post", "/fields/", {
       name: name,

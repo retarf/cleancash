@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useParams, Outlet } from 'react-router-dom';
-import { useChildren, useChild } from './queries'
+import { useChildren, useChild, useSaveChild } from './queries'
 import { useFields } from '/app/src/apps/fields/queries'
 
 import List from '@mui/material/List';
@@ -28,13 +28,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+import { useQueryClient, useQuery, useQueries, useMutation } from "@tanstack/react-query";
+import { Request } from "/app/src/core";
+
 
 export const Children = ({ setChildId }) => {
 
     const { status, data, error, isFetching } = useChildren();
 
     return <React.Fragment>
-      <Title>Children List</Title>
+      <Title>Children</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -70,9 +75,25 @@ export const Children = ({ setChildId }) => {
 }
 
 export const Child = ({ childId, setChildId }) => {
+    const queryClient = useQueryClient();
     const child = useChild(childId);
     const [ checked, setChecked ] = useState([]);
+    const [ name, setName ] = useState();
+    const [ editState, setEditState ] = useState(false);
     const fields = useFields();
+    const nameRef = useRef();
+    const saveMutation = useSaveChild(childId);
+
+    const enableEditState = (event) => {
+        setEditState(true);
+    }
+
+    const disableEditState = (event) => {
+        if (event.code == "Enter") {
+            setName(event.target.value);
+            setEditState(false);
+        }
+    }
 
     const handleToggle = (event) => {
         let value = event.target.tabIndex;
@@ -86,9 +107,25 @@ export const Child = ({ childId, setChildId }) => {
         }
     };
 
+    const save = async () => {
+        let child = {
+            id: childId,
+            name: name,
+            fields: checked
+        }
+        await queryClient.cancelQueries({queryKey: ["children", child.id]});
+        await queryClient.cancelQueries({queryKey: ["children"]});
+        saveMutation.mutate(child);
+        queryClient.invalidateQueries({ queryKey: ["children"] });
+        queryClient.setQueryData(["children", child.id], child);
+    }
+
     useEffect(() => {
         if (child.status === "success") {
             setChecked(child.data.fields);
+            setName(child.data.name);
+            console.log(child.data);
+            console.log('ttt');
         }
     },[child.status])
 
@@ -100,8 +137,8 @@ export const Child = ({ childId, setChildId }) => {
                       ) : (
                         <>
                           <Stack direction="row" spacing={1}>
-                              <h1>{child.data.name}</h1>
-                              <IconButton aria-label="edit">
+                              { editState ? <TextField defaultValue={ name } onKeyDown={ disableEditState } inputRef={ nameRef } /> : <h1 onClick={ enableEditState }>{ name }</h1> }
+                              <IconButton aria-label="edit" onClick={ enableEditState } >
                                   <ModeEditIcon />
                               </IconButton>
                           </Stack>
@@ -112,7 +149,7 @@ export const Child = ({ childId, setChildId }) => {
                           </Stack>
                           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                           {
-                              fields.status == "loading" ? (
+                              fields.status === "loading" ? (
                                 "Loading..."
                               ): fields.status === "error" ? (
                                 <span>Error: {fields.error.message}</span>
@@ -124,16 +161,18 @@ export const Child = ({ childId, setChildId }) => {
                                         key={field.id}
                                         disablePadding
                                       >
-                                        <ListItemButton role={undefined} htmlfor={ labelId } dense>
-                                          <Checkbox
-                                            id={ labelId }
-                                            checked={ checked.includes(field.id) }
-                                            tabIndex={ field.id }
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                            onChange={ handleToggle }
-                                          />
-                                          <ListItemText htmlfor={labelId} primary={ field.name } />
-                                        </ListItemButton>
+                                        <FormControlLabel
+                                          control={
+                                            <Checkbox
+                                              id={ labelId }
+                                              checked={ checked.includes(field.id) }
+                                              tabIndex={ field.id }
+                                              inputProps={{ 'aria-labelledby': labelId }}
+                                              onChange={ handleToggle }
+                                            />
+                                          }
+                                          label={ field.name }
+                                        />
                                       </ListItem>
                                     );
                                   })
@@ -143,6 +182,7 @@ export const Child = ({ childId, setChildId }) => {
                           <div>{child.isFetching ? "Background Updating..." : " "}</div>
                         </>
                       )}
+      <button onClick={ save }>save</button>
       <button onClick={ () => { setChildId(-1) } }>back</button>
     </React.Fragment>)
 }
