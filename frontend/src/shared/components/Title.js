@@ -28,7 +28,7 @@ export const EditableTitle = ({ defaultValue, defaultState, setTitle }) => {
     }
 
     const disableEditState = (event) => {
-        if (event.code == "Enter") {
+        if (event.code === "Enter") {
             setTitle(event.target.value);
             setEditState(false);
         }

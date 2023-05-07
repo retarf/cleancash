@@ -58,12 +58,7 @@ export const ChildList = ({ setChildId }) => {
     const childList = query.useList();
 
     return <React.Fragment>
-      <Stack direction="row" spacing={1}>
-          <Title>Children</Title>
-          <IconButton onClick={ () => setChildId(0) } aria-label="add" >
-              <AddIcon />
-          </IconButton>
-      </Stack>
+      <Title>Children</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -80,7 +75,7 @@ export const ChildList = ({ setChildId }) => {
                         <TableCell>Error: {childList.error.message}</TableCell>
                     </TableRow>
                 ) : (
-                    // TODO: Remove unnecessary data att        childId > 0 ? <ChildDetails childId={ childId } setChildId={ setChildId } /> : <ribute
+                    // TODO: Remove unnecessary data attribute
                     childList.data.data.map((child) =>
                         <TableRow key={child.id} onClick={ () => { setChildId(child.id) }} hover={ true }>
                             <TableCell>{child.name}</TableCell>
