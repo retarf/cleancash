@@ -10,7 +10,8 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useParams, Outlet } from 'react-router-dom';
-import { ChildrenQuery, ChildQuery } from './queries'
+import { ChildQuery } from './queries'
+import { Query } from "/app/src/core";
 import { useFields } from '/app/src/apps/fields/queries'
 
 import List from '@mui/material/List';
@@ -36,7 +37,6 @@ import { Request } from "/app/src/core";
 
 
 export const Children = ({ setChildId }) => {
-
     const query = ChildQuery()
     const childList = query.useList();
 
