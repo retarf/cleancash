@@ -35,8 +35,25 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useQueryClient, useQuery, useQueries, useMutation } from "@tanstack/react-query";
 import { Request } from "/app/src/core";
 
+import { EditableTitle } from "/app/src/shared"
 
-export const Children = ({ setChildId }) => {
+
+
+export const Child = ({ childId, setChildId }) => {
+    switch (childId) {
+        case -1:
+            return <ChildList setChildId={ setChildId } />
+            break;
+        case 0:
+            return <ChildForm childId={ childId } setChildId={ setChildId } />
+            break;
+        default:
+            return <ChildDetails childId={ childId } setChildId={ setChildId } />
+    }
+}
+
+
+export const ChildList = ({ setChildId }) => {
     const query = ChildQuery()
     const childList = query.useList();
 
@@ -63,7 +80,7 @@ export const Children = ({ setChildId }) => {
                         <TableCell>Error: {childList.error.message}</TableCell>
                     </TableRow>
                 ) : (
-                    // TODO: Remove unnecessary data attribute
+                    // TODO: Remove unnecessary data att        childId > 0 ? <ChildDetails childId={ childId } setChildId={ setChildId } /> : <ribute
                     childList.data.data.map((child) =>
                         <TableRow key={child.id} onClick={ () => { setChildId(child.id) }} hover={ true }>
                             <TableCell>{child.name}</TableCell>
@@ -73,29 +90,22 @@ export const Children = ({ setChildId }) => {
             }
         </TableBody>
       </Table>
+      <IconButton onClick={ () => setChildId(0) } aria-label="add" >
+          <AddIcon />
+      </IconButton>
     </React.Fragment>
 }
 
-export const Child = ({ childId, setChildId }) => {
+
+export const ChildDetails = ({ childId, setChildId }) => {
     const query = ChildQuery();
     const child = query.useRead(childId);
     const updateMutation = query.useUpdate(childId);
+    const deleteMutation = query.useDelete(childId);
     const [ checked, setChecked ] = useState([]);
     const [ name, setName ] = useState();
     const [ editState, setEditState ] = useState(false);
     const fields = useFields();
-    const nameRef = useRef();
-
-    const enableEditState = (event) => {
-        setEditState(true);
-    }
-
-    const disableEditState = (event) => {
-        if (event.code == "Enter") {
-            setName(event.target.value);
-            setEditState(false);
-        }
-    }
 
     const handleToggle = (event) => {
         let value = event.target.tabIndex;
@@ -118,6 +128,11 @@ export const Child = ({ childId, setChildId }) => {
         updateMutation.mutate(child);
     }
 
+    const del = () => {
+        deleteMutation.mutate();
+        setChildId(-1);
+    }
+
     useEffect(() => {
         if (child.status === "success") {
             setChecked(child.data.data.fields);
@@ -132,17 +147,12 @@ export const Child = ({ childId, setChildId }) => {
                         <span>Error: {child.error.message}</span>
                       ) : (
                         <>
-                          <Stack direction="row" spacing={1}>
-                              { editState ? <TextField defaultValue={ name } onKeyDown={ disableEditState } inputRef={ nameRef } /> : <h1 onClick={ enableEditState }>{ name }</h1> }
-                              <IconButton aria-label="edit" onClick={ enableEditState } >
-                                  <ModeEditIcon />
-                              </IconButton>
-                          </Stack>
+                          <EditableTitle defaultValue={ name } defaultState={ false } setTitle={ setName } />
                           <Stack direction="row" spacing={1}>
                               <IconButton aria-label="delete">
-                                      <DeleteIcon />
+                                      <DeleteIcon onClick={ del }/>
                               </IconButton>
-                          </Stack>
+     </Stack>
                           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                           {
                               fields.status === "loading" ? (
@@ -182,5 +192,82 @@ export const Child = ({ childId, setChildId }) => {
                           <Button variant="contained" onClick={ save }>save</Button>
                           <Button variant="contained" onClick={ () => { setChildId(-1) } }>back</Button>
                       </Stack>
+    </React.Fragment>)
+}
+
+
+export const ChildForm = ({ childId, setChildId }) => {
+    const query = ChildQuery();
+    const createMutation = query.useCreate();
+    const [ checked, setChecked ] = useState([]);
+    const [ name, setName ] = useState();
+    const [ editState, setEditState ] = useState(true);
+    const fields = useFields();
+
+    const handleToggle = (event) => {
+        let value = event.target.tabIndex;
+        if (!checked.includes(value)) {
+          setChecked((preChecked) => [...preChecked, value])
+        } else {
+          const currentIndex = checked.indexOf(value);
+          let newChecked = [...checked];
+          newChecked.splice(currentIndex, 1);
+          setChecked(newChecked);
+        }
+    };
+
+    const save = () => {
+        let child = {
+            name: name,
+            fields: checked
+        }
+        createMutation.mutate(child);
+    }
+
+    return (<React.Fragment>
+                        <>
+                          <EditableTitle defaultValue={ name } defaultState={ true } setTitle={ setName } />
+                          <Stack direction="row" spacing={1}>
+                              <IconButton aria-label="delete">
+                                      <DeleteIcon />
+                              </IconButton>
+                          </Stack>
+                          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                          {
+                              fields.status === "loading" ? (
+                                "Loading..."
+                              ): fields.status === "error" ? (
+                                <span>Error: {fields.error.message}</span>
+                              ) : (
+                                  fields.data.data.map((field) => {
+                                  const labelId = `checkbox-list-label-${field.id}`;
+                                  return (
+                                      <ListItem
+                                        key={field.id}
+                                        disablePadding
+                                      >
+                                        <FormControlLabel
+                                          control={
+                                            <Checkbox
+                                              id={ labelId }
+                                              checked={ checked.includes(field.id) }
+                                              tabIndex={ field.id }
+                                              inputProps={{ 'aria-labelledby': labelId }}
+                                              onChange={ handleToggle }
+                                            />
+                                          }
+                                          label={ field.name }
+                                        />
+                                      </ListItem>
+                                    );
+                                  })
+                              )
+                          }
+                          </List>
+                      <Stack direction="row" spacing={3}>
+                          <Button variant="contained" onClick={ save }>save</Button>
+                          <Button variant="contained" onClick={ () => { setChildId(-1) } }>back</Button>
+                      </Stack>
+                        </>
     </React.Fragment>)
 }

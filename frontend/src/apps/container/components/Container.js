@@ -24,7 +24,7 @@ import { CleaningList } from "/app/src/apps/cleanings";
 import { FieldList } from "/app/src/apps/fields";
 import { SalaryList } from "/app/src/apps/salary";
 import { Request } from "/app/src/core";
-import { Child, Children } from "/app/src/apps/children"
+import { Child } from "/app/src/apps/children"
 
 function Copyright(props) {
   return (
@@ -281,7 +281,8 @@ function MainContainer() {
                     <Route
                       index
                       path="/children"
-                      element={ childId > -1 ? ( <Child childId={ childId } setChildId={ setChildId } />) : ( <Children setChildId={ setChildId } /> )}
+                      //element={ childId > -1 ? ( <Child childId={ childId } setChildId={ setChildId } />) : ( <Children setChildId={ setChildId } /> )}
+                      element={ <Child childId={ childId } setChildId={ setChildId } /> }
                     />
                   </Route>
                   <Route

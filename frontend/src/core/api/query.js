@@ -14,7 +14,7 @@ const Query = (url) => {
           });
     };
 
-    const useCreate = async () => {
+    const useCreate = () => {
         return useMutation({mutationFn: request.post, mutationKey: [url], onSuccess:async () => {
             await queryClient.cancelQueries({queryKey: [url]});
             queryClient.invalidateQueries({ queryKey: [url] });
@@ -38,7 +38,14 @@ const Query = (url) => {
         }});
     }
 
-    const useDelete = (id) => {}
+    const useDelete = (id) => {
+        return useMutation({mutationFn: () => request.del(id), mutationKey: [url, id, "del"], onSuccess: async () => {
+            await queryClient.cancelQueries({queryKey: [url, id]});
+            await queryClient.cancelQueries({queryKey: [url]});
+            queryClient.invalidateQueries({ queryKey: [url] });
+        }});
+
+    }
 
     return {
         useList,
