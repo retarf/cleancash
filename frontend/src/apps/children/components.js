@@ -43,7 +43,7 @@ export const Children = ({ setChildId }) => {
     return <React.Fragment>
       <Stack direction="row" spacing={1}>
           <Title>Children</Title>
-          <IconButton aria-label="add" >
+          <IconButton onClick={ () => setChildId(0) } aria-label="add" >
               <AddIcon />
           </IconButton>
       </Stack>
@@ -178,7 +178,9 @@ export const Child = ({ childId, setChildId }) => {
                           <div>{child.isFetching ? "Background Updating..." : " "}</div>
                         </>
                       )}
-      <button onClick={ save }>save</button>
-      <button onClick={ () => { setChildId(-1) } }>back</button>
+                      <Stack direction="row" spacing={3}>
+                          <Button variant="contained" onClick={ save }>save</Button>
+                          <Button variant="contained" onClick={ () => { setChildId(-1) } }>back</Button>
+                      </Stack>
     </React.Fragment>)
 }

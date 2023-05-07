@@ -20,12 +20,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Routes, Route } from "react-router-dom";
 import { MainMenu, SecondaryMenu } from "/app/src/apps/menu";
 import { Dashboard } from "/app/src/apps/dashboard";
-//import { ChildrenList } from "/app/src/apps/children";
 import { CleaningList } from "/app/src/apps/cleanings";
 import { FieldList } from "/app/src/apps/fields";
 import { SalaryList } from "/app/src/apps/salary";
 import { Request } from "/app/src/core";
-//import { useChildrenListQuery } from "/app/src/apps/children/queries";
 import { Child, Children } from "/app/src/apps/children"
 
 function Copyright(props) {
