@@ -98,7 +98,6 @@ function MainContainer() {
     setOpen(!open);
   };
 
-  //const [childrenListState, setChildrenListState] = useState([]);
   const [cleaningListState, setCleaningListState] = useState([]);
   const [fieldListState, setFieldListState] = useState([]);
   const [salaryListState, setSalaryListState] = useState([]);
@@ -281,17 +280,13 @@ function MainContainer() {
                     <Route
                       index
                       path="/children"
-                      //element={ childId > -1 ? ( <Child childId={ childId } setChildId={ setChildId } />) : ( <Children setChildId={ setChildId } /> )}
                       element={ <Child childId={ childId } setChildId={ setChildId } /> }
                     />
                   </Route>
                   <Route
                     path="/salary"
                     element={
-                      <SalaryList
-                        salaryState={salaryListState}
-                        onAddSalary={addSalaryHandler}
-                      />
+                      <SalaryList />
                     }
                   />
                   <Route

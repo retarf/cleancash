@@ -184,7 +184,7 @@ export const ChildDetails = ({ childId, setChildId }) => {
                         </>
                       )}
                       <Stack direction="row" spacing={3}>
-                          <Button variant="contained" onClick={ save }>save</Button>
+                          <Button variant="outlined" onClick={ save }>save</Button>
                           <Button variant="contained" onClick={ () => { setChildId(-1) } }>back</Button>
                       </Stack>
     </React.Fragment>)
