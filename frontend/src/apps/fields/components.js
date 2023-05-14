@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Title } from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,80 +8,65 @@ import TableRow from "@mui/material/TableRow";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { useParams, Outlet } from "react-router-dom";
+import { FieldsQuery } from "./queries"
+import { EditableTableCell, DeleteCell } from "/app/src/shared"
 
-import { Query } from "/app/src/core";
-
-import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
-import { EditableTableCell, DeleteCell } from "/app/src/shared"
-
-
-
-function SalaryList(props) {
-  const query = Query("salary");
-  const salaryList = query.useList();
+export const FieldList = () => {
+  const query = FieldsQuery();
+  const fieldList = query.useList();
   const createMutation = query.useCreate();
-
-  const date = useRef();
-  const value = useRef();
   const [ editState, setEditState ] = useState(false);
-
-  const salaryState = [];
+  const name = useRef();
 
   const enableEditState = () => {
     setEditState(true);
   };
 
   const save = () => {
-    createMutation.mutate({ date: date.current.value, value: value.current.value })
+    createMutation.mutate({ name: name.current.value })
     setEditState(false);
   };
 
-
   return (
     <React.Fragment>
-          <Title>Salary List</Title>
+          <Title>Fields</Title>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Value</TableCell>
+                <TableCell>Name</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {salaryList.status === "loading" ? (
-                <TableRow key={"loading"}>
-                    <TableCell>Loading...</TableCell>
-                </TableRow>
-              ) :salaryList.status === "error" ? (
+            {fieldList.status === "loading" ? (
+                    <TableRow key={"loading"}>
+                        <TableCell>Loading...</TableCell>
+                    </TableRow>
+                ) : fieldList.status === "error" ? (
                     <TableRow key={"error"}>
-                        <TableCell>Error: {salaryList.error.message}</TableCell>
+                        <TableCell>Error: {fieldList.error.message}</TableCell>
                     </TableRow>
                 ) : (
-              salaryList.data?.data.map((row) => (
-                <SalaryDetails key={row.id} id={ row.id } date={ row.date } value={ row.value } query={ query } />
-              ))
-              )}
+                    // TODO: Remove unnecessary data attribute
+                    fieldList.data.data.map((field) =>
+                        <FieldDetails key={ field.id } id={ field.id } name={ field.name } query={ query } />
+                    )
+                )
+            }
               {editState ? (
                 <TableRow key="new">
                   <TableCell>
                   <TextField
-                    id="date"
-                    label="date"
+                    id="name"
+                    label="name"
                     variant="outlined"
-                    inputRef={ date }
-                  />
-                  </TableCell>
-                  <TableCell>
-                  <TextField
-                    id="value"
-                    label="value"
-                    variant="outlined"
-                    inputRef={ value }
+                    inputRef={ name }
                   />
                   </TableCell>
                   <TableCell>
@@ -98,20 +83,15 @@ function SalaryList(props) {
   );
 }
 
-const SalaryDetails = ({ id, date, value, query }) => {
+const FieldDetails = ({ id, name, query }) => {
     const updateMutation = query.useUpdate(id);
     const [ editState, setEditState ] = useState(false);
-    const [ dateState, setDateState ] = useState(date);
-    const [ valueState, setValueState ] = useState(value);
+    const [ nameState, setNameState ] = useState(name);
 
     return (
         <TableRow>
-            <EditableTableCell id={ id } name="date" defaultValue={ dateState } query={ query } />
-            <EditableTableCell id={ id } name="value" defaultValue={ valueState } query={ query } />
+            <EditableTableCell id={ id } name="name" defaultValue={ nameState } query={ query } />
             <DeleteCell id={ id } query={ query } />
         </TableRow>
         )
     }
-
-
-export default SalaryList;

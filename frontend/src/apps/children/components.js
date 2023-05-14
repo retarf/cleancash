@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import { useParams, Outlet } from 'react-router-dom';
 import { ChildQuery } from './queries'
 import { Query } from "/app/src/core";
-import { useFields } from '/app/src/apps/fields/queries'
+import { FieldsQuery } from '/app/src/apps/fields/queries'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -36,6 +36,7 @@ import { useQueryClient, useQuery, useQueries, useMutation } from "@tanstack/rea
 import { Request } from "/app/src/core";
 
 import { EditableTitle } from "/app/src/shared"
+
 
 
 
@@ -100,7 +101,8 @@ export const ChildDetails = ({ childId, setChildId }) => {
     const [ checked, setChecked ] = useState([]);
     const [ name, setName ] = useState();
     const [ editState, setEditState ] = useState(false);
-    const fields = useFields();
+    const fieldsQuery = FieldsQuery();
+    const fields = fieldsQuery.useList();
 
     const handleToggle = (event) => {
         let value = event.target.tabIndex;
@@ -197,7 +199,8 @@ export const ChildForm = ({ childId, setChildId }) => {
     const [ checked, setChecked ] = useState([]);
     const [ name, setName ] = useState();
     const [ editState, setEditState ] = useState(true);
-    const fields = useFields();
+    const fieldsQuery = FieldsQuery();
+    const fields = fieldsQuery.useList();
 
     const handleToggle = (event) => {
         let value = event.target.tabIndex;
@@ -220,7 +223,6 @@ export const ChildForm = ({ childId, setChildId }) => {
     }
 
     return (<React.Fragment>
-                        <>
                           <EditableTitle defaultValue={ name } defaultState={ true } setTitle={ setName } />
                           <Stack direction="row" spacing={1}>
                               <IconButton aria-label="delete">
@@ -231,7 +233,7 @@ export const ChildForm = ({ childId, setChildId }) => {
                           {
                               fields.status === "loading" ? (
                                 "Loading..."
-                              ): fields.status === "error" ? (
+                              ) : fields.status === "error" ? (
                                 <span>Error: {fields.error.message}</span>
                               ) : (
                                   fields.data.data.map((field) => {
@@ -263,6 +265,5 @@ export const ChildForm = ({ childId, setChildId }) => {
                           <Button variant="contained" onClick={ save }>save</Button>
                           <Button variant="contained" onClick={ () => { setChildId(-1) } }>back</Button>
                       </Stack>
-                        </>
     </React.Fragment>)
 }
