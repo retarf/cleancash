@@ -16,6 +16,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
+import { EditableTableCell, DeleteCell } from "/app/src/shared"
+
 
 
 function SalaryList(props) {
@@ -98,18 +100,29 @@ function SalaryList(props) {
 
 const SalaryDetails = ({ id, date, value, query }) => {
     const deleteMutation = query.useDelete(id);
+    const updateMutation = query.useUpdate(id);
+    const [ editState, setEditState ] = useState(false);
+    const [ dateState, setDateState ] = useState(date);
+    const [ valueState, setValueState ] = useState(value);
+
+
 
     const del = () => {
         deleteMutation.mutate();
     }
 
-    return <TableRow key={id}>
-              <TableCell>{date}</TableCell>
-              <TableCell>{value}</TableCell>
-              <TableCell align="right">
-                 <IconButton tabIndex={ id } aria-label="delete" onClick={ del } children={ <DeleteIcon /> } />
-              </TableCell>
-            </TableRow>
-}
+    const update = () => {
+
+    }
+
+    return (
+        <TableRow>
+            <EditableTableCell id={ id } name="date" defaultValue={ dateState } query={ query } />
+            <EditableTableCell id={ id } name="value" defaultValue={ valueState } query={ query } />
+            <DeleteCell id={ id } query={ query } />
+        </TableRow>
+        )
+    }
+
 
 export default SalaryList;
