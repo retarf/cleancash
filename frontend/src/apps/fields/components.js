@@ -11,17 +11,17 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { useParams, Outlet } from "react-router-dom";
-import { FieldsQuery } from "./queries"
-import { EditableTableCell, DeleteCell } from "/app/src/shared"
+import { FieldsQuery } from "./queries";
+import { EditableTableCell, DeleteCell } from "/app/src/shared";
 
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 
 export const FieldList = () => {
   const query = FieldsQuery();
   const fieldList = query.useList();
   const createMutation = query.useCreate();
-  const [ editState, setEditState ] = useState(false);
+  const [editState, setEditState] = useState(false);
   const name = useRef();
 
   const enableEditState = () => {
@@ -29,69 +29,78 @@ export const FieldList = () => {
   };
 
   const save = () => {
-    createMutation.mutate({ name: name.current.value })
+    createMutation.mutate({ name: name.current.value });
     setEditState(false);
   };
 
   return (
     <React.Fragment>
-          <Title>Fields</Title>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-            {fieldList.status === "loading" ? (
-                    <TableRow key={"loading"}>
-                        <TableCell>Loading...</TableCell>
-                    </TableRow>
-                ) : fieldList.status === "error" ? (
-                    <TableRow key={"error"}>
-                        <TableCell>Error: {fieldList.error.message}</TableCell>
-                    </TableRow>
-                ) : (
-                    // TODO: Remove unnecessary data attribute
-                    fieldList.data.data.map((field) =>
-                        <FieldDetails key={ field.id } id={ field.id } name={ field.name } query={ query } />
-                    )
-                )
-            }
-              {editState ? (
-                <TableRow key="new">
-                  <TableCell>
-                  <TextField
-                    id="name"
-                    label="name"
-                    variant="outlined"
-                    inputRef={ name }
-                  />
-                  </TableCell>
-                  <TableCell>
-                  <Button onClick={ save }>save</Button>
-                  </TableCell>
-                  </TableRow>
-              ) : null}
-            </TableBody>
-          </Table>
-      <IconButton onClick={ enableEditState } aria-label="add" >
-          <AddIcon />
+      <Title>Fields</Title>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {fieldList.status === "loading" ? (
+            <TableRow key={"loading"}>
+              <TableCell>Loading...</TableCell>
+            </TableRow>
+          ) : fieldList.status === "error" ? (
+            <TableRow key={"error"}>
+              <TableCell>Error: {fieldList.error.message}</TableCell>
+            </TableRow>
+          ) : (
+            // TODO: Remove unnecessary data attribute
+            fieldList.data.data.map((field) => (
+              <FieldDetails
+                key={field.id}
+                id={field.id}
+                name={field.name}
+                query={query}
+              />
+            ))
+          )}
+          {editState ? (
+            <TableRow key="new">
+              <TableCell>
+                <TextField
+                  id="name"
+                  label="name"
+                  variant="outlined"
+                  inputRef={name}
+                />
+              </TableCell>
+              <TableCell>
+                <Button onClick={save}>save</Button>
+              </TableCell>
+            </TableRow>
+          ) : null}
+        </TableBody>
+      </Table>
+      <IconButton onClick={enableEditState} aria-label="add">
+        <AddIcon />
       </IconButton>
     </React.Fragment>
   );
-}
+};
 
 const FieldDetails = ({ id, name, query }) => {
-    const updateMutation = query.useUpdate(id);
-    const [ editState, setEditState ] = useState(false);
-    const [ nameState, setNameState ] = useState(name);
+  const updateMutation = query.useUpdate(id);
+  const [editState, setEditState] = useState(false);
+  const [nameState, setNameState] = useState(name);
 
-    return (
-        <TableRow>
-            <EditableTableCell id={ id } name="name" defaultValue={ nameState } query={ query } />
-            <DeleteCell id={ id } query={ query } />
-        </TableRow>
-        )
-    }
+  return (
+    <TableRow>
+      <EditableTableCell
+        id={id}
+        name="name"
+        defaultValue={nameState}
+        query={query}
+      />
+      <DeleteCell id={id} query={query} />
+    </TableRow>
+  );
+};

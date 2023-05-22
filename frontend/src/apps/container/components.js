@@ -5,7 +5,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -24,7 +24,7 @@ import { Cleaning } from "/app/src/apps/cleanings";
 import { FieldList } from "/app/src/apps/fields";
 import { SalaryList } from "/app/src/apps/salary";
 import { Request } from "/app/src/core";
-import { Child } from "/app/src/apps/children"
+import { Child } from "/app/src/apps/children";
 
 function Copyright(props) {
   return (
@@ -265,43 +265,42 @@ export function MainContainer() {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route
-                    path="/cleanings"
-                    element={
-                      <Cleaning
-                        cleaningId={ cleaningId }
-                        setCleaningId={ setCleaningId }
+                  <Paper
+                    sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                  >
+                    <Routes>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route
+                        path="/cleanings"
+                        element={
+                          <Cleaning
+                            cleaningId={cleaningId}
+                            setCleaningId={setCleaningId}
+                          />
+                        }
                       />
-                    }
-                  />
-                  <Route path="/children">
-                    <Route
-                      index
-                      path="/children"
-                      element={ <Child childId={ childId } setChildId={ setChildId } /> }
-                    />
-                  </Route>
-                  <Route
-                    path="/salary"
-                    element={
-                      <SalaryList />
-                    }
-                  />
-                  <Route
-                    path="/fields"
-                    element={
-                      <FieldList
-                        fieldState={fieldListState}
-                        onAddField={addFieldHandler}
+                      <Route path="/children">
+                        <Route
+                          index
+                          path="/children"
+                          element={
+                            <Child childId={childId} setChildId={setChildId} />
+                          }
+                        />
+                      </Route>
+                      <Route path="/salary" element={<SalaryList />} />
+                      <Route
+                        path="/fields"
+                        element={
+                          <FieldList
+                            fieldState={fieldListState}
+                            onAddField={addFieldHandler}
+                          />
+                        }
                       />
-                    }
-                  />
-                  <Route path="/settings" element={<h1>settings</h1>} />
-                </Routes>
-                </Paper>
+                      <Route path="/settings" element={<h1>settings</h1>} />
+                    </Routes>
+                  </Paper>
                 </Grid>
               </Grid>
             </Container>
