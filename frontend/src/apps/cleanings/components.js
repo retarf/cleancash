@@ -18,6 +18,12 @@ import { ChildQuery } from "/app/src/apps/children/queries";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import { DeleteCell } from "/app/src/shared";
+import { EditableTitle } from "/app/src/shared";
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 export const Cleaning = ({ cleaningId, setCleaningId }) => {
   switch (cleaningId) {
@@ -45,13 +51,6 @@ const CleaningList = ({ setCleaningId }) => {
   const query = CleaningQuery();
   const cleaningList = query.useList();
 
-  useEffect(() => {
-    if (cleaningList.status !== "loading") {
-        cleaningList.data
-      console.log(cleaningList.data.data[0].field);
-    }
-  }, [cleaningList.status]);
-
   return (
     <React.Fragment>
       <Title>Cleanings List</Title>
@@ -75,7 +74,7 @@ const CleaningList = ({ setCleaningId }) => {
             </TableRow>
           ) : (
             cleaningList.data.data.map((cleaning) => {
-              return <TableRow key={ cleaning.id }>
+              return <TableRow key={ cleaning.id } hover={true} onClick={() => { setCleaningId(cleaning.id) }} >
                 <TableCell>{cleaning.date}</TableCell>
                 <TableCell>
                 { childList.status === "loading" ? "loading..." : (
@@ -90,7 +89,7 @@ const CleaningList = ({ setCleaningId }) => {
                     { fieldList.status === "loading" ? "loading..." : (
                         fieldList.status === "error" ? fieldList.error.message : (
                             cleaning.field.map((fieldId) => {
-                                return <li>{ fieldList.data.data.find(field => field.id === fieldId ).name }</li>
+                                return <li key={ fieldId }>{ fieldList.data.data.find(field => field.id === fieldId ).name }</li>
                             })
                         )
                     )}
@@ -99,6 +98,7 @@ const CleaningList = ({ setCleaningId }) => {
                     })}
                   </ul>
                 </TableCell>
+                <DeleteCell id={cleaning.id} query={query} />
               </TableRow>;
             })
           )}
@@ -125,4 +125,58 @@ const CleaningDetails = ({ cleaning, query }) => {
 };
 
 const CleaningForm = () => {};
-const CleaningEdit = () => {};
+const CleaningEdit = ({ cleaningId }) => {
+    const query = CleaningQuery();
+    const cleaning = query.useRead(cleaningId);
+    const childQuery = ChildQuery();
+    const childList = childQuery.useList();
+    const [date, setDate] = useState();
+    const [childId, setChildId] = useState();
+    const [childName, setChildName] = useState();
+
+    useEffect(() => {
+            if (cleaning.status === "success") {
+                setDate(cleaning.data.data.date);
+                setChildId(cleaning.data.data.child);
+                if (childList.status === "success") {
+                    setChildName(childList.data.data.find(child => child.id === cleaning.data.data.child).name)
+                }
+            }
+            console.log( cleaning.status );
+    }, [cleaning.status, childList.status])
+
+    return <>
+        {
+            !cleaningId || cleaning.status === "loading" ? (
+                "Loading..."
+            ) : (
+                cleaning.status === "error" ? (
+                    cleaning.error.message
+                ) : (
+                  <>
+                  <EditableTitle
+                    defaultValue={date}
+                    defaultState={false}
+                    setTitle={setDate}
+                  />
+                        <FormControl fullWidth>
+                            <InputLabel id="child-simple-select-label">Child</InputLabel>
+                            <Select
+                              labelId="child-simple-select-label"
+                              id="demo-simple-select"
+                              value={child}
+                              label="Age"
+                              onChange={handleChange}
+                            >
+                              <MenuItem value={10}>Ten</MenuItem>
+                              <MenuItem value={20}>Twenty</MenuItem>
+                              <MenuItem value={30}>Thirty</MenuItem>
+                            </Select>
+                          </FormControl>
+
+                 </>
+                )
+            )
+        }
+    </>
+};
