@@ -23,7 +23,12 @@ import { EditableTitle } from "/app/src/shared";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Stack from "@mui/material/Stack";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Checkbox from "@mui/material/Checkbox";
 
 export const Cleaning = ({ cleaningId, setCleaningId }) => {
   switch (cleaningId) {
@@ -125,24 +130,42 @@ const CleaningDetails = ({ cleaning, query }) => {
 };
 
 const CleaningForm = () => {};
-const CleaningEdit = ({ cleaningId }) => {
+
+
+const CleaningEdit = ({ cleaningId, setCleaningId }) => {
     const query = CleaningQuery();
     const cleaning = query.useRead(cleaningId);
+    const updateMutation = query.useUpdate(cleaningId);
     const childQuery = ChildQuery();
     const childList = childQuery.useList();
     const [date, setDate] = useState();
-    const [childId, setChildId] = useState();
-    const [childName, setChildName] = useState();
+    const [child, setChild] = useState();
+    const fieldQuery = FieldsQuery();
+    const fields = fieldQuery.useList();
+    const [checked, setChecked] = useState();
+
+    const handleChange = (event) => {
+        let child = event.target.value;
+        setChild(child);
+    };
+
+    const save = () => {
+        const cleaning = {
+            id: cleaningId,
+            date: date,
+            child: child.id,
+            field: child.field
+        }
+        updateMutation.mutate(cleaning);
+    };
 
     useEffect(() => {
             if (cleaning.status === "success") {
                 setDate(cleaning.data.data.date);
-                setChildId(cleaning.data.data.child);
                 if (childList.status === "success") {
-                    setChildName(childList.data.data.find(child => child.id === cleaning.data.data.child).name)
+                    setChild(childList.data.data.find(child => child.id === cleaning.data.data.child));
                 }
             }
-            console.log( cleaning.status );
     }, [cleaning.status, childList.status])
 
     return <>
@@ -159,21 +182,68 @@ const CleaningEdit = ({ cleaningId }) => {
                     defaultState={false}
                     setTitle={setDate}
                   />
+                    { childList.status === "loading" ? <p>{"loading..."}</p> : (
+                      childList.status === "error" ? <p>{childList.error.message}</p> : (
                         <FormControl fullWidth>
                             <InputLabel id="child-simple-select-label">Child</InputLabel>
                             <Select
                               labelId="child-simple-select-label"
-                              id="demo-simple-select"
-                              value={child}
-                              label="Age"
-                              onChange={handleChange}
+                              id="child-simple-select"
+                              value={child ? child : ''}
+                              label="Child"
+                              onChange={ handleChange }
                             >
-                              <MenuItem value={10}>Ten</MenuItem>
-                              <MenuItem value={20}>Twenty</MenuItem>
-                              <MenuItem value={30}>Thirty</MenuItem>
+                            <MenuItem key="" value=""></MenuItem>
+                            { childList.data.data.map((child) => {
+                              return <MenuItem key={child.id} value={child}>{child.name}</MenuItem>
+                            }
+                            )}
                             </Select>
                           </FormControl>
-
+                      )
+                    )}
+                  <List
+                    sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+                  >
+                    {fields.status === "loading" ? (
+                      "Loading..."
+                    ) : fields.status === "error" ? (
+                      <span>Error: {fields.error.message}</span>
+                    ) : (
+                      fields.data.data.map((field) => {
+                        const labelId = `checkbox-list-label-${field.id}`;
+                        return (
+                          <ListItem key={field.id} disablePadding>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  id={labelId}
+                                  checked={checked.includes(field.id)}
+                                  tabIndex={field.id}
+                                  inputProps={{ "aria-labelledby": labelId }}
+                                  onChange={handleToggle}
+                                />
+                              }
+                              label={field.name}
+                            />
+                          </ListItem>
+                        );
+                      })
+                    )}
+                  </List>
+                  <Stack direction="row" spacing={3}>
+                    <Button variant="outlined" onClick={save}>
+                      save
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        setCleaningId(-1);
+                      }}
+                    >
+                      back
+                    </Button>
+                  </Stack>
                  </>
                 )
             )
