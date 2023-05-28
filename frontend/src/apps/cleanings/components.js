@@ -142,12 +142,24 @@ const CleaningEdit = ({ cleaningId, setCleaningId }) => {
     const [child, setChild] = useState();
     const fieldQuery = FieldsQuery();
     const fields = fieldQuery.useList();
-    const [checked, setChecked] = useState();
+    const [checked, setChecked] = useState([]);
 
     const handleChange = (event) => {
         let child = event.target.value;
         setChild(child);
     };
+
+  const handleToggle = (event) => {
+    let value = event.target.tabIndex;
+    if (!checked.includes(value)) {
+      setChecked((preChecked) => [...preChecked, value]);
+    } else {
+      const currentIndex = checked.indexOf(value);
+      let newChecked = [...checked];
+      newChecked.splice(currentIndex, 1);
+      setChecked(newChecked);
+    }
+  };
 
     const save = () => {
         const cleaning = {
