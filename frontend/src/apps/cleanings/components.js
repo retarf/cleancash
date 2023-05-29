@@ -140,6 +140,7 @@ const CleaningEdit = ({ cleaningId, setCleaningId }) => {
     const childList = childQuery.useList();
     const [date, setDate] = useState();
     const [child, setChild] = useState();
+    const [defauldChild, setDefaultChild] = useState();
     const fieldQuery = FieldsQuery();
     const fields = fieldQuery.useList();
     const [checked, setChecked] = useState([]);
@@ -147,6 +148,11 @@ const CleaningEdit = ({ cleaningId, setCleaningId }) => {
     const handleChange = (event) => {
         let child = event.target.value;
         setChild(child);
+        if (child === defauldChild) {
+            setChecked(cleaning.data.data.field);
+        } else {
+            setChecked([]);
+        }
     };
 
   const handleToggle = (event) => {
@@ -166,7 +172,7 @@ const CleaningEdit = ({ cleaningId, setCleaningId }) => {
             id: cleaningId,
             date: date,
             child: child.id,
-            field: child.field
+            field: checked
         }
         updateMutation.mutate(cleaning);
     };
@@ -175,7 +181,10 @@ const CleaningEdit = ({ cleaningId, setCleaningId }) => {
             if (cleaning.status === "success") {
                 setDate(cleaning.data.data.date);
                 if (childList.status === "success") {
-                    setChild(childList.data.data.find(child => child.id === cleaning.data.data.child));
+                    let child = childList.data.data.find(child => child.id === cleaning.data.data.child);
+                    setChild(child);
+                    setDefaultChild(child);
+                    setChecked(cleaning.data.data.field);
                 }
             }
     }, [cleaning.status, childList.status])
@@ -217,31 +226,33 @@ const CleaningEdit = ({ cleaningId, setCleaningId }) => {
                   <List
                     sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
                   >
-                    {fields.status === "loading" ? (
+                    {fields.status === "loading" || !child ? (
                       "Loading..."
                     ) : fields.status === "error" ? (
                       <span>Error: {fields.error.message}</span>
                     ) : (
                       fields.data.data.map((field) => {
-                        const labelId = `checkbox-list-label-${field.id}`;
-                        return (
-                          <ListItem key={field.id} disablePadding>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  id={labelId}
-                                  checked={checked.includes(field.id)}
-                                  tabIndex={field.id}
-                                  inputProps={{ "aria-labelledby": labelId }}
-                                  onChange={handleToggle}
+                        if (child.fields.includes(field.id)) {
+                            const labelId = `checkbox-list-label-${field.id}`;
+                            return (
+                              <ListItem key={field.id} disablePadding>
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      id={labelId}
+                                      checked={checked.includes(field.id)}
+                                      tabIndex={field.id}
+                                      inputProps={{ "aria-labelledby": labelId }}
+                                      onChange={handleToggle}
+                                    />
+                                  }
+                                  label={field.name}
                                 />
-                              }
-                              label={field.name}
-                            />
                           </ListItem>
                         );
-                      })
-                    )}
+                        }
+                      }
+                    ))}
                   </List>
                   <Stack direction="row" spacing={3}>
                     <Button variant="outlined" onClick={save}>
