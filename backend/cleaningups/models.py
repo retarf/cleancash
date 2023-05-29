@@ -7,4 +7,4 @@ from fields.models import Field
 class CleaningUp(models.Model):
     date = models.DateField()
     child = models.ForeignKey(Children, on_delete=models.CASCADE)
-    field = models.ManyToManyField(Field)
+    field = models.ManyToManyField(Field, blank=True)
