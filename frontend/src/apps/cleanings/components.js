@@ -129,7 +129,110 @@ const CleaningDetails = ({ cleaning, query }) => {
   );
 };
 
-const CleaningForm = () => {};
+const CleaningForm = ({ cleaningId, setCleaningId}) => {
+    const query = CleaningQuery();
+    const createMutation = query.useCreate();
+    const childQuery = ChildQuery();
+    const childList = childQuery.useList();
+    const [date, setDate] = useState();
+    const [child, setChild] = useState();
+    const fieldQuery = FieldsQuery();
+    const fields = fieldQuery.useList();
+    const [checked, setChecked] = useState([]);
+
+    const handleChange = (event) => {
+        let child = event.target.value;
+        setChild(child);
+        setChecked([]);
+    };
+
+    const handleToggle = (event) => {
+      let value = event.target.tabIndex;
+      if (!checked.includes(value)) {
+        setChecked((preChecked) => [...preChecked, value]);
+      } else {
+        const currentIndex = checked.indexOf(value);
+        let newChecked = [...checked];
+        newChecked.splice(currentIndex, 1);
+        setChecked(newChecked);
+      }
+    };
+
+    const save = () => {
+        const cleaning = {
+            date: date,
+            child: child.id,
+            field: checked
+        }
+        createMutation.mutate(cleaning);
+    };
+
+};
+
+
+const ChildFieldList = ({child, fields, checked, setChecked}) => {
+
+    const getChildFields = () => {
+        return fields.map(field => {
+            if (child.fields.includes(field.id)) {
+                return field;
+            }
+        })
+    }
+
+    const childFields = getChildFields();
+
+    return <List
+                    sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+                  >
+                    {fields.status === "loading" || !child ? (
+                      "Loading..."
+                    ) : fields.status === "error" ? (
+                      <span>Error: {fields.error.message}</span>
+                    ) : (<FieldList fields={childFields} checked={checked} setChecked={setChecked} /> )
+                        }
+                      }
+                    ))}
+                  </List>
+}
+
+const FieldList = ({fields, checked, setChecked}) => {
+
+  const handleToggle = (event) => {
+    let value = event.target.tabIndex;
+    if (!checked.includes(value)) {
+      setChecked((preChecked) => [...preChecked, value]);
+    } else {
+      const currentIndex = checked.indexOf(value);
+      let newChecked = [...checked];
+      newChecked.splice(currentIndex, 1);
+      setChecked(newChecked);
+    }
+  };
+
+    return <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }} >
+      {fields.map((field) => {
+            const labelId = `checkbox-list-label-${field.id}`;
+            return (
+              <ListItem key={field.id} disablePadding>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id={labelId}
+                      checked={checked.includes(field.id)}
+                      tabIndex={field.id}
+                      inputProps={{ "aria-labelledby": labelId }}
+                      onChange={handleToggle}
+                    />
+                  }
+                  label={field.name}
+                />
+          </ListItem>
+        );
+        })
+      }
+    </List>
+}
 
 
 const CleaningEdit = ({ cleaningId, setCleaningId }) => {
