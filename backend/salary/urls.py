@@ -7,4 +7,5 @@ router.register(r'', api.SalaryViewSet, basename="salary")
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('last', api.last),
 ]
