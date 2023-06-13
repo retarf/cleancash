@@ -10,3 +10,4 @@ class CleaningUp(models.Model):
     child = models.ForeignKey(Children, on_delete=models.CASCADE)
     field = models.ManyToManyField(Field, blank=True)
     salary = models.ForeignKey(Salary, on_delete=models.PROTECT)
+    bill = models.DecimalField(max_digits=7, decimal_places=2)
