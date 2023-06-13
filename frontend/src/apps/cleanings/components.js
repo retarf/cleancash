@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {Title} from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,6 +14,7 @@ import {useParams, Outlet} from "react-router-dom";
 import {CleaningQuery} from "./queries";
 import {FieldsQuery} from "/app/src/apps/fields/queries";
 import {ChildQuery} from "/app/src/apps/children/queries";
+import {SalaryQuery} from "/app/src/apps/salary/queries";
 
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
@@ -65,6 +66,8 @@ const CleaningList = ({setCleaningId}) => {
                         <TableCell>Date</TableCell>
                         <TableCell>Child</TableCell>
                         <TableCell>Fields</TableCell>
+                        <TableCell>Salary</TableCell>
+                        <TableCell>Bill</TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
@@ -106,6 +109,12 @@ const CleaningList = ({setCleaningId}) => {
                                         })}
                                     </ul>
                                 </TableCell>
+                                <TableCell>
+                                    {cleaning.salary}
+                                </TableCell>
+                                <TableCell>
+                                    {cleaning.bill}
+                                </TableCell>
                                 <DeleteCell id={cleaning.id} query={query}/>
                             </TableRow>;
                         })
@@ -137,12 +146,18 @@ const CleaningForm = ({setCleaningId}) => {
         const createMutation = query.useCreate();
         const childQuery = ChildQuery();
         const childList = childQuery.useList();
+        const salaryQuery = SalaryQuery();
+        const salaryList = salaryQuery.useList();
         const [date, setDate] = useState();
         const [child, setChild] = useState();
         const fieldQuery = FieldsQuery();
         const fields = fieldQuery.useList();
         const [checked, setChecked] = useState([]);
         const [cleaningFields, setCleaningFields] = useState([]);
+        const [salary, setSalary] = useState(0);
+        const [bill, setBill] = useState();
+        const [fieldValue, setFieldValue] = useState();
+
 
         const getFieldById = (id) => fields.data.data.find(field => field ? field.id === id : null);
 
@@ -157,6 +172,21 @@ const CleaningForm = ({setCleaningId}) => {
             setChild(child);
             setChecked([]);
             setCleaningFields(getCleaningFields(child));
+        };
+
+        const getFieldValue = () => {
+            let amount = child.fields.count();
+            return (salary / amount).toFixed(2);
+        };
+
+        const getCleaningValue = () => {
+            let fieldValue = getFieldValue();
+            return fieldValue * checked.length;
+        }
+
+        const handleSalaryChange = (event) => {
+            let salary = event.target.value;
+            setSalary(salary);
         };
 
         const handleToggle = (event) => {
@@ -175,7 +205,9 @@ const CleaningForm = ({setCleaningId}) => {
             const cleaning = {
                 date: date,
                 child: child.id,
-                field: checked
+                field: checked,
+                salary: salary,
+                bill: bill
             }
             createMutation.mutate(cleaning);
             setCleaningId(-1);
@@ -208,6 +240,26 @@ const CleaningForm = ({setCleaningId}) => {
                 )
             )}
             <ChildFieldList cleaningFields={cleaningFields} checked={checked} setChecked={setChecked}/>
+            {salaryList.status === "loading" ? <p>{"loading..."}</p> : (
+                salaryList.status === "error" ? <p>{salaryList.error.message}</p> : (
+                    <FormControl fullWidth>
+                        <InputLabel id="salary-simple-select-label">Salary</InputLabel>
+                        <Select
+                            labelId="salary-simple-select-label"
+                            id="salary-simple-select"
+                            value={salary ? salary : ''}
+                            label="Salary"
+                            onChange={handleSalaryChange}
+                        >
+                            <MenuItem key="" value=""></MenuItem>
+                            {salaryList.data.data.map((salary) => {
+                                    return <MenuItem key={salary.id} value={salary}>{salary.value}</MenuItem>
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+                )
+            )}
             <Stack direction="row" spacing={3}>
                 <Button variant="outlined" onClick={save}>
                     save
