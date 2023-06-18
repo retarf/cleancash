@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useReducer} from "react";
 import {Title} from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -67,7 +67,7 @@ const CleaningList = ({setCleaningId}) => {
                         <TableCell>Child</TableCell>
                         <TableCell>Fields</TableCell>
                         <TableCell>Salary</TableCell>
-                        <TableCell>Bill</TableCell>
+                        <TableCell>Amount</TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
@@ -141,6 +141,41 @@ const CleaningDetails = ({cleaning, query}) => {
     );
 };
 
+const AmountReducer = (state, action) => {
+    let child = state.child;
+    let salary = state.salary;
+    let checked = state.checked;
+    let sum = 0;
+    switch (action.type) {
+        case 'setChild': {
+            child = action.child;
+            break;
+        }
+        case 'setSalary': {
+            salary = action.salary;
+            break;
+        }
+        case 'setChecked': {
+            checked = action.checked;
+            break;
+        }
+        default: {
+            throw Error('Unknown action: ' + action.type);
+        }
+    }
+    if (child !== undefined & salary !== undefined) {
+        let fieldValue = (salary.value / child.fields.length).toFixed(2);
+        sum = (fieldValue * checked.length);
+    }
+    return {
+        child: child,
+        salary: salary,
+        checked: checked,
+        sum: sum
+    }
+}
+
+
 const CleaningForm = ({setCleaningId}) => {
         const query = CleaningQuery();
         const createMutation = query.useCreate();
@@ -155,8 +190,14 @@ const CleaningForm = ({setCleaningId}) => {
         const [checked, setChecked] = useState([]);
         const [cleaningFields, setCleaningFields] = useState([]);
         const [salary, setSalary] = useState(0);
-        const [bill, setBill] = useState();
         const [fieldValue, setFieldValue] = useState();
+
+        const [amount, amountDispatch] = useReducer(AmountReducer, {
+            child: undefined,
+            salary: undefined,
+            checked: [],
+            sum: 0
+        });
 
 
         const getFieldById = (id) => fields.data.data.find(field => field ? field.id === id : null);
@@ -172,21 +213,17 @@ const CleaningForm = ({setCleaningId}) => {
             setChild(child);
             setChecked([]);
             setCleaningFields(getCleaningFields(child));
+            amountDispatch({type: 'setChild', child: child})
         };
 
         const getFieldValue = () => {
-            let amount = child.fields.count();
-            return (salary / amount).toFixed(2);
+            let value = (salary / child.fields.length).toFixed(2);
         };
-
-        const getCleaningValue = () => {
-            let fieldValue = getFieldValue();
-            return fieldValue * checked.length;
-        }
 
         const handleSalaryChange = (event) => {
             let salary = event.target.value;
             setSalary(salary);
+            amountDispatch({type: 'setSalary', salary: salary});
         };
 
         const handleToggle = (event) => {
@@ -199,6 +236,7 @@ const CleaningForm = ({setCleaningId}) => {
                 newChecked.splice(currentIndex, 1);
                 setChecked(newChecked);
             }
+            amountDispatch({type: 'setChecked', checked: checked})
         };
 
         const save = () => {
@@ -206,9 +244,10 @@ const CleaningForm = ({setCleaningId}) => {
                 date: date,
                 child: child.id,
                 field: checked,
-                salary: salary,
-                bill: bill
+                salary: salary.id,
+                bill: amount.sum,
             }
+            console.log(cleaning);
             createMutation.mutate(cleaning);
             setCleaningId(-1);
         };
@@ -239,7 +278,8 @@ const CleaningForm = ({setCleaningId}) => {
                     </FormControl>
                 )
             )}
-            <ChildFieldList cleaningFields={cleaningFields} checked={checked} setChecked={setChecked}/>
+            <ChildFieldList cleaningFields={cleaningFields} checked={checked} setChecked={setChecked}
+                            amountDispatch={amountDispatch}/>
             {salaryList.status === "loading" ? <p>{"loading..."}</p> : (
                 salaryList.status === "error" ? <p>{salaryList.error.message}</p> : (
                     <FormControl fullWidth>
@@ -260,6 +300,7 @@ const CleaningForm = ({setCleaningId}) => {
                     </FormControl>
                 )
             )}
+            <h3>{amount.sum}</h3>
             <Stack direction="row" spacing={3}>
                 <Button variant="outlined" onClick={save}>
                     save
@@ -279,18 +320,19 @@ const CleaningForm = ({setCleaningId}) => {
 ;
 
 
-const ChildFieldList = ({cleaningFields, checked, setChecked}) => {
+const ChildFieldList = ({cleaningFields, checked, setChecked, amountDispatch}) => {
 
     const handleToggle = (event) => {
         let value = event.target.tabIndex;
+        let newChecked = [...checked];
         if (!checked.includes(value)) {
-            setChecked((preChecked) => [...preChecked, value]);
+            newChecked = [...checked, value];
         } else {
             const currentIndex = checked.indexOf(value);
-            let newChecked = [...checked];
             newChecked.splice(currentIndex, 1);
-            setChecked(newChecked);
         }
+        setChecked(newChecked);
+        amountDispatch({type: 'setChecked', checked: newChecked})
     };
 
     return <List sx={{width: "100%", maxWidth: 360, bgcolor: "background.paper"}}>
