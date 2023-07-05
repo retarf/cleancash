@@ -147,6 +147,7 @@ function MainContainer() {
       });
   };
 
+  // TODO: To remove!!!
   const addCleaningHandler = (date, child, field) => {
     Request("post", "/cleaningups/", {
       date: date,

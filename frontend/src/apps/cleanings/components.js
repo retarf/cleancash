@@ -163,7 +163,7 @@ const AmountReducer = (state, action) => {
             throw Error('Unknown action: ' + action.type);
         }
     }
-    if (child !== undefined & salary !== undefined) {
+    if (child !== undefined && salary !== undefined) {
         let fieldValue = (salary.value / child.fields.length).toFixed(2);
         sum = (fieldValue * checked.length);
     }
@@ -291,7 +291,6 @@ const CleaningForm = ({setCleaningId}) => {
                             label="Salary"
                             onChange={handleSalaryChange}
                         >
-                            <MenuItem key="" value=""></MenuItem>
                             {salaryList.data.data.map((salary) => {
                                     return <MenuItem key={salary.id} value={salary}>{salary.value}</MenuItem>
                                 }
@@ -336,7 +335,7 @@ const ChildFieldList = ({cleaningFields, checked, setChecked, amountDispatch}) =
     };
 
     return <List sx={{width: "100%", maxWidth: 360, bgcolor: "background.paper"}}>
-        {cleaningFields.length === 0 ? (<ListItem></ListItem>) : (
+        {!cleaningFields.length ? (<ListItem>no items.</ListItem>) : (
             cleaningFields.map((field) => {
                 const labelId = `checkbox-list-label-${field.id}`;
                 return (
@@ -429,6 +428,7 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
         }
     }
 
+    // TODO: handleChildChange
     const handleChange = (event) => {
         let child = event.target.value;
         setChild(child);
@@ -438,18 +438,6 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
             setChecked(cleaning.data.data.field);
         } else {
             setChecked([]);
-        }
-    };
-
-    const handleToggle = (event) => {
-        let value = event.target.tabIndex;
-        if (!checked.includes(value)) {
-            setChecked((preChecked) => [...preChecked, value]);
-        } else {
-            const currentIndex = checked.indexOf(value);
-            let newChecked = [...checked];
-            newChecked.splice(currentIndex, 1);
-            setChecked(newChecked);
         }
     };
 
@@ -478,13 +466,9 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
 
 
     return <>
-        {
-            !cleaningId || cleaning.status === "loading" ? (
-                "Loading..."
-            ) : (
-                cleaning.status === "error" ? (
-                    cleaning.error.message
-                ) : (
+        {!cleaningId || cleaning.isLoading && "Loading..."}
+        {cleaning.isError && cleaning.error.message}
+        {childList.isSuccess && childList.data &&
                     <>
                         <EditableTitle
                             defaultValue={date}
@@ -502,7 +486,6 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
                                         label="Child"
                                         onChange={handleChange}
                                     >
-                                        <MenuItem key="" value=""></MenuItem>
                                         {childList.data.data.map((child) => {
                                                 return <MenuItem key={child.id} value={child}>{child.name}</MenuItem>
                                             }
@@ -520,6 +503,7 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
                             <Button
                                 variant="contained"
                                 onClick={() => {
+                                    // TODO: Change to object with consts
                                     setCleaningId(-1);
                                 }}
                             >
@@ -527,8 +511,6 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
                             </Button>
                         </Stack>
                     </>
-                )
-            )
         }
     </>
 };

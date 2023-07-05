@@ -53,6 +53,7 @@ const Query = (url) => {
         await queryClient.cancelQueries({ queryKey: [url, id] });
         await queryClient.cancelQueries({ queryKey: [url] });
         queryClient.invalidateQueries({ queryKey: [url] });
+        // TODO: usprawnić rerenderowanie listy (optimistic update)
       },
     });
   };

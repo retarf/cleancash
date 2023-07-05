@@ -44,15 +44,17 @@ export const FieldList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {fieldList.status === "loading" ? (
+            {fieldList.isLoading &&
             <TableRow key={"loading"}>
-              <TableCell>Loading...</TableCell>
+                <TableCell>Loading...</TableCell>
             </TableRow>
-          ) : fieldList.status === "error" ? (
+            }
+            {fieldList.isError &&
             <TableRow key={"error"}>
               <TableCell>Error: {fieldList.error.message}</TableCell>
             </TableRow>
-          ) : (
+            }
+            {fieldList.isSuccess && fieldList.data &&
             // TODO: Remove unnecessary data attribute
             fieldList.data.data.map((field) => (
               <FieldDetails
@@ -62,22 +64,23 @@ export const FieldList = () => {
                 query={query}
               />
             ))
-          )}
-          {editState ? (
+          }
+          {editState && (
             <TableRow key="new">
               <TableCell>
                 <TextField
                   id="name"
                   label="name"
                   variant="outlined"
+                  // TODO: nameRef
                   inputRef={name}
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={save}>save</Button>
+                <Button onClick={save} disabled={createMutation.isLoading}>save</Button>
               </TableCell>
             </TableRow>
-          ) : null}
+          )}
         </TableBody>
       </Table>
       <IconButton onClick={enableEditState} aria-label="add">

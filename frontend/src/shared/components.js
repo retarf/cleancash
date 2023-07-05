@@ -70,12 +70,13 @@ export const EditableTableCell = ({ id, name, defaultValue, query }) => {
 
   const save = (value) => {
     let object = {};
-    object["id"] = id;
+    object.id = id;
     object[name] = value;
 
     updateMutation.mutate(object);
   };
 
+  // TODO: Change id value to id
   return (
     <>
       {editState ? (
@@ -98,7 +99,8 @@ export const EditableTableCell = ({ id, name, defaultValue, query }) => {
 export const DeleteCell = ({ id, query }) => {
   const deleteMutation = query.useDelete(id);
 
-  const del = () => {
+  const del = (event) => {
+    event.stopPropagation();
     deleteMutation.mutate();
   };
 
