@@ -44,17 +44,18 @@ export const FieldList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-            {fieldList.isLoading &&
+          {fieldList.isLoading && (
             <TableRow key={"loading"}>
-                <TableCell>Loading...</TableCell>
+              <TableCell>Loading...</TableCell>
             </TableRow>
-            }
-            {fieldList.isError &&
+          )}
+          {fieldList.isError && (
             <TableRow key={"error"}>
               <TableCell>Error: {fieldList.error.message}</TableCell>
             </TableRow>
-            }
-            {fieldList.isSuccess && fieldList.data &&
+          )}
+          {fieldList.isSuccess &&
+            fieldList.data &&
             // TODO: Remove unnecessary data attribute
             fieldList.data.data.map((field) => (
               <FieldDetails
@@ -63,8 +64,7 @@ export const FieldList = () => {
                 name={field.name}
                 query={query}
               />
-            ))
-          }
+            ))}
           {editState && (
             <TableRow key="new">
               <TableCell>
@@ -77,7 +77,9 @@ export const FieldList = () => {
                 />
               </TableCell>
               <TableCell>
-                <Button onClick={save} disabled={createMutation.isLoading}>save</Button>
+                <Button onClick={save} disabled={createMutation.isLoading}>
+                  save
+                </Button>
               </TableCell>
             </TableRow>
           )}
