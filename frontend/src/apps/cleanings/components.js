@@ -208,7 +208,7 @@ const CleaningForm = ({setCleaningId}) => {
             })
         }
 
-        const handleChange = (event) => {
+        const handleChildChange = (event) => {
             let child = event.target.value;
             setChild(child);
             setChecked([]);
@@ -267,7 +267,7 @@ const CleaningForm = ({setCleaningId}) => {
                             id="child-simple-select"
                             value={child ? child : ''}
                             label="Child"
-                            onChange={handleChange}
+                            onChange={handleChildChange}
                         >
                             <MenuItem key="" value=""></MenuItem>
                             {childList.data.data.map((child) => {
@@ -428,8 +428,7 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
         }
     }
 
-    // TODO: handleChildChange
-    const handleChange = (event) => {
+    const handleChildChange = (event) => {
         let child = event.target.value;
         setChild(child);
         // TODO: Using getCleaningField with component's state variables is quite ugly
@@ -484,7 +483,7 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
                                         id="child-simple-select"
                                         value={child ? child : ''}
                                         label="Child"
-                                        onChange={handleChange}
+                                        onChange={handleChildChange}
                                     >
                                         {childList.data.data.map((child) => {
                                                 return <MenuItem key={child.id} value={child}>{child.name}</MenuItem>
