@@ -30,6 +30,8 @@ import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Checkbox from "@mui/material/Checkbox";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const Cleaning = ({ cleaningId, setCleaningId }) => {
   switch (cleaningId) {
@@ -192,6 +194,7 @@ const CleaningForm = ({ setCleaningId }) => {
   const childList = childQuery.useList();
   const salaryQuery = SalaryQuery();
   const salaryList = salaryQuery.useList();
+  //const [date, setDate] = useState(getDateString(dayjs(() => new Date())));
   const [date, setDate] = useState();
   const [child, setChild] = useState();
   const fieldQuery = FieldsQuery();
@@ -261,13 +264,16 @@ const CleaningForm = ({ setCleaningId }) => {
     setCleaningId(-1);
   };
 
+  const getDateString = newDate => newDate.toISOString().split("T")[0];
+
+  useEffect(() => {
+    setDate(getDateString(dayjs(new Date())));
+  }, [])
+
+
   return (
     <>
-      <EditableTitle
-        defaultValue={date}
-        defaultState={false}
-        setTitle={setDate}
-      />
+      <DatePicker label="date" defaultValue={date} onChange={ newDate => setDate(getDateString(newDate)) }/>
       {childList.status === "loading" ? (
         <p>{"loading..."}</p>
       ) : childList.status === "error" ? (
