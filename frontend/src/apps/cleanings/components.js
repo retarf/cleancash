@@ -273,7 +273,7 @@ const CleaningForm = ({ setCleaningId }) => {
 
   return (
     <>
-      <DatePicker label="date" defaultValue={date} onChange={ newDate => setDate(getDateString(newDate)) }/>
+      <DatePicker label="date" defaultValue={dayjs(new Date())} onChange={ newDate => setDate(getDateString(newDate)) }/>
       {childList.status === "loading" ? (
         <p>{"loading..."}</p>
       ) : childList.status === "error" ? (
