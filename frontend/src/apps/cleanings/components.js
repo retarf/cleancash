@@ -258,11 +258,11 @@ const CleaningForm = ({setCleaningId}) => {
     return (
         <>
             <DatePicker label="date" defaultValue={dayjs(date)} onChange={newDate => setDate(getDateString(newDate))}/>
-            {childList.status === "loading" ? (
+            {childList.isLoading &&
                 <p>{"loading..."}</p>
-            ) : childList.status === "error" ? (
-                <p>{childList.error.message}</p>
-            ) : (
+            }
+            {childList.isError && <p>{childList.error.message}</p>}
+            {childList.isSuccess && childList.data &&
                 <FormControl fullWidth>
                     <InputLabel id="child-simple-select-label">Child</InputLabel>
                     <Select
@@ -282,18 +282,16 @@ const CleaningForm = ({setCleaningId}) => {
                         })}
                     </Select>
                 </FormControl>
-            )}
+            }
             <ChildFieldList
                 cleaningFields={cleaningFields}
                 checked={checked}
                 setChecked={setChecked}
                 amountDispatch={amountDispatch}
             />
-            {salaryList.status === "loading" ? (
-                <p>{"loading..."}</p>
-            ) : salaryList.status === "error" ? (
-                <p>{salaryList.error.message}</p>
-            ) : (
+            {salaryList.isLoading && <p>{"loading..."}</p>}
+            {salaryList.isError && <p>{salaryList.error.message}</p>}
+            {salaryList.isSuccess && salaryList.data &&
                 <FormControl fullWidth>
                     <InputLabel id="salary-simple-select-label">Salary</InputLabel>
                     <Select
@@ -312,7 +310,7 @@ const CleaningForm = ({setCleaningId}) => {
                         })}
                     </Select>
                 </FormControl>
-            )}
+            }
             <h3>{amount.sum}</h3>
             <Stack direction="row" spacing={3}>
                 <Button variant="outlined" onClick={save}>
@@ -476,9 +474,9 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
     };
 
     useEffect(() => {
-        if (cleaning.status === "success") {
+        if (cleaning.isSuccess) {
             setDate(cleaning.data.data.date);
-            if (childList.status === "success") {
+            if (childList.isSuccess) {
                 let child = childList.data.data.find(
                     (child) => child.id === cleaning.data.data.child
                 );
@@ -494,18 +492,12 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
         <>
             {!cleaningId || (cleaning.isLoading && "Loading...")}
             {cleaning.isError && cleaning.error.message}
-            {childList.isSuccess && childList.data && (
+            {childList.isSuccess && childList.data && cleaning.isSuccess && cleaning.data && (
                 <>
-                    <EditableTitle
-                        defaultValue={date}
-                        defaultState={false}
-                        setTitle={setDate}
-                    />
-                    {childList.status === "loading" ? (
-                        <p>{"loading..."}</p>
-                    ) : childList.status === "error" ? (
-                        <p>{childList.error.message}</p>
-                    ) : (
+                    <DatePicker label="date" defaultValue={dayjs(new Date(cleaning.data.data.date))} onChange={newDate => setDate(getDateString(newDate))}/>
+                    {childList.isLoading && <p>{"loading..."}</p>}
+                    {childList.isError && <p>{childList.error.message}</p>}
+                    {childList.isSuccess && childList.data &&
                         <FormControl fullWidth>
                             <InputLabel id="child-simple-select-label">Child</InputLabel>
                             <Select
@@ -524,7 +516,7 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
                                 })}
                             </Select>
                         </FormControl>
-                    )}
+                    }
                     <ChildFieldList
                         child={child}
                         cleaningFields={cleaningFields}
