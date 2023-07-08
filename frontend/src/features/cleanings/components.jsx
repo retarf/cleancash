@@ -12,9 +12,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useParams, Outlet} from "react-router-dom";
 import {CleaningQuery} from "./queries";
-import {FieldsQuery} from "/app/src/apps/fields/queries";
-import {ChildQuery} from "/app/src/apps/children/queries";
-import {SalaryQuery} from "/app/src/apps/salary/queries";
+import {FieldsQuery} from "/app/src/features/fields/queries";
+import {ChildQuery} from "/app/src/features/children/queries";
+import {SalaryQuery} from "/app/src/features/salary/queries";
 
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";

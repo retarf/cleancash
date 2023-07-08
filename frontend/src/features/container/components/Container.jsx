@@ -18,13 +18,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Routes, Route } from "react-router-dom";
-import { MainMenu, SecondaryMenu } from "/app/src/apps/menu";
-import { Dashboard } from "/app/src/apps/dashboard";
-import { Cleaning } from "/app/src/apps/cleanings";
-import { FieldList } from "/app/src/apps/fields";
-import { SalaryList } from "/app/src/apps/salary";
+import { MainMenu, SecondaryMenu } from "/app/src/features/menu";
+import { Dashboard } from "/app/src/features/dashboard";
+import { CleaningList } from "/app/src/features/cleanings";
+import { FieldList } from "/app/src/features/fields";
+import { SalaryList } from "/app/src/features/salary";
 import { Request } from "/app/src/core";
-import { Child } from "/app/src/apps/children";
+import { Child } from "/app/src/features/children";
 
 function Copyright(props) {
   return (
@@ -92,7 +92,7 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-export function MainContainer() {
+function MainContainer() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -101,7 +101,6 @@ export function MainContainer() {
   const [cleaningListState, setCleaningListState] = useState([]);
   const [fieldListState, setFieldListState] = useState([]);
   const [salaryListState, setSalaryListState] = useState([]);
-  const [cleaningId, setCleaningId] = useState(-1);
   const [childId, setChildId] = useState(-1);
   const [fieldId, setFieldId] = useState(-1);
 
@@ -148,6 +147,7 @@ export function MainContainer() {
       });
   };
 
+  // TODO: To remove!!!
   const addCleaningHandler = (date, child, field) => {
     Request("post", "/cleaningups/", {
       date: date,
@@ -273,9 +273,9 @@ export function MainContainer() {
                       <Route
                         path="/cleanings"
                         element={
-                          <Cleaning
-                            cleaningId={cleaningId}
-                            setCleaningId={setCleaningId}
+                          <CleaningList
+                            cleaningsState={cleaningListState}
+                            onAddCleaning={addCleaningHandler}
                           />
                         }
                       />
@@ -313,3 +313,5 @@ export function MainContainer() {
     </ThemeProvider>
   );
 }
+
+export default MainContainer;

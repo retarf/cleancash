@@ -3,8 +3,8 @@ import Button from "@mui/material/Button";
 import "@fontsource/roboto/400.css";
 import { BrowserRouter } from "react-router-dom";
 
-import { Dashboard } from "./apps";
-import { MainContainer } from "./apps";
+import { Dashboard } from "./features";
+import { MainContainer } from "./features";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 

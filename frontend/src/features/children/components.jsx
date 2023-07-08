@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import { useParams, Outlet } from "react-router-dom";
 import { ChildQuery } from "./queries";
 import { Query } from "/app/src/core";
-import { FieldsQuery } from "/app/src/apps/fields/queries";
+import { FieldsQuery } from "/app/src/features/fields/queries";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
