@@ -4,7 +4,7 @@ import "@fontsource/roboto/400.css";
 import { BrowserRouter } from "react-router-dom";
 
 import { Dashboard } from "./features";
-import { MainContainer } from "./features";
+import { MainContainer } from "./core";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
