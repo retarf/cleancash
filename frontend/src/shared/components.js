@@ -115,3 +115,5 @@ export const DeleteCell = ({ id, query }) => {
     </TableCell>
   );
 };
+
+export const getDateString = newDate => newDate.toISOString().split("T")[0];
