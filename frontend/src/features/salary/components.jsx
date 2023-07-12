@@ -22,13 +22,8 @@ function SalaryList(props) {
   const query = Query("salary");
   const salaryList = query.useList();
   const createMutation = query.useCreate();
-
-  //
-  const date = useRef();
   const value = useRef();
   const [editState, setEditState] = useState(false);
-
-  const salaryState = [];
 
   const enableEditState = () => {
     setEditState(true);
@@ -36,7 +31,6 @@ function SalaryList(props) {
 
   const save = () => {
     createMutation.mutate({
-      date: date.current.value,
       value: value.current.value,
     });
     setEditState(false);
@@ -48,7 +42,6 @@ function SalaryList(props) {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
             <TableCell>Value</TableCell>
             <TableCell></TableCell>
           </TableRow>
@@ -70,21 +63,12 @@ function SalaryList(props) {
               <SalaryDetails
                 key={row.id}
                 id={row.id}
-                date={row.date}
                 value={row.value}
                 query={query}
               />
             ))}
           {editState && (
             <TableRow key="new">
-              <TableCell>
-                <TextField
-                  id="date"
-                  label="date"
-                  variant="outlined"
-                  inputRef={date}
-                />
-              </TableCell>
               <TableCell>
                 <TextField
                   id="value"
@@ -107,20 +91,13 @@ function SalaryList(props) {
   );
 }
 
-const SalaryDetails = ({ id, date, value, query }) => {
+const SalaryDetails = ({ id, value, query }) => {
   const updateMutation = query.useUpdate(id);
   const [editState, setEditState] = useState(false);
-  const [dateState, setDateState] = useState(date);
   const [valueState, setValueState] = useState(value);
 
   return (
     <TableRow>
-      <EditableTableCell
-        id={id}
-        name="date"
-        defaultValue={dateState}
-        query={query}
-      />
       <EditableTableCell
         id={id}
         name="value"
