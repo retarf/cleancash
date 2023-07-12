@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ['localhost']
 INSTALLED_APPS = [
     'salary.apps.SalaryConfig',
     'cleaningups.apps.CleaningUpsConfig',
-    'cleaningfields.apps.CleaningfieldsConfig',
     'fields.apps.FieldsConfig',
     'children.apps.ChildrenConfig',
     'corsheaders',
