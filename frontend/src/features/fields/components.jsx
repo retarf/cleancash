@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Title } from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useParams, Outlet } from "react-router-dom";
 import { FieldsQuery } from "./queries";
 import { EditableTableCell, DeleteCell } from "/app/src/shared";
 
@@ -27,6 +23,10 @@ export const FieldList = () => {
   const enableEditState = () => {
     setEditState(true);
   };
+
+    const disableEditState = () => {
+        setEditState(false);
+    };
 
   const save = () => {
     createMutation.mutate({ name: name.current.value });

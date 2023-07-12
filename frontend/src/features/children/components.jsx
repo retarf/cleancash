@@ -5,42 +5,23 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import {useParams, Outlet} from "react-router-dom";
 import {ChildQuery} from "./queries";
-import {Query} from "/app/src/core";
 import {FieldsQuery} from "/app/src/features/fields/queries";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import CommentIcon from "@mui/icons-material/Comment";
 
 import Stack from "@mui/material/Stack";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddIcon from "@mui/icons-material/Add";
 import CircularProgress from '@mui/material/CircularProgress';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import DangerousIcon from '@mui/icons-material/Dangerous';
-
-
-import {
-    useQueryClient,
-    useQuery,
-    useQueries,
-    useMutation,
-} from "@tanstack/react-query";
-import {Request} from "/app/src/core";
 
 import {EditableTitle} from "/app/src/shared";
 
@@ -124,7 +105,6 @@ export const ChildDetails = ({childId, setChildId}) => {
     const deleteMutation = query.useDelete(childId);
     const [checked, setChecked] = useState([]);
     const [name, setName] = useState();
-    const [editState, setEditState] = useState(false);
     const fieldsQuery = FieldsQuery();
     const fields = fieldsQuery.useList();
 
@@ -228,7 +208,6 @@ export const ChildForm = ({childId, setChildId}) => {
     const createMutation = query.useCreate();
     const [checked, setChecked] = useState([]);
     const [name, setName] = useState();
-    const [editState, setEditState] = useState(true);
     const fieldsQuery = FieldsQuery();
     const fields = fieldsQuery.useList();
 

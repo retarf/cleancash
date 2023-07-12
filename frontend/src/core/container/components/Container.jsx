@@ -100,9 +100,7 @@ function MainContainer() {
 
   const [cleaningListState, setCleaningListState] = useState([]);
   const [fieldListState, setFieldListState] = useState([]);
-  const [salaryListState, setSalaryListState] = useState([]);
   const [childId, setChildId] = useState(-1);
-  const [fieldId, setFieldId] = useState(-1);
 
   const addFieldHandler = (name) => {
     Request("post", "/fields/", {

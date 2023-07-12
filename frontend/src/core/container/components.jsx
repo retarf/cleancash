@@ -23,7 +23,6 @@ import { Dashboard } from "/app/src/features/dashboard";
 import { Cleaning } from "/app/src/features/cleanings";
 import { FieldList } from "/app/src/features/fields";
 import { SalaryList } from "/app/src/features/salary";
-import { Request } from "/app/src/core";
 import { Child } from "/app/src/features/children";
 
 function Copyright(props) {
@@ -98,85 +97,9 @@ export function MainContainer() {
     setOpen(!open);
   };
 
-  const [cleaningListState, setCleaningListState] = useState([]);
-  const [fieldListState, setFieldListState] = useState([]);
-  const [salaryListState, setSalaryListState] = useState([]);
   const [cleaningId, setCleaningId] = useState(-1);
   const [childId, setChildId] = useState(-1);
-  const [fieldId, setFieldId] = useState(-1);
 
-  const addFieldHandler = (name) => {
-    Request("post", "/fields/", {
-      name: name,
-    })
-      .then((response) => {
-        let id = response.data.id;
-        let name = response.data.name;
-        console.log(response.data);
-        setFieldListState((prevFieldList) => {
-          return [...prevFieldList, { id: id, name: name }];
-        });
-      })
-      .catch((error) => {
-        // add exception handling
-        console.log(error);
-      });
-  };
-
-  const addSalaryHandler = (date, value, child) => {
-    Request("post", "/salary/", {
-      date: date,
-      value: value,
-      child: child,
-    })
-      .then((response) => {
-        let id = response.data.id;
-        let date = response.data.date;
-        let value = response.data.value;
-        let child = response.data.child;
-        console.log(response.data);
-        setSalaryListState((prevSalaryList) => {
-          return [
-            ...prevSalaryList,
-            { id: id, date: date, value: value, child: child },
-          ];
-        });
-      })
-      .catch((error) => {
-        // add exception handling
-        console.log(error);
-      });
-  };
-
-  const addCleaningHandler = (date, child, field) => {
-    Request("post", "/cleaningups/", {
-      date: date,
-      child: child,
-      field: field,
-    })
-      .then((response) => {
-        let id = response.data.id;
-        let date = response.data.date;
-        let child = response.data.child;
-        let field = response.data.field;
-        console.log(response.data);
-        setCleaningListState((prevCleaningList) => {
-          return [
-            ...prevCleaningList,
-            {
-              id: id,
-              date: date,
-              child: child,
-              field: field,
-            },
-          ];
-        });
-      })
-      .catch((error) => {
-        // add exception handling
-        console.log(error);
-      });
-  };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -292,10 +215,7 @@ export function MainContainer() {
                       <Route
                         path="/fields"
                         element={
-                          <FieldList
-                            fieldState={fieldListState}
-                            onAddField={addFieldHandler}
-                          />
+                          <FieldList />
                         }
                       />
                       <Route path="/settings" element={<h1>settings</h1>} />
