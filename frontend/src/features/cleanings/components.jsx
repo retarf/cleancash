@@ -5,12 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import {useParams, Outlet} from "react-router-dom";
 import {CleaningQuery} from "./queries";
 import {FieldsQuery} from "/app/src/features/fields/queries";
 import {ChildQuery} from "/app/src/features/children/queries";
@@ -19,7 +14,6 @@ import {SalaryQuery} from "/app/src/features/salary/queries";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import {DeleteCell} from "/app/src/shared";
-import {EditableTitle} from "/app/src/shared";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,6 +26,8 @@ import ListItem from "@mui/material/ListItem";
 import Checkbox from "@mui/material/Checkbox";
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import dayjs, {Dayjs} from 'dayjs';
+import {CustomTableHead, ErrorBox, Spinner, SelectMenu, findNameById} from "/app/src/shared";
+import {findItemById} from "../../shared";
 
 export const Cleaning = ({cleaningId, setCleaningId}) => {
     switch (cleaningId) {
@@ -50,100 +46,70 @@ export const Cleaning = ({cleaningId, setCleaningId}) => {
     }
 };
 
+
 const CleaningList = ({setCleaningId}) => {
-    const [editOnState, setEditOnState] = useState(false);
     const childQuery = ChildQuery();
     const childList = childQuery.useList();
     const fieldsQuery = FieldsQuery();
     const fieldList = fieldsQuery.useList();
     const query = CleaningQuery();
     const cleaningList = query.useList();
+    const columns = ["Date", "Child", "Fields", "Salary", "Amount", ""]
 
     return (
         <React.Fragment>
             <Title>Cleanings List</Title>
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Child</TableCell>
-                        <TableCell>Fields</TableCell>
-                        <TableCell>Salary</TableCell>
-                        <TableCell>Amount</TableCell>
-                        <TableCell></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {cleaningList.isLoading && childList.isLoading && fieldList.isLoading &&
-                        <TableRow key={"loading"}><TableCell>{"loading..."}</TableCell></TableRow>
-                    }
-                    {cleaningList.isError &&
-                        <TableRow key={"error"}><TableCell>{cleaningList.error.message}</TableCell></TableRow>}
-                    {childList.isError &&
-                        <TableRow key={"error"}><TableCell>{childList.error.message}</TableCell></TableRow>}
-                    {fieldList.isError &&
-                        <TableRow key={"error"}><TableCell>{fieldList.error.message}</TableCell></TableRow>}
-                    {cleaningList.isSuccess && cleaningList.data &&
-                        cleaningList.data.data.map((cleaning) => {
-                            return (
-                                <TableRow
-                                    key={cleaning.id}
-                                    hover={true}
-                                    onClick={() => {
-                                        setCleaningId(cleaning.id);
-                                    }}
-                                >
-                                    <TableCell>{cleaning.date}</TableCell>
-                                    <TableCell>
-                                        {childList.isSuccess && childList.data &&
-                                            childList.data.data.find(
-                                                (child) => child.id === cleaning.child
-                                            ).name}
-                                    </TableCell>
-                                    <TableCell>
-                                        <ul>
-                                            {fieldList.isSuccess && fieldList.data &&
-                                                cleaning.field.map((fieldId) => {
-                                                    return (
-                                                        <li key={fieldId}>
-                                                            {fieldList.data.data.find(
-                                                                (field) => field.id === fieldId).name
-                                                            }
-                                                        </li>
-                                                    );
-                                                })}
-                                            {cleaning.field.map((field) => {
-                                                <li>{field}</li>;
-                                            })}
-                                        </ul>
-                                    </TableCell>
-                                    <TableCell>{cleaning.salary}</TableCell>
-                                    <TableCell>{cleaning.bill}</TableCell>
-                                    <DeleteCell id={cleaning.id} query={query}/>
-                                </TableRow>
-                            );
-                        })}
-                </TableBody>
-            </Table>
-            <IconButton onClick={() => setCleaningId(0)} aria-label="add">
-                <AddIcon/>
-            </IconButton>
+            {cleaningList.isLoading && childList.isLoading && fieldList.isLoading && <Spinner/>}
+            {cleaningList.isError && <ErrorBox msg={cleaningList.error.message}/>}
+            {childList.isError && <ErrorBox msg={childList.error.message}/>}
+            {fieldList.isError && <ErrorBox msg={fieldList.error.message}/>}
+            {cleaningList.isSuccess && cleaningList.data &&
+                childList.isSuccess && childList.data &&
+                fieldList.isSuccess && fieldList.data &&
+                <>
+                    <Table size="small">
+                        <CustomTableHead columns={columns}/>
+                        <TableBody>
+                            {
+                                cleaningList.data.data.map((cleaning) => {
+                                    return (
+                                        <TableRow
+                                            key={cleaning.id}
+                                            hover={true}
+                                            onClick={() => {
+                                                setCleaningId(cleaning.id);
+                                            }}
+                                        >
+                                            <TableCell>{cleaning.date}</TableCell>
+                                            <TableCell>{findNameById(childList.data.data, cleaning.child)}</TableCell>
+                                            <TableCell>
+                                                <ul>
+                                                    {cleaning.field.map((fieldId) => {
+                                                        return (
+                                                            <li key={fieldId}>
+                                                                {findNameById(fieldList.data.data, fieldId)}
+                                                            </li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </TableCell>
+                                            <TableCell>{cleaning.salary}</TableCell>
+                                            <TableCell>{cleaning.bill}</TableCell>
+                                            <DeleteCell id={cleaning.id} query={query}/>
+                                        </TableRow>
+                                    );
+                                })}
+                        </TableBody>
+                    </Table>
+                    <IconButton onClick={() => setCleaningId(0)} aria-label="add">
+                        <AddIcon/>
+                    </IconButton>
+                </>
+            }
         </React.Fragment>
-    );
+    )
 };
 
-const CleaningDetails = ({cleaning, query}) => {
-    return (
-        <TableRow>
-            <TableCell>{cleaning.date}</TableCell>
-            <TableCell>{cleaning.child}</TableCell>
-            <TableCell>
-                <ul></ul>
-            </TableCell>
-            <DeleteCell id={cleaning.id} query={query}/>
-        </TableRow>
-    );
-};
 
 const AmountReducer = (state, action) => {
     let child = state.child;
@@ -202,12 +168,9 @@ const CleaningForm = ({setCleaningId}) => {
         sum: 0,
     });
 
-    const getFieldById = (id) =>
-        fields.data.data.find((field) => (field ? field.id === id : null));
-
     const getCleaningFields = (child) => {
         return child.fields.map((id) => {
-            return getFieldById(id);
+            return findItemById(fields.data.data, id);
         });
     };
 
@@ -217,10 +180,6 @@ const CleaningForm = ({setCleaningId}) => {
         setChecked([]);
         setCleaningFields(getCleaningFields(child));
         amountDispatch({type: "setChild", child: child});
-    };
-
-    const getFieldValue = () => {
-        let value = (salary / child.fields.length).toFixed(2);
     };
 
     const handleSalaryChange = (event) => {
@@ -257,31 +216,15 @@ const CleaningForm = ({setCleaningId}) => {
 
     return (
         <>
-            <DatePicker label="date" defaultValue={dayjs(date)} onChange={newDate => setDate(getDateString(newDate))}/>
-            {childList.isLoading &&
-                <p>{"loading..."}</p>
-            }
-            {childList.isError && <p>{childList.error.message}</p>}
+            {childList.isLoading && salaryList.isLoading && <Spinner/>}
+            {childList.isError && <ErrorBox msg={childList.error.message} />}
+            {childList.isError && <ErrorBox msg={salaryList.error.message} />}
             {childList.isSuccess && childList.data &&
-                <FormControl fullWidth>
-                    <InputLabel id="child-simple-select-label">Child</InputLabel>
-                    <Select
-                        labelId="child-simple-select-label"
-                        id="child-simple-select"
-                        value={child ? child : ""}
-                        label="Child"
-                        onChange={handleChildChange}
-                    >
-                        <MenuItem key="" value=""></MenuItem>
-                        {childList.data.data.map((child) => {
-                            return (
-                                <MenuItem key={child.id} value={child}>
-                                    {child.name}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                </FormControl>
+                <>
+                    <DatePicker label="date" defaultValue={dayjs(date)}
+                                onChange={newDate => setDate(getDateString(newDate))}/>
+                    <SelectMenu label="Child" itemList={childList.data.data} item={child} onChangeHandler={handleChildChange} fieldName="name" />
+                </>
             }
             <ChildFieldList
                 cleaningFields={cleaningFields}
@@ -289,27 +232,8 @@ const CleaningForm = ({setCleaningId}) => {
                 setChecked={setChecked}
                 amountDispatch={amountDispatch}
             />
-            {salaryList.isLoading && <p>{"loading..."}</p>}
-            {salaryList.isError && <p>{salaryList.error.message}</p>}
             {salaryList.isSuccess && salaryList.data &&
-                <FormControl fullWidth>
-                    <InputLabel id="salary-simple-select-label">Salary</InputLabel>
-                    <Select
-                        labelId="salary-simple-select-label"
-                        id="salary-simple-select"
-                        value={salary ? salary : ""}
-                        label="Salary"
-                        onChange={handleSalaryChange}
-                    >
-                        {salaryList.data.data.map((salary) => {
-                            return (
-                                <MenuItem key={salary.id} value={salary}>
-                                    {salary.value}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                </FormControl>
+                <SelectMenu label="Salary" itemList={salaryList.data.data} item={salary} onChangeHandler={handleSalaryChange} fieldName="value" />
             }
             <h3>{amount.sum}</h3>
             <Stack direction="row" spacing={3}>
@@ -494,7 +418,8 @@ const CleaningEdit = ({cleaningId, setCleaningId}) => {
             {cleaning.isError && cleaning.error.message}
             {childList.isSuccess && childList.data && cleaning.isSuccess && cleaning.data && (
                 <>
-                    <DatePicker label="date" defaultValue={dayjs(new Date(cleaning.data.data.date))} onChange={newDate => setDate(getDateString(newDate))}/>
+                    <DatePicker label="date" defaultValue={dayjs(new Date(cleaning.data.data.date))}
+                                onChange={newDate => setDate(getDateString(newDate))}/>
                     {childList.isLoading && <p>{"loading..."}</p>}
                     {childList.isError && <p>{childList.error.message}</p>}
                     {childList.isSuccess && childList.data &&

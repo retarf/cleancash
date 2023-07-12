@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import {ChildQuery} from "./queries";
 import {FieldsQuery} from "/app/src/features/fields/queries";
 
@@ -19,11 +18,9 @@ import Stack from "@mui/material/Stack";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import CircularProgress from '@mui/material/CircularProgress';
 import FormControlLabel from "@mui/material/FormControlLabel";
-import DangerousIcon from '@mui/icons-material/Dangerous';
 
-import {EditableTitle} from "/app/src/shared";
+import {EditableTitle, ErrorBox, Spinner} from "/app/src/shared";
 
 export const Child = ({childId, setChildId}) => {
     switch (childId) {
@@ -45,23 +42,8 @@ export const ChildList = ({setChildId}) => {
     return (
         <React.Fragment>
             <Title>Children</Title>
-            {childList.isError && (
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    color: 'red',
-                    fontWeight: 'bold',
-                }}>
-                    <DangerousIcon/>
-                    <span>Error: {childList.error.message}</span>
-                </Box>
-            )}
-            {childList.isLoading &&
-                <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                    <CircularProgress/>
-                </Box>
-            }
+            {childList.isError && <ErrorBox msg={childList.error.message} />}
+            {childList.isLoading && <Spinner /> }
             {childList.isSuccess &&
                 childList.data &&
                 <>
