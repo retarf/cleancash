@@ -21,6 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import {EditableTitle, ErrorBox, Spinner} from "/app/src/shared";
+import {CustomTableHead, TableRowList} from "../../shared";
 
 export const Child = ({childId, setChildId}) => {
     switch (childId) {
@@ -38,6 +39,7 @@ export const Child = ({childId, setChildId}) => {
 export const ChildList = ({setChildId}) => {
     const query = ChildQuery();
     const childList = query.useList();
+    const columns = ["Name", "", ""];
 
     return (
         <React.Fragment>
@@ -48,26 +50,9 @@ export const ChildList = ({setChildId}) => {
                 childList.data &&
                 <>
                     <Table size="small">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Name</TableCell>
-                            </TableRow>
-                        </TableHead>
+                        <CustomTableHead columns={columns}/>
                         <TableBody>
-                            {
-                                childList.data.data.map((child) => (
-                                    // TODO: Remove unnecessary data attribute
-                                    <TableRow
-                                        key={child.id}
-                                        onClick={() => {
-                                            setChildId(child.id);
-                                        }}
-                                        hover={true}
-                                    >
-                                        <TableCell>{child.name}</TableCell>
-                                    </TableRow>
-                                ))
-                            }
+                            <TableRowList itemList={childList.data.data} columns={columns} query={query} editable={false} onClickHandler={setChildId}/>
                         </TableBody>
                     </Table>
                     <IconButton onClick={() => setChildId(0)} aria-label="add">
@@ -135,11 +120,6 @@ export const ChildDetails = ({childId, setChildId}) => {
                         defaultState={false}
                         setTitle={setName}
                     />
-                    <Stack direction="row" spacing={1}>
-                        <IconButton aria-label="delete">
-                            <DeleteIcon onClick={del}/>
-                        </IconButton>
-                    </Stack>
                     <List
                         sx={{width: "100%", maxWidth: 360, bgcolor: "background.paper"}}
                     >
@@ -208,9 +188,10 @@ export const ChildForm = ({childId, setChildId}) => {
     const save = () => {
         let child = {
             name: name,
-            fields: checked,
+            fields: checked
         };
         createMutation.mutate(child);
+        setChildId(0);
     };
 
     return (
@@ -220,11 +201,6 @@ export const ChildForm = ({childId, setChildId}) => {
                 defaultState={true}
                 setTitle={setName}
             />
-            <Stack direction="row" spacing={1}>
-                <IconButton aria-label="delete">
-                    <DeleteIcon/>
-                </IconButton>
-            </Stack>
             <List sx={{width: "100%", maxWidth: 360, bgcolor: "background.paper"}}>
                 {fields.isLoading && "Loading..."}
                 {fields.isError && <span>Error: {fields.error.message}</span>}

@@ -1,27 +1,26 @@
-import React, {useState, useRef} from "react";
-import {Title} from "/app/src/shared";
+import * as React from "react";
+import {Title} from "../../shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import {FieldsQuery} from "./queries";
-import {EditableTableCell, DeleteCell} from "/app/src/shared";
 
 import {AddIconButton, CustomTableHead, ErrorBox, Spinner, TableRowList, TextButtonTableCell} from "../../shared";
 
-import CreateFieldResponsePayload from "./models/CreateField.model";
+import {CreateFieldResponsePayload} from "./models/CreateField.model";
 
 export const FieldList = () => {
     const query = FieldsQuery();
     const fieldList = query.useList();
     const createMutation = query.useCreate();
-    const [editState, setEditState] = useState(false);
-    const nameRef = useRef();
-    const columns = ["Name", "", ""];
+    const [editState, setEditState] = React.useState<boolean>(false);
+    const nameRef: React.MutableRefObject<any> = React.useRef();
+    const columns: string[] = ["Name", "", ""];
 
 
-    const save = () => {
+    const save = (): void => {
         createMutation.mutate<CreateFieldResponsePayload>({
             name: nameRef.current.value,
         });

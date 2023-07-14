@@ -18,6 +18,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 export function Title(props) {
     return (
@@ -30,6 +32,7 @@ export function Title(props) {
 Title.propTypes = {
     children: PropTypes.node,
 };
+
 
 export const EditableTitle = ({defaultValue, defaultState, setTitle}) => {
     const [editState, setEditState] = useState(defaultState);
@@ -148,9 +151,17 @@ export const Spinner = () => {
 }
 
 export const CustomTableHead = ({columns}) => {
+    let blankColumnId = 1;
+
+    const getCurrentId = () => {
+        let current = "column" + blankColumnId;
+        blankColumnId++;
+        return current;
+    }
+
     return <TableHead>
         <TableRow>
-            {columns.map(column => <TableCell key={column}>{column}</TableCell>)}
+            {columns.map(column => <TableCell key={!column && getCurrentId()}>{column}</TableCell>)}
         </TableRow>
     </TableHead>
 }
@@ -178,4 +189,47 @@ export const SelectMenu = ({label, itemList, item, onChangeHandler, fieldName}) 
             })}
         </Select>
     </FormControl>
+}
+
+export const TextButtonTableCell = ({text, onClick, disabled = null}) => {
+    return <TableCell>
+        <Button onClick={onClick} disabled={disabled}>
+            {text}
+        </Button>
+    </TableCell>
+}
+
+export const AddIconButton = ({onClick}) => {
+    return <IconButton onClick={onClick} aria-label="add">
+        <AddIcon/>
+    </IconButton>
+}
+
+export const TableRowList = ({itemList, columns, query, editable = false, onClickHandler = () => null}) => {
+    return <>
+        {itemList.map((item) => (
+            <TableRow key={`row-${item.id}`}>
+                {columns.map(column =>
+                    column &&
+                    <React.Fragment key={item.id}>
+                        {editable ?
+                            <EditableTableCell
+                                key={`cell-${item.id}-${column}`}
+                                id={item.id}
+                                name={item[column.toLowerCase()]}
+                                defaultValue={item[column.toLowerCase()]}
+                                query={query}
+                            />
+                            :
+                            <TableCell key={`cell-${item.id}-${column}`}
+                                       onClick={() => onClickHandler(item.id)}>{item[column.toLowerCase()]}</TableCell>
+                        }
+                    </React.Fragment>
+                )}
+                <TableCell></TableCell>
+                <DeleteCell id={item.id} query={query}/>
+            </TableRow>
+        ))
+        }
+    </>
 }
