@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -35,7 +35,7 @@ function Copyright(props) {
     >
       {"Copyright Łukasz Długajczyk "}
       <Link color="inherit" href="https://mui.com/">
-        I don't hava a website
+        I dont hava a website
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

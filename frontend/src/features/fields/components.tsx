@@ -35,6 +35,7 @@ export const FieldList = () => {
             {fieldList.isLoading && <Spinner/>}
             {fieldList.isSuccess && fieldList.data &&
                 <>
+                    {console.log(fieldList.data)}
                     <Table size="small">
                         <CustomTableHead columns={columns}/>
                         <TableBody>
