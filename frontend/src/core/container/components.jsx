@@ -100,7 +100,6 @@ export function MainContainer() {
   const [cleaningId, setCleaningId] = useState(-1);
   const [childId, setChildId] = useState(-1);
 
-
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -212,12 +211,7 @@ export function MainContainer() {
                         />
                       </Route>
                       <Route path="/salary" element={<SalaryList />} />
-                      <Route
-                        path="/fields"
-                        element={
-                          <FieldList />
-                        }
-                      />
+                      <Route path="/fields" element={<FieldList />} />
                       <Route path="/settings" element={<h1>settings</h1>} />
                     </Routes>
                   </Paper>

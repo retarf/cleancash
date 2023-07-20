@@ -1,6 +1,4 @@
 export type Field = {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 };
-
-
