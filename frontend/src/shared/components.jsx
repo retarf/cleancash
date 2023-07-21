@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
@@ -209,7 +210,7 @@ export const SelectMenu = ({
   );
 };
 
-export const TextButtonTableCell = ({ text, onClick, disabled: boolean = false }) => {
+export const TextButtonTableCell = ({ text, onClick, disabled = false }) => {
   return (
     <TableCell>
       <Button onClick={onClick} disabled={disabled}>

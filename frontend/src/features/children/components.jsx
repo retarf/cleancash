@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { Title } from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { ChildQuery } from "./queries";
 import { FieldsQuery } from "/app/src/features/fields/queries";
@@ -42,7 +40,7 @@ export const ChildList = ({ setChildId }) => {
   const columns = ["Name", "", ""];
 
   return (
-    <React.Fragment>
+    <>
       <Title>Children</Title>
       {childList.isError && <ErrorBox msg={childList.error.message} />}
       {childList.isLoading && <Spinner />}
@@ -65,7 +63,7 @@ export const ChildList = ({ setChildId }) => {
           </IconButton>
         </>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
@@ -113,7 +111,7 @@ export const ChildDetails = ({ childId, setChildId }) => {
   }, [child.status]);
 
   return (
-    <React.Fragment>
+    <>
       {!childId || child.isLoading || (fields.isLoading && "Loading...")}
       {fields.isError && <span>Error: {fields.error.message}</span>}
       {child.isError && <span>Error: {child.error.message}</span>}
@@ -165,7 +163,7 @@ export const ChildDetails = ({ childId, setChildId }) => {
           back
         </Button>
       </Stack>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -199,7 +197,7 @@ export const ChildForm = ({ childId, setChildId }) => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <EditableTitle
         defaultValue={name}
         defaultState={true}
@@ -243,6 +241,6 @@ export const ChildForm = ({ childId, setChildId }) => {
           back
         </Button>
       </Stack>
-    </React.Fragment>
+    </>
   );
 };
