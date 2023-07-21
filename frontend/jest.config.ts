@@ -4,6 +4,7 @@
  */
 
 import type {Config} from "jest";
+import type { JestConfigWithTsJest } from "ts-jest";
 
 const config: Config = {
     // All imported modules in your tests should be mocked automatically
@@ -134,7 +135,7 @@ const config: Config = {
     // restoreMocks: false,
 
     // The root directory that Jest should scan for tests and modules within
-    // rootDir: undefined,
+    rootDir: "./src",
 
     // A list of paths to directories that Jest should use to search for files in
     // roots: [
@@ -176,9 +177,9 @@ const config: Config = {
     ],
 
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-    // testPathIgnorePatterns: [
-    //   "/node_modules/"
-    // ],
+    testPathIgnorePatterns: [
+      "/node_modules/"
+    ],
 
     // The regexp pattern or array of patterns that Jest uses to detect test files
     // testRegex: [],
@@ -193,14 +194,15 @@ const config: Config = {
     // transform: undefined,
     transform: {
         //'^.+\\.ts?$': 'ts-jest',
-        "^.+\\.ts?$": ["ts-jest", {tsConfig: "./tsconfig.json"}],
+        "^.+\\.ts?$": ["ts-jest", {tsconfig: "./tsconfig.json"}],
+        //"^.+\\.ts?$": ["ts-jest", {tsconfig: false}],
     },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-    // transformIgnorePatterns: [
-    //   "/node_modules/",
-    //   "\\.pnp\\.[^\\/]+$"
-    // ],
+    transformIgnorePatterns: [
+      "/node_modules/",
+      "\\.pnp\\.[^\\/]+$"
+    ],
 
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,
