@@ -14,27 +14,16 @@ import IconButton from "@mui/material/IconButton";
 
 import Stack from "@mui/material/Stack";
 
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { EditableTitle, ErrorBox, Spinner } from "/app/src/shared";
 import { CustomTableHead, TableRowList } from "../../shared";
+import {redirect, useNavigate, useParams} from "react-router-dom";
+import {APP_ROUTES, BASE_ROUTES} from "../../core/routes";
 
-export const Child = ({ childId, setChildId }) => {
-  switch (childId) {
-    case -1:
-      return <ChildList setChildId={setChildId} />;
-      break;
-    case 0:
-      return <ChildForm childId={childId} setChildId={setChildId} />;
-      break;
-    default:
-      return <ChildDetails childId={childId} setChildId={setChildId} />;
-  }
-};
-
-export const ChildList = ({ setChildId }) => {
+export const ChildList = () => {
+  const navigate = useNavigate();
   const query = ChildQuery();
   const childList = query.useList();
   const columns = ["Name", "", ""];
@@ -54,11 +43,11 @@ export const ChildList = ({ setChildId }) => {
                 columns={columns}
                 query={query}
                 editable={false}
-                onClickHandler={setChildId}
+                baseUrl={APP_ROUTES.CHILDREN.LIST}
               />
             </TableBody>
           </Table>
-          <IconButton onClick={() => setChildId(0)} aria-label="add">
+          <IconButton onClick={() => navigate(BASE_ROUTES.CREATE)} aria-label="add">
             <AddIcon />
           </IconButton>
         </>
@@ -67,11 +56,13 @@ export const ChildList = ({ setChildId }) => {
   );
 };
 
-export const ChildDetails = ({ childId, setChildId }) => {
+export const ChildDetails = () => {
+  const params = useParams();
+  const navigate = useNavigate();
   const query = ChildQuery();
-  const child = query.useRead(childId);
-  const updateMutation = query.useUpdate(childId);
-  const deleteMutation = query.useDelete(childId);
+  const child = query.useRead(params.id);
+  const updateMutation = query.useUpdate(params.id);
+  const deleteMutation = query.useDelete(params.id);
   const [checked, setChecked] = useState([]);
   const [name, setName] = useState();
   const fieldsQuery = FieldsQuery();
@@ -91,11 +82,12 @@ export const ChildDetails = ({ childId, setChildId }) => {
 
   const save = () => {
     let child = {
-      id: childId,
+      id: params.id,
       name: name,
       fields: checked,
     };
     updateMutation.mutate(child);
+    navigate(APP_ROUTES.CHILDREN.LIST);
   };
 
   const del = () => {
@@ -112,7 +104,7 @@ export const ChildDetails = ({ childId, setChildId }) => {
 
   return (
     <>
-      {!childId || child.isLoading || (fields.isLoading && "Loading...")}
+      {!params.id || child.isLoading || (fields.isLoading && "Loading...")}
       {fields.isError && <span>Error: {fields.error.message}</span>}
       {child.isError && <span>Error: {child.error.message}</span>}
       {
@@ -157,7 +149,7 @@ export const ChildDetails = ({ childId, setChildId }) => {
         <Button
           variant="contained"
           onClick={() => {
-            setChildId(-1);
+            navigate(APP_ROUTES.CHILDREN.LIST)
           }}
         >
           back
@@ -167,7 +159,8 @@ export const ChildDetails = ({ childId, setChildId }) => {
   );
 };
 
-export const ChildForm = ({ childId, setChildId }) => {
+export const ChildForm = () => {
+  const navigate = useNavigate();
   const query = ChildQuery();
   const createMutation = query.useCreate();
   const [checked, setChecked] = useState([]);
@@ -193,7 +186,7 @@ export const ChildForm = ({ childId, setChildId }) => {
       fields: checked,
     };
     createMutation.mutate(child);
-    setChildId(0);
+    navigate(APP_ROUTES.CHILDREN.LIST)
   };
 
   return (
@@ -235,7 +228,7 @@ export const ChildForm = ({ childId, setChildId }) => {
         <Button
           variant="contained"
           onClick={() => {
-            setChildId(-1);
+            navigate(APP_ROUTES.CHILDREN.LIST)
           }}
         >
           back

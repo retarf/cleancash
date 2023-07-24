@@ -25,6 +25,7 @@ import {FieldList} from "/app/src/features/fields";
 import {SalaryList} from "/app/src/features/salary";
 import {Child} from "/app/src/features/children";
 import { APP_ROUTES } from "../routes";
+import {ChildDetails, ChildForm, ChildList} from "../../features";
 
 function Copyright(props) {
     return (
@@ -197,14 +198,10 @@ export function MainContainer() {
                                                 <Route path={APP_ROUTES.CLEANINGS.EDIT} element={<CleaningEdit/>}/>
                                                 <Route path={APP_ROUTES.CLEANINGS.CREATE} element={<CleaningForm/>}/>
                                             </Route>
-                                            <Route path="/children">
-                                                <Route
-                                                    index
-                                                    path="/children"
-                                                    element={
-                                                        <Child childId={childId} setChildId={setChildId}/>
-                                                    }
-                                                />
+                                            <Route path={APP_ROUTES.CHILDREN.LIST} >
+                                                <Route path={APP_ROUTES.CHILDREN.LIST} element={<ChildList />}/>
+                                                <Route path={APP_ROUTES.CHILDREN.EDIT} element={<ChildDetails />} />
+                                                <Route path={APP_ROUTES.CHILDREN.CREATE} element={<ChildForm />}/>
                                             </Route>
                                             <Route path="/salary" element={<SalaryList/>}/>
                                             <Route path="/fields" element={<FieldList/>}/>
