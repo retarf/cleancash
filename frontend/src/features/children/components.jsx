@@ -96,7 +96,7 @@ export const ChildDetails = () => {
   };
 
   useEffect(() => {
-    if (child.status === "success") {
+    if (child.isSuccess) {
       setChecked(child.data.data.fields);
       setName(child.data.data.name);
     }
