@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 
@@ -21,7 +21,6 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import {useNavigate} from "react-router-dom";
 
 export function Title(props) {
   return (
@@ -109,145 +108,164 @@ export const EditableTableCell = ({ id, name, defaultValue, query }) => {
   );
 };
 
+export const DeleteCell = ({ id, query }) => {
+  const deleteMutation = query.useDelete(id);
+
+  const del = (event) => {
+    event.stopPropagation();
+    deleteMutation.mutate();
+  };
+
+  return (
+    <TableCell align="right">
+      <IconButton
+        tabIndex={id}
+        aria-label="delete"
+        onClick={del}
+        children={<DeleteIcon />}
+      />
+    </TableCell>
+  );
+};
+
 export const getDateString = (newDate) => newDate.toISOString().split("T")[0];
 
-export const ErrorBox = ({msg: string}) => {
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                color: "red",
-                fontWeight: "bold",
-            }}
-        >
-            <DangerousIcon/>
-            <span>Error: {msg}</span>
-        </Box>
-    );
+export const ErrorBox = ({ msg: string }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        color: "red",
+        fontWeight: "bold",
+      }}
+    >
+      <DangerousIcon />
+      <span>Error: {msg}</span>
+    </Box>
+  );
 };
 
 export const Spinner = () => {
-    return (
-        <Box
-            sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}
-        >
-            <CircularProgress/>
-        </Box>
-    );
+  return (
+    <Box
+      sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
+    >
+      <CircularProgress />
+    </Box>
+  );
 };
 
-export const CustomTableHead = ({columns}) => {
-    let blankColumnId = 1;
+export const CustomTableHead = ({ columns }) => {
+  let blankColumnId = 1;
 
-    const getCurrentId = () => {
-        let current = "column" + blankColumnId;
-        blankColumnId++;
-        return current;
-    };
+  const getCurrentId = () => {
+    let current = "column" + blankColumnId;
+    blankColumnId++;
+    return current;
+  };
 
-    return (
-        <TableHead>
-            <TableRow>
-                {columns.map((column) => (
-                    <TableCell key={!column && getCurrentId()}>{column}</TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
+  return (
+    <TableHead>
+      <TableRow>
+        {columns.map((column) => (
+          <TableCell key={!column && getCurrentId()}>{column}</TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
 };
 
 export const SelectMenu = ({
-                               label,
-                               itemList,
-                               item,
-                               onChangeHandler,
-                               fieldName,
-                           }) => {
-    const menuLabel = `${label}-simple-select-label`;
-    const id = `${label}-simple-select`;
+  label,
+  itemList,
+  item,
+  onChangeHandler,
+  fieldName,
+}) => {
+  const menuLabel = `${label}-simple-select-label`;
+  const id = `${label}-simple-select`;
 
-    return (
-        <FormControl fullWidth>
-            <InputLabel id={menuLabel}>{label}</InputLabel>
-            <Select
-                labelId={menuLabel}
-                id={id}
-                value={item ? item : ""}
-                label={label}
-                onChange={onChangeHandler}
-            >
-                <MenuItem key="" value=""></MenuItem>
-                {itemList.map((item) => {
-                    return (
-                        <MenuItem key={item.id} value={item}>
-                            {item[fieldName]}
-                        </MenuItem>
-                    );
-                })}
-            </Select>
-        </FormControl>
-    );
+  return (
+    <FormControl fullWidth>
+      <InputLabel id={menuLabel}>{label}</InputLabel>
+      <Select
+        labelId={menuLabel}
+        id={id}
+        value={item ? item : ""}
+        label={label}
+        onChange={onChangeHandler}
+      >
+        <MenuItem key="" value=""></MenuItem>
+        {itemList.map((item) => {
+          return (
+            <MenuItem key={item.id} value={item}>
+              {item[fieldName]}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
+  );
 };
 
-export const TextButtonTableCell = ({text, onClick, disabled = false}) => {
-    return (
-        <TableCell>
-            <Button onClick={onClick} disabled={disabled}>
-                {text}
-            </Button>
-        </TableCell>
-    );
+export const TextButtonTableCell = ({ text, onClick, disabled = false }) => {
+  return (
+    <TableCell>
+      <Button onClick={onClick} disabled={disabled}>
+        {text}
+      </Button>
+    </TableCell>
+  );
 };
 
-export const AddIconButton = ({onClick}) => {
-    return (
-        <IconButton onClick={onClick} aria-label="add">
-            <AddIcon/>
-        </IconButton>
-    );
+export const AddIconButton = ({ onClick }) => {
+  return (
+    <IconButton onClick={onClick} aria-label="add">
+      <AddIcon />
+    </IconButton>
+  );
 };
 
 export const TableRowList = ({
-                                 itemList,
-                                 columns,
-                                 query,
-                                 editable = false,
-                                 baseUrl = "",
-                             }) => {
-    const navigate = useNavigate();
-    return (
-        <>
-            {itemList.map((item) => (
-                <TableRow key={`row-${item.id}`}>
-                    {columns.map(
-                        (column) =>
-                            column && (
-                                <React.Fragment key={item.id}>
-                                    {editable ? (
-                                        <EditableTableCell
-                                            key={`cell-${item.id}-${column}`}
-                                            id={item.id}
-                                            name={item[column.toLowerCase()]}
-                                            defaultValue={item[column.toLowerCase()]}
-                                            query={query}
-                                        />
-                                    ) : (
-                                        <TableCell
-                                            key={`cell-${item.id}-${column}`}
-                                            onClick={() => navigate(`${baseUrl}/${item.id}`)}
-                                        >
-                                            {item[column.toLowerCase()]}
-                                        </TableCell>
-                                    )}
-                                </React.Fragment>
-                            )
-                    )}
-                    <TableCell></TableCell>
-                    <DeleteCell id={item.id} query={query}/>
-                </TableRow>
-            ))}
-        </>
-    );
+  itemList,
+  columns,
+  query,
+  editable = false,
+  onClickHandler = () => null,
+}) => {
+  return (
+    <>
+      {itemList.map((item) => (
+        <TableRow key={`row-${item.id}`}>
+          {columns.map(
+            (column) =>
+              column && (
+                <React.Fragment key={item.id}>
+                  {editable ? (
+                    <EditableTableCell
+                      key={`cell-${item.id}-${column}`}
+                      id={item.id}
+                      name={item[column.toLowerCase()]}
+                      defaultValue={item[column.toLowerCase()]}
+                      query={query}
+                    />
+                  ) : (
+                    <TableCell
+                      key={`cell-${item.id}-${column}`}
+                      onClick={() => onClickHandler(item.id)}
+                    >
+                      {item[column.toLowerCase()]}
+                    </TableCell>
+                  )}
+                </React.Fragment>
+              )
+          )}
+          <TableCell></TableCell>
+          <DeleteCell id={item.id} query={query} />
+        </TableRow>
+      ))}
+    </>
+  );
 };
