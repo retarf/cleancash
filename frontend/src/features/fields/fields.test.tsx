@@ -8,28 +8,12 @@ import { FieldsQuery } from "./queries";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import App from "../../App";
 import {setupTestServer} from "../testUtils/setupTestServer";
+import { testHandler, testQueryClient, renderWithProviders} from "../../shared/testHandlers";
+
+import {APP_ROUTES} from "../../core/routes";
 
 const baseURL = `${process.env.REACT_APP_BASE_URL}`;
 
-const testQueryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        }
-    }
-});
-
-const renderWithProviders = (ui: ReactElement, options?: RenderOptions) => {
-    const providers = ({children}: {children: ReactElement}) => {
-        return <QueryClientProvider client={testQueryClient}>
-            {children}
-        </QueryClientProvider>
-    }
-
-    return render(
-        ui, {wrapper: providers, ...options}
-    )
-}
 
 const fields = [
     {
@@ -43,26 +27,13 @@ const fields = [
     },
 ]
 
-jest.mock('uuid', () => {
-  return {
-    v4: jest.fn(() => 1)
-  }
-})
-
-
-const testHandler = () => {
-    return rest.get(`${baseURL}/fields`, (req, res, ctx) => {
-        return res(ctx.status(200));
-    })
-}
 
 describe("FieldListComponent", () =>{
-    const server = setupTestServer(...[testHandler()]);
+    const server = setupTestServer(...[testHandler(APP_ROUTES.FIELDS.LIST)]);
     beforeEach(()=>{
         testQueryClient.clear();
     });
     test("testing fields elements", async () => {
-        //TODO: Move to handlers
         renderWithProviders(<FieldList />);
     });
 
