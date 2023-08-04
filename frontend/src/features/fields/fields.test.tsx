@@ -43,9 +43,6 @@ const fields = [
     },
 ]
 
-//jest.mock("./queries", () => [{"name": "test"}]);
-//jest.mock("./queries", () => {error: "test"});
-
 jest.mock('uuid', () => {
   return {
     v4: jest.fn(() => 1)
@@ -66,10 +63,7 @@ describe("FieldListComponent", () =>{
     });
     test("testing fields elements", async () => {
         //TODO: Move to handlers
-        //render(<FieldList url="/fields" />);
         renderWithProviders(<FieldList />);
-        //render(FieldList());
-        //render(<div>123</div>);
     });
 
 })
