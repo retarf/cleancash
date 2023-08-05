@@ -1,7 +1,7 @@
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import React, {ReactElement} from "react";
 import {render, RenderOptions} from "@testing-library/react";
-import {rest} from "msw";
+import {ResponseComposition, rest} from "msw";
 
 export const testQueryClient = new QueryClient({
     defaultOptions: {
@@ -23,8 +23,9 @@ export const renderWithProviders = (ui: ReactElement, options?: RenderOptions) =
     )
 }
 
-export const testHandler = (path: string) => {
+export const testHandler = (path: string, json: object) => {
     return rest.get(path, (req, res, ctx) => {
-        return res(ctx.status(200));
+        return res(ctx.json({"name": "field1"}))
+        //return res(ctx.status(200), ctx.json({"name": "field1"}))
     })
 }
