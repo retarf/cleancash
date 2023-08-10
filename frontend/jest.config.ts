@@ -18,6 +18,9 @@ const config: Config = {
         "^.+\\.(js|jsx)$": "babel-jest",
     },
     testEnvironment: "jsdom",
+    setupFiles: [
+        '<rootDir>/setEnvVars.ts'
+    ],
 };
 
 export default config;

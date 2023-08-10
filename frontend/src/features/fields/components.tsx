@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Title} from "../../shared/components";
+import {Title} from "../../shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -16,19 +16,17 @@ import {
     TextButtonTableCell,
 } from "../../shared";
 
-import {CreateFieldResponsePayload} from "./models/CreateField.model";
-
 export const FieldList = () => {
     const query = FieldsQuery();
     const fieldList = query.useList();
     const createMutation = query.useCreate();
     const [editState, setEditState] = React.useState<boolean>(false);
-    const nameRef: React.MutableRefObject<any> = React.useRef();
+    const nameRef: React.MutableRefObject<HTMLInputElement | undefined> = React.useRef<undefined>();
     const columns: string[] = ["Name", "", ""];
 
     const save = (): void => {
         createMutation.mutate({
-            name: nameRef.current.value,
+            name: nameRef.current?.value,
         });
         setEditState(false);
     };
@@ -39,7 +37,6 @@ export const FieldList = () => {
         {fieldList.isLoading && <Spinner/>}
         {fieldList.isSuccess && fieldList.data && (
             <>
-                {console.log(fieldList.data)}
                 <Table size="small">
                     <CustomTableHead columns={columns}/>
                     <TableBody>

@@ -1,39 +1,43 @@
 import React, {ReactElement} from "react";
 import {screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { FieldList } from "./components";
+import SalaryList from "./components";
 import {setupTestServer} from "../testUtils/setupTestServer";
 import { handlers, testQueryClient, renderWithProviders} from "../testUtils/handlers";
-import { Field } from "./models/Field.model";
 
 import {APP_ROUTES} from "../../core/routes";
 import {SetupServer} from "msw/node";
 
-const field: Field = {
-    "id": 1,
-    "name": "field1"
+type Salary = {
+    "id": number
+    "value": string
 }
 
-const fields: Field[] = [
-    field,
+const salary: Salary  = {
+    "id": 1,
+    "value": "100.00"
+}
+
+const salaries: Salary[] = [
+    salary,
     {
         "id": 2,
-        "name": "field2"
+        "value": "200.00"
     },
     {
         "id": 3,
-        "name": "field3"
+        "value": "300.00"
     },
 ];
 
 
-describe("FieldListComponent", () =>{
-    const server: SetupServer = setupTestServer(...handlers(APP_ROUTES.FIELDS.LIST, fields));
+describe("SalaryList component", () =>{
+    const server: SetupServer = setupTestServer(...handlers(APP_ROUTES.SALARY.LIST, salaries));
     beforeEach(()=>{
         testQueryClient.clear();
     });
-    it("testing fields elements", async () => {
-        renderWithProviders(<FieldList />);
+    it("testing salary elements", async () => {
+        renderWithProviders(<SalaryList />);
         const rows = await screen.findAllByRole("row");
         // three elements rows and the title
         expect(rows).toHaveLength(4)

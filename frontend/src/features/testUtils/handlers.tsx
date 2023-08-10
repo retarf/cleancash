@@ -12,7 +12,7 @@ export const testQueryClient = new QueryClient({
 });
 
 export const renderWithProviders = (ui: ReactElement, options?: RenderOptions) => {
-    const providers = ({children}: {children: ReactElement}) => {
+    const providers = ({children}: { children: ReactElement }) => {
         return <QueryClientProvider client={testQueryClient}>
             {children}
         </QueryClientProvider>
@@ -23,9 +23,10 @@ export const renderWithProviders = (ui: ReactElement, options?: RenderOptions) =
     )
 }
 
-export const testHandler = (path: string, json: object) => {
-    return rest.get(path, (req, res, ctx) => {
-        return res(ctx.json({"name": "field1"}))
-        //return res(ctx.status(200), ctx.json({"name": "field1"}))
-    })
+export const handlers = (path: string, json: object) => {
+    return [
+        rest.get(path, (req, res, ctx) => {
+            return res(ctx.json(json))
+        })
+    ]
 }
