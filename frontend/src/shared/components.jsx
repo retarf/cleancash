@@ -96,9 +96,12 @@ export const EditableTableCell = ({ id, name, defaultValue, query }) => {
           <TextField
             id="value"
             label="value"
-            variant="outlined"
             defaultValue={value}
             onKeyDown={disableEditState}
+                        fullWidth
+            variant="standard"
+                        autoFocus
+            margin="dense"
           />
         </TableCell>
       ) : (
