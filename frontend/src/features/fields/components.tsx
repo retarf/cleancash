@@ -6,6 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import {FieldsQuery} from "./queries";
+import {Box } from "@mui/material/Box";
 
 import {
     AddIconButton,
@@ -15,6 +16,9 @@ import {
     TableRowList,
     TextButtonTableCell,
 } from "../../shared";
+import query from "../../shared/query";
+
+const FieldsQueryContentext = React.createContext(null);
 
 export const FieldList = () => {
     const query = FieldsQuery();
@@ -33,6 +37,7 @@ export const FieldList = () => {
 
     return <>
         <Title>Fields</Title>
+        <FieldsQueryContext.Provider value={query}>
         {fieldList.isError && <ErrorBox msg={fieldList.error instanceof Error && fieldList.error.message}/>}
         {fieldList.isLoading && <Spinner/>}
         {fieldList.isSuccess && fieldList.data && (
@@ -72,12 +77,33 @@ export const FieldList = () => {
                 <AddIconButton onClick={() => setEditState(true)}/>
             </>
         )}
+            </FieldsQueryContext.Provider>
     </>
 };
 
 
-export const FieldForm = id => {
-    return <>
+export const FieldForm = (id = null) => {
+    query = React.useContext(FieldsQueryContentext);
+    const nameRef = React.useRef();
 
-    </>
+    const save = () => {
+        field = {
+            name: nameRef.value,
+        }
+        if (id) {
+            mutation = query.useUpdate(id);
+        } else {
+            mutation = query.useCreate();
+        }
+        mutation.mutate(field);
+    }
+
+    return <Box>
+        <TextField
+            id="new"
+            label="name"
+            variant="outlined"
+            inputRef={nameRef}
+        />
+    </Box>
 }
