@@ -12,7 +12,7 @@ import { SalaryQuery } from "/app/src/features/salary/queries";
 
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { DeleteCell } from "/app/src/shared";
+import { DeleteButtonCell} from "../../shared/TableCell";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -34,7 +34,7 @@ import {
 } from "/app/src/shared";
 import { findItemById } from "../../shared";
 import {redirect, useNavigate, useParams} from "react-router-dom";
-import { BASE_ROUTES } from "../../core/routes";
+import {APP_ROUTES, BASE_ROUTES} from "../../core/routes";
 
 
 export const CleaningList = () => {
@@ -46,6 +46,13 @@ export const CleaningList = () => {
   const query = CleaningQuery();
   const cleaningList = query.useList();
   const columns = ["Date", "Child", "Fields", "Salary", "Amount", ""];
+
+
+  const onDeleteHandler = event => {
+    event.pr
+
+  }
+
 
   return (
     <React.Fragment>
@@ -92,7 +99,7 @@ export const CleaningList = () => {
                       </TableCell>
                       <TableCell>{cleaning.salary}</TableCell>
                       <TableCell>{cleaning.bill}</TableCell>
-                      <DeleteCell id={cleaning.id} query={query} />
+                      <DeleteButtonCell onClick={onDeleteHandler}/>
                     </TableRow>
                   );
                 })}
@@ -207,7 +214,7 @@ export const CleaningForm = () => {
       bill: amount.sum,
     };
     createMutation.mutate(cleaning);
-    navigate("/cleanings");
+    navigate(APP_ROUTES.CLEANINGS.LIST)
   };
 
   return (

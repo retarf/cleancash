@@ -9,13 +9,14 @@ import TextField from "@mui/material/TextField";
 import { Query } from "/app/src/core";
 
 import {
-  AddIconButton,
-  CustomTableHead,
+  AddIconButton, BaseTableRow,
+  CustomTableHead, EditableTableRow,
   ErrorBox,
   Spinner,
   TableRowList,
   TextButtonTableCell,
 } from "../../shared";
+import {APP_ROUTES} from "../../core/routes";
 
 function SalaryList(props) {
   const query = Query("salary");
@@ -24,6 +25,7 @@ function SalaryList(props) {
   const valueRef = useRef();
   const [editState, setEditState] = useState(false);
   const columns = ["Value", "", ""];
+  const [blockedState, setBlockedState] = useState(false);
 
   const enableEditState = () => {
     setEditState(true);
@@ -46,12 +48,18 @@ function SalaryList(props) {
           <Table size="small">
             <CustomTableHead columns={columns} />
             <TableBody>
-              <TableRowList
-                itemList={salaryList.data.data}
-                columns={columns}
-                query={query}
-                editable={true}
-              />
+              {salaryList.data.data.map(salary => {
+                  return <EditableTableRow
+                      item={salary}
+                      name="salary"
+                      valueName="value"
+                      query={query}
+                      blockedState={blockedState}
+                      setBlockedState={setBlockedState}
+                    />
+
+                  }
+              )}
               {editState && (
                 <TableRow key="new">
                   <TableCell>

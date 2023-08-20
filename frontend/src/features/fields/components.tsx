@@ -33,24 +33,7 @@ export const FieldList = () => {
     const nameRef: React.MutableRefObject<HTMLInputElement | undefined> = React.useRef<undefined>();
     const columns: string[] = ["Name", "", ""];
     const [blockedState, setBlockedState] = useState<boolean>(false);
-    // const contextValue = {
-    //     query: query,
-    //     editState: editState,
-    //     setEditState: setEditState,
-    // }
 
-    // const save = (): void => {
-    //     createMutation.mutate({
-    //         name: nameRef.current?.value,
-    //     });
-    //     setEditState(null);
-    // };
-
-    // const onClickHandler = (field: Field) => {
-    //     if (editState) {
-    //     }
-
-    // }
 
     return <>
         <Title>Fields</Title>
@@ -77,31 +60,3 @@ export const FieldList = () => {
         )}
     </>
 };
-
-export const FieldDetails = () => {
-}
-
-
-export const FieldForm = (id = null) => {
-    const query = React.useContext(FieldsContext);
-    const nameRef = React.useRef();
-
-    const save = () => {
-        const field = {
-            name: nameRef.current,
-        }
-        const mutation = id ? query.useUpdate(id) : query.useCreate();
-        mutation.mutate(field);
-    }
-
-    return <Box>
-        <TextField
-            id="new"
-            label="name"
-            variant="outlined"
-            inputRef={nameRef}
-        />
-        <Button>Save</Button>
-        <Button>Cancel</Button>
-    </Box>
-}
