@@ -31,7 +31,7 @@ export const EditableTableCell = props => {
         <TableCell>
             <TextField
                 error={error}
-                id={id}
+                key={id}
                 label={name}
                 defaultValue={value}
                 fullWidth

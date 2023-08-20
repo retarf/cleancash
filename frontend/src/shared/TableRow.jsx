@@ -4,7 +4,7 @@ import React, {useRef, useState} from "react";
 import TableCell from "@mui/material/TableCell";
 import {DeleteButtonCell, EditableTableCell, SaveButtonCell, CancelButtonCell} from "./TableCell";
 import TextField from "@mui/material/TextField";
-import {TextButtonTableCell} from "./components";
+import {AddIconButton, TextButtonTableCell} from "./components";
 
 export const BaseTableRow = (props) => {
     const {item, columns, query, baseUrl} = props;
@@ -59,7 +59,9 @@ export const EditableTableRow = (props) => {
 
     const onSaveHandler = () => {
         const newItem = {id: item.id};
-        item[valueName] = value;
+        newItem[valueName] = value;
+        console.log(item.id);
+        console.log(newItem);
         updateMutation.mutate(newItem);
         setEditState(false);
         setBlockedState(false);
@@ -105,40 +107,49 @@ export const EditableTableRow = (props) => {
 
 
 export const NewTableRow = props => {
-    const {columns, query, blockedState, setBlockedState} = props;
-    const [editState, setEditState] = useState(false);
+    const {name, valueName, query, blockedState, setBlockedState} = props;
     const createMutation = query.useCreate();
+    const [value, setValue] = useState();
+    const [editState, setEditState] = useState(false);
+
+    console.log(editState);
+
+    const onCancelHandler = () => {
+        setEditState(false);
+        setBlockedState(false);
+    }
 
     const onSaveHandler = () => {
         const newItem = {};
-        item[name] = value;
-        updateMutation.mutate(newItem);
+        newItem[valueName] = value;
+        createMutation.mutate(newItem);
+        setEditState(false);
+        setBlockedState(false);
     }
 
     return (
         <>
-
-            {editState && (
+            {editState ? (
                 <TableRow key="new">
                     <TableCell>
                         <TextField
-                            id="new"
-                            label="value"
-                            variant="outlined"
-                            inputRef={valueRef}
+                            error={false}
+                            key="new"
+                            label={name}
+                            fullWidth
+                            variant="standard"
+                            autoFocus
+                            margin="dense"
+                            onChange={event => setValue(event.target.value)}
                         />
                     </TableCell>
-                    <TextButtonTableCell
-                        text="save"
-                        onClick={save}
-                        disabled={createMutation.isLoading}
-                    />
-                    <TextButtonTableCell
-                        text="cancel"
-                        onClick={() => setEditState(false)}
-                    />
+                    <SaveButtonCell onClick={onSaveHandler}/>
+                    <CancelButtonCell onClick={onCancelHandler}/>
                 </TableRow>
-            )}
+            ) : (
+                <AddIconButton onClick={() => setEditState(true)}/>
+            )
+            }
         </>
     )
 }
