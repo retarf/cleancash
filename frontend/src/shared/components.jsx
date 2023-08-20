@@ -22,7 +22,7 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export function Title(props) {
     return (
@@ -64,79 +64,7 @@ export const EditableTitle = ({defaultValue, defaultState, setTitle}) => {
     );
 };
 
-export const EditableTableCell = ({id, name, defaultValue, query}) => {
-    const updateMutation = query.useUpdate(id);
-    const [editState, setEditState] = useState(false);
-    const [value, setValue] = useState(defaultValue);
 
-    const enableEditState = (event) => {
-        setEditState(true);
-    };
-
-    const disableEditState = (event) => {
-        const value = event.target.value;
-        if (event.code === "Enter") {
-            setValue(value);
-            setEditState(false);
-            save(value);
-        }
-        if (event.code === "Escape") {
-            setEditState(false);
-        }
-    };
-
-    const save = (value) => {
-        let object = {};
-        object.id = id;
-        object[name] = value;
-
-        updateMutation.mutate(object);
-    };
-
-    // TODO: Change id value to id
-    return (
-        <>
-            {editState ? (
-                <>
-                    <TableCell>
-                        <TextField
-                            id="value"
-                            label="value"
-                            defaultValue={value}
-                            onKeyDown={disableEditState}
-                            fullWidth
-                            variant="standard"
-                            autoFocus
-                            margin="dense"
-                        />
-                    </TableCell>
-                </>
-            ) : (
-                <TableCell onClick={enableEditState}>{value}</TableCell>
-            )}
-        </>
-    );
-};
-
-export const DeleteCell = ({id, query}) => {
-    const deleteMutation = query.useDelete(id);
-
-    const del = (event) => {
-        event.stopPropagation();
-        deleteMutation.mutate();
-    };
-
-    return (
-        <TableCell align="right">
-            <IconButton
-                tabIndex={id}
-                aria-label="delete"
-                onClick={del}
-                children={<DeleteIcon/>}
-            />
-        </TableCell>
-    );
-};
 
 export const getDateString = (newDate) => newDate.toISOString().split("T")[0];
 
