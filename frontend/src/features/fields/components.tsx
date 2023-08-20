@@ -47,7 +47,8 @@ export const FieldList = () => {
                         {fieldList.data.data.map((field: Field): React.ReactElement => {
                             return <EditableTableRow
                                 item={field}
-                                columns={columns}
+                                name="field"
+                                valueName="name"
                                 query={query}
                                 blockedState={blockedState}
                                 setBlockedState={setBlockedState}
