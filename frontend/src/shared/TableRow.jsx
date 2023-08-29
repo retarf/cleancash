@@ -2,9 +2,10 @@ import {useNavigate} from "react-router-dom";
 import TableRow from "@mui/material/TableRow";
 import React, {useRef, useState} from "react";
 import TableCell from "@mui/material/TableCell";
-import {DeleteButtonCell, EditableTableCell, SaveButtonCell, CancelButtonCell} from "./TableCell";
+import {DeleteButtonCell, EditableTableCell, SaveButtonCell, CancelButtonCell, AddButtonCell} from "./TableCell";
 import TextField from "@mui/material/TextField";
 import {AddIconButton, TextButtonTableCell} from "./components";
+import Box from "@mui/material/Box";
 
 export const BaseTableRow = (props) => {
     const {item, columns, query, baseUrl} = props;
@@ -147,7 +148,7 @@ export const NewTableRow = props => {
                     <CancelButtonCell onClick={onCancelHandler}/>
                 </TableRow>
             ) : (
-                <AddIconButton onClick={() => setEditState(true)}/>
+                <AddButtonCell onClick={() => setEditState(true)}/>
             )
             }
         </>

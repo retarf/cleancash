@@ -5,6 +5,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from '@mui/icons-material/Cancel';
 import React from "react";
 import TextField from "@mui/material/TextField";
+import TableRow from "@mui/material/TableRow";
+import Box from "@mui/material/Box";
+import {AddIconButton} from "./components";
 
 export const ButtonCell = ({icon, name, onClick}) => {
     return (
@@ -19,9 +22,25 @@ export const ButtonCell = ({icon, name, onClick}) => {
 };
 
 
-export const SaveButtonCell = ({onClick}) => {return <ButtonCell icon={<SaveIcon />} name="Save" onClick={onClick} />};
-export const DeleteButtonCell = ({onClick}) => {return <ButtonCell icon={<DeleteIcon />} name="Delete" onClick={onClick} />};
-export const CancelButtonCell = ({onClick}) => {return <ButtonCell icon={<CancelIcon />} name="Cancel" onClick={onClick} />};
+export const SaveButtonCell = ({onClick}) => {
+    return <ButtonCell icon={<SaveIcon/>} name="Save" onClick={onClick}/>
+};
+export const DeleteButtonCell = ({onClick}) => {
+    return <ButtonCell icon={<DeleteIcon/>} name="Delete" onClick={onClick}/>
+};
+export const CancelButtonCell = ({onClick}) => {
+    return <ButtonCell icon={<CancelIcon/>} name="Cancel" onClick={onClick}/>
+};
+
+export const AddButtonCell = ({onClick}) => {
+    return <TableRow>
+        <TableCell colSpan={3}>
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                <AddIconButton onClick={onClick}/>
+            </Box>
+        </TableCell>
+    </TableRow>
+}
 
 
 export const EditableTableCell = props => {

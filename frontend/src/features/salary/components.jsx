@@ -71,7 +71,6 @@ function SalaryList(props) {
                             />
                         </TableBody>
                     </Table>
-                    <AddIconButton onClick={enableEditState}/>
                 </>
             )}
         </React.Fragment>
