@@ -32,15 +32,6 @@ export const CancelButtonCell = ({onClick}) => {
     return <ButtonCell icon={<CancelIcon/>} name="Cancel" onClick={onClick}/>
 };
 
-export const AddButtonCell = ({onClick}) => {
-    return <TableRow>
-        <TableCell colSpan={3}>
-            <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <AddIconButton onClick={onClick}/>
-            </Box>
-        </TableCell>
-    </TableRow>
-}
 
 
 export const EditableTableCell = props => {

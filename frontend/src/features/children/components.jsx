@@ -18,7 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import {EditableTitle, ErrorBox, Spinner} from "/app/src/shared";
-import {CustomTableHead, TableRowList} from "../../shared";
+import {AddButtonRow, CustomTableHead, TableRowList} from "../../shared";
 import {redirect, useNavigate, useParams} from "react-router-dom";
 import {APP_ROUTES, BASE_ROUTES} from "../../core/routes";
 
@@ -49,11 +49,9 @@ export const ChildList = () => {
                                 />
 
                             })}
+                            <AddButtonRow onClick={() => navigate(BASE_ROUTES.CREATE)}/>
                         </TableBody>
                     </Table>
-                    <IconButton onClick={() => navigate(BASE_ROUTES.CREATE)} aria-label="add">
-                        <AddIcon/>
-                    </IconButton>
                 </>
             )}
         </>

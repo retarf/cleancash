@@ -32,7 +32,7 @@ import {
   SelectMenu,
   findNameById,
 } from "/app/src/shared";
-import { findItemById } from "../../shared";
+import {AddButtonRow, findItemById} from "../../shared";
 import {redirect, useNavigate, useParams} from "react-router-dom";
 import {APP_ROUTES, BASE_ROUTES} from "../../core/routes";
 
@@ -103,11 +103,9 @@ export const CleaningList = () => {
                     </TableRow>
                   );
                 })}
+                <AddButtonRow onClick={() => navigate(BASE_ROUTES.CREATE)} rows={6} />
               </TableBody>
             </Table>
-            <IconButton onClick={() => navigate(BASE_ROUTES.CREATE)} aria-label="add">
-              <AddIcon />
-            </IconButton>
           </>
         )}
     </React.Fragment>

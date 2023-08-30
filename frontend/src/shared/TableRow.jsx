@@ -1,10 +1,10 @@
 import {useNavigate} from "react-router-dom";
 import TableRow from "@mui/material/TableRow";
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import TableCell from "@mui/material/TableCell";
 import {DeleteButtonCell, EditableTableCell, SaveButtonCell, CancelButtonCell, AddButtonCell} from "./TableCell";
 import TextField from "@mui/material/TextField";
-import {AddIconButton, TextButtonTableCell} from "./components";
+import {AddIconButton} from "./components";
 import Box from "@mui/material/Box";
 
 export const BaseTableRow = (props) => {
@@ -113,14 +113,13 @@ export const NewTableRow = props => {
     const [value, setValue] = useState();
     const [editState, setEditState] = useState(false);
 
-    console.log(editState);
-
     const onCancelHandler = () => {
         setEditState(false);
         setBlockedState(false);
     }
 
     const onSaveHandler = () => {
+        console.log("s");
         const newItem = {};
         newItem[valueName] = value;
         createMutation.mutate(newItem);
@@ -148,9 +147,19 @@ export const NewTableRow = props => {
                     <CancelButtonCell onClick={onCancelHandler}/>
                 </TableRow>
             ) : (
-                <AddButtonCell onClick={() => setEditState(true)}/>
+                <AddButtonRow onClick={() => setEditState(true)}/>
             )
             }
         </>
     )
+}
+
+export const AddButtonRow = ({onClick, rows=3}) => {
+    return <TableRow>
+        <TableCell colSpan={rows} sx={{borderBottom: 'none'}}>
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                <AddIconButton onClick={onClick}/>
+            </Box>
+        </TableCell>
+    </TableRow>
 }

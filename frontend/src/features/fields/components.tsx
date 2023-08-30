@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Title} from "../../shared";
+import {NewTableRow, Title} from "../../shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -54,9 +54,15 @@ export const FieldList = () => {
                                 setBlockedState={setBlockedState}
                             />
                         })}
+                        <NewTableRow
+                            name="field"
+                            valueName="name"
+                            query={query}
+                            blockedState={blockedState}
+                            setBlockedState={setBlockedState}
+                        />
                     </TableBody>
                 </Table>
-                <AddIconButton onClick={() => setBlockedState(true)}/>
             </>
         )}
     </>
