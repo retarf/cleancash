@@ -39,8 +39,8 @@ describe("SalaryList component", () =>{
     it("testing salary elements", async () => {
         renderWithProviders(<SalaryList />);
         const rows = await screen.findAllByRole("row");
-        // three elements rows and the title
-        expect(rows).toHaveLength(4)
+        // three elements rows, the title and the add row
+        expect(rows).toHaveLength(5)
     });
 
 })

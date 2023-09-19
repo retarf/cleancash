@@ -134,7 +134,7 @@ export const NewTableRow = props => {
                     <TableCell>
                         <TextField
                             error={false}
-                            key="new"
+                            key="newField"
                             label={name}
                             fullWidth
                             variant="standard"

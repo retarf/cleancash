@@ -46,6 +46,7 @@ export const FieldList = () => {
                     <TableBody>
                         {fieldList.data.data.map((field: Field): React.ReactElement => {
                             return <EditableTableRow
+                                key={field.id}
                                 item={field}
                                 name="field"
                                 valueName="name"
