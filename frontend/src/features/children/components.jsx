@@ -10,16 +10,14 @@ import { FieldsQuery } from "/app/src/features/fields/queries";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
 
 import Stack from "@mui/material/Stack";
 
-import AddIcon from "@mui/icons-material/Add";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { EditableTitle, ErrorBox, Spinner } from "/app/src/shared";
-import { AddButtonRow, CustomTableHead, TableRowList } from "../../shared";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { AddButtonRow, CustomTableHead } from "../../shared";
+import { useNavigate, useParams } from "react-router-dom";
 import { APP_ROUTES, BASE_ROUTES } from "../../core/routes";
 
 import { BaseTableRow } from "../../shared";
@@ -43,6 +41,8 @@ export const ChildList = () => {
               {childList.data.data.map((child) => {
                 return (
                   <BaseTableRow
+                      id={child.id}
+                    key={child.id}
                     item={child}
                     columns={columns}
                     query={query}
@@ -50,7 +50,7 @@ export const ChildList = () => {
                   />
                 );
               })}
-              <AddButtonRow onClick={() => navigate(BASE_ROUTES.CREATE)} />
+              <AddButtonRow onClick={() => navigate(APP_ROUTES.CHILDREN.CREATE)} />
             </TableBody>
           </Table>
         </>
