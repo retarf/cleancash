@@ -2,50 +2,31 @@ import React, { useState, useRef } from "react";
 import { Title } from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
 
-import { Query } from "/app/src/core";
+import { SalaryQuery } from "./queries";
 
 import {
-  AddIconButton,
-  BaseTableRow,
   CustomTableHead,
   EditableTableRow,
   ErrorBox,
   NewTableRow,
   Spinner,
-  TableRowList,
-  TextButtonTableCell,
 } from "../../shared";
-import { APP_ROUTES } from "../../core/routes";
 
 function SalaryList(props) {
-  const query = Query("salary");
+  const query = SalaryQuery();
   const salaryList = query.useList();
-  const createMutation = query.useCreate();
-  const valueRef = useRef();
-  const [editState, setEditState] = useState(false);
   const columns = ["Value", "", ""];
   const [blockedState, setBlockedState] = useState(false);
-
-  const enableEditState = () => {
-    setEditState(true);
-  };
-
-  const save = () => {
-    console.log("save -- salaryList");
-    createMutation.mutate({
-      value: valueRef.current.value,
-    });
-    setEditState(false);
-  };
 
   return (
     <React.Fragment>
       <Title>Salary List</Title>
-      {salaryList.isError && <ErrorBox msg={salaryList.error.message} />}
+      {salaryList.isError && (
+          <ErrorBox
+              msg={salaryList.error instanceof Error && salaryList.error.message}
+          />
+      )}
       {salaryList.isLoading && <Spinner />}
       {salaryList.isSuccess && salaryList.data && (
         <>
