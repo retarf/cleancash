@@ -5,7 +5,6 @@ import { ResponseComposition, rest } from "msw";
 import { baseURL } from "../../core/api/client";
 import { spiesObject } from "./spies";
 
-
 export const testQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -29,7 +28,11 @@ export const renderWithProviders = (
   return render(ui, { wrapper: providers, ...options });
 };
 
-export const handlers = (path: string, spies: spiesObject, json: Array<object>) => {
+export const handlers = (
+  path: string,
+  spies: spiesObject,
+  json: Array<object>
+) => {
   const url = `${baseURL}${path}`;
   return [
     rest.get(url, (req, res, ctx) => {

@@ -23,9 +23,9 @@ function SalaryList(props) {
     <React.Fragment>
       <Title>Salary List</Title>
       {salaryList.isError && (
-          <ErrorBox
-              msg={salaryList.error instanceof Error && salaryList.error.message}
-          />
+        <ErrorBox
+          msg={salaryList.error instanceof Error && salaryList.error.message}
+        />
       )}
       {salaryList.isLoading && <Spinner />}
       {salaryList.isSuccess && salaryList.data && (

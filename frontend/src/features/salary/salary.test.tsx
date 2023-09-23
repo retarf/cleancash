@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import {fireEvent, screen, waitFor} from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SalaryList from "./components";
 import { setupTestServer } from "../testUtils/setupTestServer";
@@ -11,7 +11,7 @@ import {
 
 import { APP_ROUTES } from "../../core/routes";
 import { SetupServer } from "msw/node";
-import {spies} from "../testUtils/spies";
+import { spies } from "../testUtils/spies";
 
 type Salary = {
   id: number;
@@ -37,7 +37,7 @@ const salaries: Salary[] = [
 
 describe("SalaryList component", () => {
   const server: SetupServer = setupTestServer(
-      ...handlers(APP_ROUTES.SALARY.LIST, spies, salaries)
+    ...handlers(APP_ROUTES.SALARY.LIST, spies, salaries)
   );
   beforeEach(() => {
     testQueryClient.clear();

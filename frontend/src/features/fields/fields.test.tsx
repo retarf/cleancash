@@ -1,9 +1,5 @@
-import React  from "react";
-import {
-  fireEvent,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import React from "react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { FieldList } from "./components";
 import { setupTestServer } from "../testUtils/setupTestServer";
@@ -35,7 +31,6 @@ const fields: Field[] = [
     name: "field3",
   },
 ];
-
 
 describe("FieldListComponent", () => {
   const server: SetupServer = setupTestServer(
