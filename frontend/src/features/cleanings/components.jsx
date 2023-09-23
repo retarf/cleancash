@@ -12,7 +12,7 @@ import { SalaryQuery } from "/app/src/features/salary/queries";
 
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-import { DeleteButtonCell} from "../../shared/TableCell";
+import { DeleteButtonCell } from "../../shared/TableCell";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,10 +32,9 @@ import {
   SelectMenu,
   findNameById,
 } from "/app/src/shared";
-import {AddButtonRow, findItemById} from "../../shared";
-import {redirect, useNavigate, useParams} from "react-router-dom";
-import {APP_ROUTES, BASE_ROUTES} from "../../core/routes";
-
+import { AddButtonRow, findItemById } from "../../shared";
+import { redirect, useNavigate, useParams } from "react-router-dom";
+import { APP_ROUTES, BASE_ROUTES } from "../../core/routes";
 
 export const CleaningList = () => {
   const navigate = useNavigate();
@@ -47,12 +46,9 @@ export const CleaningList = () => {
   const cleaningList = query.useList();
   const columns = ["Date", "Child", "Fields", "Salary", "Amount", ""];
 
-
-  const onDeleteHandler = event => {
-    event.pr
-
-  }
-
+  const onDeleteHandler = (event) => {
+    event.pr;
+  };
 
   return (
     <React.Fragment>
@@ -79,7 +75,7 @@ export const CleaningList = () => {
                       key={cleaning.id}
                       hover={true}
                       onClick={() => {
-                        navigate(`${cleaning.id}`)
+                        navigate(`${cleaning.id}`);
                       }}
                     >
                       <TableCell>{cleaning.date}</TableCell>
@@ -99,11 +95,14 @@ export const CleaningList = () => {
                       </TableCell>
                       <TableCell>{cleaning.salary}</TableCell>
                       <TableCell>{cleaning.bill}</TableCell>
-                      <DeleteButtonCell onClick={onDeleteHandler}/>
+                      <DeleteButtonCell onClick={onDeleteHandler} />
                     </TableRow>
                   );
                 })}
-                <AddButtonRow onClick={() => navigate(BASE_ROUTES.CREATE)} rows={6} />
+                <AddButtonRow
+                  onClick={() => navigate(BASE_ROUTES.CREATE)}
+                  rows={6}
+                />
               </TableBody>
             </Table>
           </>
@@ -212,7 +211,7 @@ export const CleaningForm = () => {
       bill: amount.sum,
     };
     createMutation.mutate(cleaning);
-    navigate(APP_ROUTES.CLEANINGS.LIST)
+    navigate(APP_ROUTES.CLEANINGS.LIST);
   };
 
   return (
@@ -480,7 +479,7 @@ export const CleaningEdit = () => {
                 variant="contained"
                 onClick={() => {
                   // TODO: Change to object with consts
-                  navigate('/cleanings')
+                  navigate("/cleanings");
                 }}
               >
                 back

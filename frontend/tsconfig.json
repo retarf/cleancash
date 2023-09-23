@@ -18,5 +18,5 @@
     "jsx": "react-jsx",
     "baseUrl": "./src"
   },
-  "include": ["src", ".eslintrc.js", "jest.config.js","config-overrides.js"]
+  "include": ["src", ".eslintrc.js", "jest.config.js", "config-overrides.js"]
 }

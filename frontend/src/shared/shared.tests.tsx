@@ -1,15 +1,17 @@
 import { EditableTableRow } from "./TableRow";
-import React, {ReactElement} from "react";
-import {screen } from "@testing-library/react";
+import React, { ReactElement } from "react";
+import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {setupTestServer} from "../testUtils/setupTestServer";
-import { handlers, testQueryClient, renderWithProviders} from "../testUtils/handlers";
+import { setupTestServer } from "../testUtils/setupTestServer";
+import {
+  handlers,
+  testQueryClient,
+  renderWithProviders,
+} from "../testUtils/handlers";
 import { Field } from "./models/Field.model";
 
-import {APP_ROUTES} from "../../core/routes";
-import {SetupServer} from "msw/node";
-
-
+import { APP_ROUTES } from "../../core/routes";
+import { SetupServer } from "msw/node";
 
 /*
 describe("EditableTableRow", () =>{
