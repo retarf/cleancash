@@ -12,30 +12,10 @@ import {
 import { APP_ROUTES } from "../../core/routes";
 import { SetupServer } from "msw/node";
 import { spies } from "../testUtils/spies";
+import {salaries} from "./testData";
 
-type Salary = {
-  id: number;
-  value: string;
-};
 
-const salary: Salary = {
-  id: 1,
-  value: "100.00",
-};
-
-const salaries: Salary[] = [
-  salary,
-  {
-    id: 2,
-    value: "200.00",
-  },
-  {
-    id: 3,
-    value: "300.00",
-  },
-];
-
-describe("SalaryList component", () => {
+describe("Tests of the Salary List component.", () => {
   const server: SetupServer = setupTestServer(
     ...handlers(APP_ROUTES.SALARY.LIST, spies, salaries)
   );

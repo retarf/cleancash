@@ -94,19 +94,11 @@ export const Spinner = () => {
 };
 
 export const CustomTableHead = ({ columns }) => {
-  let blankColumnId = 1;
-
-  const getCurrentId = () => {
-    let current = "column" + blankColumnId;
-    blankColumnId++;
-    return current;
-  };
-
   return (
     <TableHead>
-      <TableRow>
-        {columns.map((column) => (
-          <TableCell key={!column && getCurrentId()}>{column}</TableCell>
+      <TableRow key="header">
+        {columns.map((column, idx) => (
+          <TableCell key={idx}>{column}</TableCell>
         ))}
       </TableRow>
     </TableHead>

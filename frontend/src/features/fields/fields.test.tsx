@@ -14,25 +14,10 @@ import { APP_ROUTES } from "../../core/routes";
 import { SetupServer } from "msw/node";
 
 import { spies } from "../testUtils/spies";
+import {fields} from "./testData";
 
-const field: Field = {
-  id: 1,
-  name: "field1",
-};
 
-const fields: Field[] = [
-  field,
-  {
-    id: 2,
-    name: "field2",
-  },
-  {
-    id: 3,
-    name: "field3",
-  },
-];
-
-describe("FieldListComponent", () => {
+describe("Tests of the Field List component.", () => {
   const server: SetupServer = setupTestServer(
     ...handlers(APP_ROUTES.FIELDS.LIST, spies, fields)
   );
