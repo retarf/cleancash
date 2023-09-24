@@ -10,16 +10,13 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Routes, Route } from "react-router-dom";
-import { MainMenu, SecondaryMenu } from "/app/src/features/menu";
-import { Dashboard } from "/app/src/features/dashboard";
+import { MainMenu } from "/app/src/features/menu";
 import {
   CleaningList,
   CleaningEdit,
@@ -27,7 +24,6 @@ import {
 } from "/app/src/features/cleanings";
 import { FieldList } from "/app/src/features/fields";
 import { SalaryList } from "/app/src/features/salary";
-import { Child } from "/app/src/features/children";
 import { APP_ROUTES } from "../routes";
 import { ChildDetails, ChildForm, ChildList } from "../../features";
 
@@ -136,11 +132,6 @@ export function MainContainer() {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -159,8 +150,6 @@ export function MainContainer() {
           <Divider />
           <List component="nav">
             <MainMenu />
-            <Divider sx={{ my: 1 }} />
-            <SecondaryMenu />
           </List>
         </Drawer>
         <Box
@@ -196,7 +185,7 @@ export function MainContainer() {
                     sx={{ p: 2, display: "flex", flexDirection: "column" }}
                   >
                     <Routes>
-                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/" element={<CleaningList />} />
                       <Route path={APP_ROUTES.CLEANINGS.LIST}>
                         <Route
                           path={APP_ROUTES.CLEANINGS.LIST}
@@ -227,7 +216,6 @@ export function MainContainer() {
                       </Route>
                       <Route path="/salary" element={<SalaryList />} />
                       <Route path="/fields" element={<FieldList />} />
-                      <Route path="/settings" element={<h1>settings</h1>} />
                     </Routes>
                   </Paper>
                 </Grid>
