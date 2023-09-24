@@ -12,7 +12,7 @@ import {ChildQuery} from "../../children/queries";
 import {SalaryQuery} from "../../salary/queries";
 import {FieldsQuery} from "../../fields/queries";
 
-const AmountReducer = (state, action) => {
+export const AmountReducer = (state, action) => {
     let child = state.child;
     let salary = state.salary;
     let checked = state.checked;

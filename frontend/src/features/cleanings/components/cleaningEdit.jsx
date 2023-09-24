@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {CleaningQuery} from "../queries";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import FormControl from "@mui/material/FormControl";
@@ -12,6 +12,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {ChildQuery} from "../../children/queries";
 import {FieldsQuery} from "../../fields/queries";
+import {AmountReducer} from "./cleaningForm";
 
 export const CleaningEdit = () => {
     const params = useParams();
@@ -29,6 +30,13 @@ export const CleaningEdit = () => {
     const [checked, setChecked] = useState([]);
     const [cleaningFields, setCleaningFields] = useState([]);
     const [testId, setTestId] = useState();
+
+    const [amount, amountDispatch] = useReducer(AmountReducer, {
+        child: undefined,
+        salary: undefined,
+        checked: [],
+        sum: 0,
+    });
 
     const getFieldById = (id) =>
         fields.data.data.find((field) => (field ? field.id === id : null));
@@ -62,7 +70,7 @@ export const CleaningEdit = () => {
 
     const save = () => {
         const cleaning = {
-            id: cleaningId,
+            id: params.id,
             date: date,
             child: child.id,
             field: checked,
@@ -126,6 +134,7 @@ export const CleaningEdit = () => {
                             cleaningFields={cleaningFields}
                             checked={checked}
                             setChecked={setChecked}
+                            amountDispatch={amountDispatch}
                         />
                         <Stack direction="row" spacing={3}>
                             <Button variant="outlined" onClick={save}>
