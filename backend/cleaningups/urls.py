@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from cleaningups import api
 
 router = DefaultRouter()
-router.register(r'', api.CleaningUpViewSet, basename="cleaningups")
+router.register(r'', api.CleaningUpViewSet, basename="cleanings")
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -1,3 +1,3 @@
 import { Query } from "/app/src/core";
 
-export const CleaningQuery = () => Query("cleaningups");
+export const CleaningQuery = () => Query("cleanings");
