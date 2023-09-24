@@ -12,8 +12,7 @@ import {
 import { APP_ROUTES } from "../../core/routes";
 import { SetupServer } from "msw/node";
 import { spies } from "../testUtils/spies";
-import {salaries} from "./testData";
-
+import { salaries } from "./testData";
 
 describe("Tests of the Salary List component.", () => {
   const server: SetupServer = setupTestServer(

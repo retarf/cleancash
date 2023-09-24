@@ -14,8 +14,7 @@ import { APP_ROUTES } from "../../core/routes";
 import { SetupServer } from "msw/node";
 
 import { spies } from "../testUtils/spies";
-import {fields} from "./testData";
-
+import { fields } from "./testData";
 
 describe("Tests of the Field List component.", () => {
   const server: SetupServer = setupTestServer(

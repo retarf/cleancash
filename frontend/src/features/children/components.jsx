@@ -41,7 +41,7 @@ export const ChildList = () => {
               {childList.data.data.map((child) => {
                 return (
                   <BaseTableRow
-                      id={child.id}
+                    id={child.id}
                     key={child.id}
                     item={child}
                     columns={columns}
@@ -50,7 +50,9 @@ export const ChildList = () => {
                   />
                 );
               })}
-              <AddButtonRow onClick={() => navigate(APP_ROUTES.CHILDREN.CREATE)} />
+              <AddButtonRow
+                onClick={() => navigate(APP_ROUTES.CHILDREN.CREATE)}
+              />
             </TableBody>
           </Table>
         </>
