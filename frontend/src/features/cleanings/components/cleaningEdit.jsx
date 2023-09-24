@@ -12,8 +12,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {ChildQuery} from "../../children/queries";
 import {FieldsQuery} from "../../fields/queries";
-import {AmountReducer} from "./cleaningForm";
 import {APP_ROUTES} from "../../../core/routes";
+import {AmountReducer} from "../reducers";
 
 export const CleaningEdit = () => {
     const params = useParams();
