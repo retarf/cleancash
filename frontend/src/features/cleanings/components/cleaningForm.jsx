@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {CleaningQuery} from "../queries";
 import React, {useReducer, useState} from "react";
-import {ErrorBox, findItemById, getDateString, SelectMenu, Spinner} from "../../../shared";
+import {CustomDatePicker, ErrorBox, findItemById, getDateString, SelectMenu, Spinner} from "../../../shared";
 import {APP_ROUTES} from "../../../core/routes";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
@@ -97,9 +97,8 @@ export const CleaningForm = () => {
             )}
             {childList.isSuccess && childList.data && (
                 <>
-                    <DatePicker
-                        label="date"
-                        defaultValue={dayjs(date)}
+                    <CustomDatePicker
+                        date={dayjs(date)}
                         onChange={(newDate) => setDate(getDateString(newDate))}
                     />
                     <SelectMenu

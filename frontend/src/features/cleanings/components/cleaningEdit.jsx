@@ -14,6 +14,8 @@ import {ChildQuery} from "../../children/queries";
 import {FieldsQuery} from "../../fields/queries";
 import {APP_ROUTES} from "../../../core/routes";
 import {AmountReducer} from "../reducers";
+import Box from "@mui/material/Box";
+import {CustomDatePicker, getDateString} from "../../../shared";
 
 export const CleaningEdit = () => {
     const params = useParams();
@@ -104,9 +106,8 @@ export const CleaningEdit = () => {
                 cleaning.isSuccess &&
                 cleaning.data && (
                     <>
-                        <DatePicker
-                            label="date"
-                            defaultValue={dayjs(new Date(cleaning.data.data.date))}
+                        <CustomDatePicker
+                            date={cleaning.data.data.date}
                             onChange={(newDate) => setDate(getDateString(newDate))}
                         />
                         {childList.isLoading && <p>{"loading..."}</p>}
@@ -120,6 +121,7 @@ export const CleaningEdit = () => {
                                     value={child ? child : ""}
                                     label="Child"
                                     onChange={handleChildChange}
+                                    sx={{margin: "20px"}}
                                 >
                                     {childList.data.data.map((child) => {
                                         return (
