@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import {ChildQuery} from "../../children/queries";
 import {FieldsQuery} from "../../fields/queries";
 import {AmountReducer} from "./cleaningForm";
+import {APP_ROUTES} from "../../../core/routes";
 
 export const CleaningEdit = () => {
     const params = useParams();
@@ -76,6 +77,7 @@ export const CleaningEdit = () => {
             field: checked,
         };
         updateMutation.mutate(cleaning);
+        navigate(APP_ROUTES.CLEANINGS.LIST);
     };
 
     useEffect(() => {
