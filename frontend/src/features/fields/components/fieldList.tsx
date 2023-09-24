@@ -1,13 +1,13 @@
 import * as React from "react";
-import { NewTableRow, Title } from "../../shared";
+import { NewTableRow, Title } from "../../../shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
-import { FieldsQuery } from "./queries";
+import { FieldsQuery } from "../queries";
 import Box from "@mui/material/Box";
-import { Field } from "./models/Field.model";
+import { Field } from "../models/Field.model";
 
 import {
   AddIconButton,
@@ -16,8 +16,8 @@ import {
   Spinner,
   EditableTableRow,
   TextButtonTableCell,
-} from "../../shared";
-import query from "../../shared/query";
+} from "../../../shared";
+import query from "../../../shared/query";
 import { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import { QueryBy } from "@testing-library/react";

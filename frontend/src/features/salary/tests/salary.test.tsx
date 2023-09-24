@@ -1,18 +1,18 @@
 import React, { ReactElement } from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import SalaryList from "./components";
-import { setupTestServer } from "../testUtils/setupTestServer";
+import SalaryList from "../components/salaryList";
+import { setupTestServer } from "../../../shared/testUtils/setupTestServer";
 import {
   handlers,
   testQueryClient,
   renderWithProviders,
-} from "../testUtils/handlers";
+} from "../../../shared/testUtils/handlers";
 
-import { APP_ROUTES } from "../../core/routes";
+import { APP_ROUTES } from "../../../core/routes";
 import { SetupServer } from "msw/node";
-import { spies } from "../testUtils/spies";
-import { salaries } from "./testData";
+import { spies } from "../../../shared/testUtils/spies";
+import { salaries } from "./data";
 
 describe("Tests of the Salary List component.", () => {
   const server: SetupServer = setupTestServer(

@@ -3,7 +3,7 @@ import { Title } from "/app/src/shared";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 
-import { SalaryQuery } from "./queries";
+import { SalaryQuery } from "../queries";
 
 import {
   CustomTableHead,
@@ -11,7 +11,7 @@ import {
   ErrorBox,
   NewTableRow,
   Spinner,
-} from "../../shared";
+} from "../../../shared";
 
 function SalaryList(props) {
   const query = SalaryQuery();

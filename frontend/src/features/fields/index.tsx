@@ -1,2 +1,2 @@
-export * from "./components";
+export * from "./components/fieldList";
 export * from "./models";

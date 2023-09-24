@@ -1,4 +1,4 @@
-import { Field } from "./models";
+import { Field } from "../models";
 
 const field: Field = {
   id: 1,

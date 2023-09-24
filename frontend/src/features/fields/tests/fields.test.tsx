@@ -1,20 +1,20 @@
 import React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { FieldList } from "./components";
-import { setupTestServer } from "../testUtils/setupTestServer";
+import { FieldList } from "../components/fieldList";
+import { setupTestServer } from "../../../shared/testUtils/setupTestServer";
 import {
   handlers,
   testQueryClient,
   renderWithProviders,
-} from "../testUtils/handlers";
-import { Field } from "./models/Field.model";
+} from "../../../shared/testUtils/handlers";
+import { Field } from "../models/Field.model";
 
-import { APP_ROUTES } from "../../core/routes";
+import { APP_ROUTES } from "../../../core/routes";
 import { SetupServer } from "msw/node";
 
-import { spies } from "../testUtils/spies";
-import { fields } from "./testData";
+import { spies } from "../../../shared/testUtils/spies";
+import { fields } from "./data";
 
 describe("Tests of the Field List component.", () => {
   const server: SetupServer = setupTestServer(

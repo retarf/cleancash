@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { CustomTableHead } from "./components";
+import { CustomTableHead } from "../components";
 import { render, RenderOptions } from "@testing-library/react";
 import Table from "@mui/material/Table";
 
