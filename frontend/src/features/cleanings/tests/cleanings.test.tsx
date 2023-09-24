@@ -1,22 +1,22 @@
 import React from "react";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { CleaningList } from "./components";
-import { setupTestServer } from "../testUtils/setupTestServer";
+import { setupTestServer } from "../../../shared/testUtils/setupTestServer";
 import {
   handlers,
   testQueryClient,
   renderWithProviders,
-} from "../testUtils/handlers";
+} from "../../../shared/testUtils/handlers";
 
-import { APP_ROUTES } from "../../core/routes";
+import { APP_ROUTES } from "../../../core/routes";
 import { SetupServer } from "msw/node";
 
-import { spies } from "../testUtils/spies";
-import { children } from "../children/testData";
-import { fields } from "../fields/testData";
-import { salaries } from "../salary/testData";
-import { cleanings } from "./testData";
+import { spies } from "../../../shared/testUtils/spies";
+import { children } from "../../children/tests/data";
+import { fields } from "../../fields/tests/data";
+import { salaries } from "../../salary/tests/data";
+import { cleanings } from "./data";
+import {CleaningList} from "../components/cleaningList";
 
 const mockedNavigator = jest.fn();
 
