@@ -44,16 +44,14 @@ export const EditableTitle = ({ defaultValue, defaultState, setTitle }) => {
   };
 
   const disableEditState = (event) => {
-    if (event.code === "Enter") {
       setTitle(event.target.value);
       setEditState(false);
-    }
   };
 
   return (
     <Stack direction="row" spacing={1}>
       {editState ? (
-        <TextField defaultValue={defaultValue} onKeyDown={disableEditState} />
+        <TextField defaultValue={defaultValue} onBlur={disableEditState} />
       ) : (
         <h1 onClick={enableEditState}>{defaultValue}</h1>
       )}
