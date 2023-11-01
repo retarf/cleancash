@@ -26,6 +26,7 @@ import { FieldList } from "/app/src/features/fields";
 import { SalaryList } from "/app/src/features/salary";
 import { APP_ROUTES } from "../routes";
 import { ChildDetails, ChildForm, ChildList } from "../../features";
+import { Navigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -216,6 +217,10 @@ export function MainContainer() {
                       </Route>
                       <Route path="/salary" element={<SalaryList />} />
                       <Route path="/fields" element={<FieldList />} />
+                      <Route
+                          path="*"
+                          element={<Navigate replace to={'/'} />}
+                      />
                     </Routes>
                   </Paper>
                 </Grid>
