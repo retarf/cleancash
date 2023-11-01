@@ -16,7 +16,7 @@ import {APP_ROUTES} from "../../../core/routes";
 import {AmountReducer} from "../reducers";
 import Box from "@mui/material/Box";
 import {CustomDatePicker, getDateString} from "../../../shared";
-import { Spinner } from "../../../shared";
+import { Spinner, ErrorBox } from "../../../shared";
 
 export const CleaningEdit = () => {
     const params = useParams();
@@ -112,7 +112,7 @@ export const CleaningEdit = () => {
                             onChange={(newDate) => setDate(getDateString(newDate))}
                         />
                         {childList.isLoading && <Spinner />}
-                        {childList.isError && <p>{childList.error.message}</p>}
+                        {childList.isError && <ErrorBox msg={childList.error.message} />}
                         {childList.isSuccess && childList.data && (
                             <FormControl fullWidth>
                                 <InputLabel id="child-simple-select-label">Child</InputLabel>
