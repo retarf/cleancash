@@ -15,7 +15,7 @@ export const ChildDetails = () => {
     const params = useParams();
     const navigate = useNavigate();
     const query = ChildQuery();
-    const child = query.useRead(params.id);
+    const fetchedChild = query.useRead(params.id);
     const updateMutation = query.useUpdate(params.id);
     const deleteMutation = query.useDelete(params.id);
     const [checked, setChecked] = useState([]);
@@ -50,17 +50,17 @@ export const ChildDetails = () => {
     };
 
     useEffect(() => {
-        if (child.isSuccess) {
-            setChecked(child.data.data.fields);
-            setName(child.data.data.name);
+        if (fetchedChild.isSuccess) {
+            setChecked(fetchedChild.data.data.fields);
+            setName(fetchedChild.data.data.name);
         }
-    }, [child.status]);
+    }, [fetchedChild.status]);
 
     return (
         <>
-            {!params.id || child.isLoading || (fields.isLoading && "Loading...")}
+            {!params.id || fetchedChild.isLoading || (fields.isLoading && "Loading...")}
             {fields.isError && <span>Error: {fields.error.message}</span>}
-            {child.isError && <span>Error: {child.error.message}</span>}
+            {fetchedChild.isError && <span>Error: {fetchedChild.error.message}</span>}
             {
                 <>
                     <EditableTitle
@@ -93,7 +93,7 @@ export const ChildDetails = () => {
                                 );
                             })}
                     </List>
-                    <div>{child.isFetching && "Background Updating..."}</div>
+                    <div>{fetchedChild.isFetching && "Background Updating..."}</div>
                 </>
             }
             <Stack direction="row" spacing={3}>
