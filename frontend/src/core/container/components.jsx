@@ -25,7 +25,7 @@ import {
 import { FieldList } from "/app/src/features/fields";
 import { SalaryList } from "/app/src/features/salary";
 import { APP_ROUTES } from "../routes";
-import { ChildDetails, ChildForm, ChildList } from "../../features";
+import { ChildDetails, AddChildForm, ChildList } from "../../features";
 import { Navigate } from "react-router-dom";
 
 function Copyright(props) {
@@ -212,7 +212,7 @@ export function MainContainer() {
                         />
                         <Route
                           path={APP_ROUTES.CHILDREN.CREATE}
-                          element={<ChildForm />}
+                          element={<AddChildForm />}
                         />
                       </Route>
                       <Route path="/salary" element={<SalaryList />} />

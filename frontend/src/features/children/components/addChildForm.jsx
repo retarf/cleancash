@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import {EditableTitle} from "../../../shared";
 import {FieldsQuery} from "../../fields/queries";
 
-export const ChildForm = () => {
+export const AddChildForm = () => {
     const navigate = useNavigate();
     const query = ChildQuery();
     const createMutation = query.useCreate();
