@@ -186,7 +186,7 @@ export function MainContainer() {
                     sx={{ p: 2, display: "flex", flexDirection: "column" }}
                   >
                     <Routes>
-                      <Route path="/" element={<CleaningList />} />
+                      <Route path={APP_ROUTES.MAIN} element={<CleaningList />} />
                       <Route path={APP_ROUTES.CLEANINGS.LIST}>
                         <Route
                           path={APP_ROUTES.CLEANINGS.LIST}

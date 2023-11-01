@@ -3,6 +3,7 @@ export const BASE_ROUTES = {
 };
 
 export const APP_ROUTES = {
+  MAIN: "/",
   CLEANINGS: {
     LIST: "/cleanings",
     EDIT: "/cleanings/:id",
