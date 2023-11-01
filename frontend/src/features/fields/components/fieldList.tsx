@@ -66,6 +66,7 @@ export const FieldList = () => {
                 query={query}
                 blockedState={blockedState}
                 setBlockedState={setBlockedState}
+                sx={margin=50px}
               />
             </TableBody>
           </Table>
