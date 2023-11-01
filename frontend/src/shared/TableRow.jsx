@@ -130,7 +130,10 @@ export const NewTableRow = (props) => {
   return (
     <>
       {editState ? (
-        <TableRow key="new">
+        <TableRow
+            key="new"
+            sx={{ margin: 50 }}
+        >
           <TableCell>
             <TextField
               error={false}
