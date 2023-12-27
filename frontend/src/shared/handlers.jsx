@@ -4,3 +4,6 @@ export const findNameById = (list, id) =>
 
 export const findValueById = (list, id) =>
   list.find((obj) => obj.id === id).value;
+
+export const findIdByName = (list, name) =>
+    list.find((obj) => obj.name === name).id;

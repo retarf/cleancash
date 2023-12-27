@@ -6,75 +6,66 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {EditableTitle} from "../../../shared";
+import {EditableTitle, ErrorBox} from "../../../shared";
 import {FieldsQuery} from "../../fields/queries";
+import Select from "react-select"
+import {useForm, Controller, SubmitHandler} from "react-hook-form"
+import TextField from "@mui/material/TextField";
+import FormGroup from '@mui/material/FormGroup';
+import {Spinner, getIdByName} from "../../../shared";
+
 
 export const AddChildForm = () => {
     const navigate = useNavigate();
     const query = ChildQuery();
     const createMutation = query.useCreate();
-    const [checked, setChecked] = useState([]);
-    const [name, setName] = useState();
     const fieldsQuery = FieldsQuery();
     const fields = fieldsQuery.useList();
 
-    const handleToggle = (event) => {
-        let value = event.target.tabIndex;
-        if (!checked.includes(value)) {
-            setChecked((preChecked) => [...preChecked, value]);
-        } else {
-            const currentIndex = checked.indexOf(value);
-            let newChecked = [...checked];
-            newChecked.splice(currentIndex, 1);
-            setChecked(newChecked);
-        }
-    };
+    const {control, handleSubmit, register, formState: {errors}} = useForm();
 
-    const save = () => {
-        let child = {
-            name: name,
-            fields: checked,
-        };
-        createMutation.mutate(child);
+    const onSubmit = data => {
+        data.fields = data.fields || [];
+        createMutation.mutate(data);
         navigate(APP_ROUTES.CHILDREN.LIST);
-    };
+    }
 
     return (
-        <>
-            <EditableTitle
-                defaultValue={name}
-                defaultState={true}
-                setTitle={setName}
-            />
-            <List sx={{width: "100%", maxWidth: 360, bgcolor: "background.paper"}}>
-                {fields.isLoading && "Loading..."}
-                {fields.isError && <span>Error: {fields.error.message}</span>}
-                {fields.isSuccess &&
-                    fields.data &&
-                    fields.data.data.map((field) => {
-                        const labelId = `checkbox-list-label-${field.id}`;
-                        return (
-                            <ListItem key={field.id} disablePadding>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            id={labelId}
-                                            checked={checked.includes(field.id)}
-                                            tabIndex={field.id}
-                                            inputProps={{"aria-labelledby": labelId}}
-                                            onChange={handleToggle}
-                                        />
-                                    }
-                                    label={field.name}
-                                />
-                            </ListItem>
-                        );
-                    })}
-            </List>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Box>
+                <Controller
+                    name="name"
+                    control={control}
+                    render={({field}) => <TextField label="Name"
+                                                    helperText={!!errors.name ? "This field is required." : ""}
+                                                    error={!!errors.name} {...field} />}
+                    rules={{required: true}}
+                    defaultValue=""
+                />
+            </Box>
+            <FormGroup sx={{margin: 3}}>
+                {fields.isLoading && <Spinner/>}
+                {fields.isError &&
+                    <ErrorBox
+                        msg={fiels.error instanceof Error && fields.error.message}
+                    />
+                }
+                {fields.isSuccess && fields.data.data.map(cleaningFild => {
+                    return (
+                        <FormControlLabel
+                            key={cleaningFild.id}
+                            label={cleaningFild.name}
+                            control={<Checkbox value={cleaningFild.id}
+                                               name={cleaningFild.name} {...register("fields")} />}
+                        />
+                    )
+                })}
+            </FormGroup>
             <Stack direction="row" spacing={3}>
-                <Button variant="contained" onClick={save}>
+                <Button variant="contained" type="submit">
                     save
                 </Button>
                 <Button
@@ -86,6 +77,6 @@ export const AddChildForm = () => {
                     back
                 </Button>
             </Stack>
-        </>
+        </form>
     );
 };
