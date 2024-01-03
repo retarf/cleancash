@@ -17,6 +17,9 @@ export const ButtonCell = ({ icon, name, onClick }) => {
   );
 };
 
+export const SubmitButtonCell = () => {
+    return <ButtonCell type="submit" icon={<SaveIcon />} name="Save" />;
+};
 export const SaveButtonCell = ({ onClick }) => {
   return <ButtonCell icon={<SaveIcon />} name="Save" onClick={onClick} />;
 };
