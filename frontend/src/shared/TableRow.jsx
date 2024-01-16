@@ -53,7 +53,7 @@ export const EditableTableRow = (props) => {
     const [errorState, setErrorState] = useState(false);
     const deleteMutation = query.useDelete(item.id);
     const updateMutation = query.useUpdate(item.id);
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(item[valueName]);
 
     const {control, handleSubmit, register, formState: {errors}} = useForm();
 
@@ -80,40 +80,31 @@ export const EditableTableRow = (props) => {
         setBlockedState(false);
     };
 
-    const onSubmit = data => {
-        console.log(data);
-    }
-
     const onDeleteHandler = (event) => {
         event.stopPropagation();
         deleteMutation.mutate();
     };
 
-    // TODO: Add error handling when other field is clicked during edition
-
     return (
-        <TableRow key={`row-${item.id}`} onClick={() => onClickHandler(item)}>
+        <TableRow key={`row-${item.id}`} onClick={() => onClickHandler()}>
             {editState ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <>
                     <TableCell>
-                        <p>test</p>
                         <TextField
-                            error={error}
-                            key={id}
-                            //label={name}
-                            label={"test"}
+                            error={errorState}
+                            key={item.id}
+                            label={valueName}
                             defaultValue={value}
                             fullWidth
                             variant="standard"
                             autoFocus
                             margin="dense"
+                            onChange={(e)=> setValue(e.target.value)}
                         />
                     </TableCell>
-                    <p>test</p>
-                    <SubmitButtonCell/>
+                    <SaveButtonCell onClick={onSaveHandler} />
                     <CancelButtonCell onClick={onCancelHandler}/>
-                    <p>test</p>
-                </form>
+                </>
             ) : (
                 <>
                     <TableCell key={`cell-${item.id}-${name}`}>
