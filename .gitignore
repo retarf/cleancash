@@ -1,1 +1,4 @@
 tags
+.idea
+.env
+db.sqlite3
