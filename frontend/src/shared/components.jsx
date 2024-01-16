@@ -64,7 +64,7 @@ export const EditableTitle = ({ defaultValue, defaultState, setTitle }) => {
 
 export const getDateString = (newDate) => newDate.toISOString().split("T")[0];
 
-export const ErrorBox = ({ msg: string }) => {
+export const ErrorBox = ({ msg }) => {
   return (
     <Box
       sx={{

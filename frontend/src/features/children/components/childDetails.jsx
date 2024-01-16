@@ -8,7 +8,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {EditableTitle} from "../../../shared";
+import {EditableTitle, Spinner} from "../../../shared";
 import {FieldsQuery} from "../../fields/queries";
 
 export const ChildDetails = () => {
@@ -58,7 +58,7 @@ export const ChildDetails = () => {
 
     return (
         <>
-            {!params.id || fetchedChild.isLoading || (fields.isLoading && "Loading...")}
+            {!params.id || fetchedChild.isLoading || (fields.isLoading && <Spinner />)}
             {fields.isError && <span>Error: {fields.error.message}</span>}
             {fetchedChild.isError && <span>Error: {fetchedChild.error.message}</span>}
             {

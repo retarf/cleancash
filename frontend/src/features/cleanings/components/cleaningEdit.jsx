@@ -100,7 +100,7 @@ export const CleaningEdit = () => {
 
     return (
         <>
-            {!params.id || (cleaning.isLoading && "Loading...")}
+            {!params.id || (cleaning.isLoading && <Spinner />)}
             {cleaning.isError && cleaning.error.message}
             {childList.isSuccess &&
                 childList.data &&
