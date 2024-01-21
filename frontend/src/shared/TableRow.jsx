@@ -12,11 +12,12 @@ import {
 import TextField from "@mui/material/TextField";
 import {AddIconButton} from "./components";
 import Box from "@mui/material/Box";
-import {useForm, Controller, SubmitHandler} from "react-hook-form"
+import {useForm, SubmitHandler, useController, Controller } from "react-hook-form"
 import IconButton from "@mui/material/IconButton";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddIcon from "@mui/icons-material/Add";
+
 
 export const BaseTableRow = (props) => {
     const {item, columns, query, baseUrl} = props;
@@ -48,14 +49,14 @@ export const BaseTableRow = (props) => {
 };
 
 export const EditableTableRow = (props) => {
-    const {item, name, valueName, query, blockedState, setBlockedState} = props;
+    const {item, name, valueName, query, blockedState, setBlockedState, rules} = props;
     const [editState, setEditState] = useState(false);
     const [errorState, setErrorState] = useState(false);
     const deleteMutation = query.useDelete(item.id);
     const updateMutation = query.useUpdate(item.id);
     const [value, setValue] = useState(item[valueName]);
 
-    const {control, handleSubmit, register, formState: {errors}} = useForm();
+    const {control, handleSubmit, register, formState: {errors}} = useController();
 
 
     const onClickHandler = (item) => {
@@ -72,12 +73,13 @@ export const EditableTableRow = (props) => {
         setBlockedState(false);
     };
 
-    const onSaveHandler = () => {
+    const onSaveHandler = async () => {
         const newItem = {id: item.id};
         newItem[valueName] = value;
-        updateMutation.mutate(newItem);
+        const response = await updateMutation.mutateAsync(newItem);
         setEditState(false);
         setBlockedState(false);
+        setValue(response.data.value)
     };
 
     const onDeleteHandler = (event) => {
@@ -90,17 +92,23 @@ export const EditableTableRow = (props) => {
             {editState ? (
                 <>
                     <TableCell>
-                        <TextField
-                            error={errorState}
-                            key={item.id}
-                            label={valueName}
-                            defaultValue={value}
-                            fullWidth
-                            variant="standard"
-                            autoFocus
-                            margin="dense"
-                            onChange={(e)=> setValue(e.target.value)}
-                        />
+                        <Controller
+                            control={control}
+                            name={`${valueName}-${item.id}`}
+                            render={({field}) => <TextField
+                                                    {...field}
+                                                    error={!!errors[valueName]}
+                                                    key={item.id}
+                                                    label={valueName}
+                                                    defaultValue={value}
+                                                    fullWidth
+                                                    variant="standard"
+                                                    autoFocus
+                                                    margin="dense"
+                                                    onChange={(e)=> setValue(e.target.value)}
+                                                />}
+                            rules={rules}
+                            />
                     </TableCell>
                     <SaveButtonCell onClick={onSaveHandler} />
                     <CancelButtonCell onClick={onCancelHandler}/>

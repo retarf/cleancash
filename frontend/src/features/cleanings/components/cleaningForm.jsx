@@ -70,7 +70,7 @@ export const CleaningForm = () => {
         amountDispatch({type: "setChecked", checked: checked});
     };
 
-    const save = () => {
+    const save = async () => {
         const cleaning = {
             date: date,
             child: child.id,
@@ -78,8 +78,12 @@ export const CleaningForm = () => {
             salary: salary.id,
             bill: amount.sum,
         };
-        createMutation.mutate(cleaning);
-        navigate(APP_ROUTES.CLEANINGS.LIST);
+        try {
+            await createMutation.mutateAsync(cleaning);
+            navigate(APP_ROUTES.CLEANINGS.LIST);
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     return (

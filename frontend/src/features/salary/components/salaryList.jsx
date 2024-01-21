@@ -51,6 +51,7 @@ function SalaryList(props) {
                                         query={query}
                                         blockedState={blockedState}
                                         setBlockedState={setBlockedState}
+                                        rules={rules}
                                     />
                                 );
                             })}
