@@ -56,7 +56,7 @@ export const EditableTableRow = (props) => {
     const updateMutation = query.useUpdate(item.id);
     const [value, setValue] = useState(item[valueName]);
 
-    const {control, handleSubmit, register, formState: {errors}} = useController();
+    const {control, handleSubmit, register, formState: {errors}, reset} = useForm();
 
 
     const onClickHandler = (item) => {
@@ -71,11 +71,12 @@ export const EditableTableRow = (props) => {
     const onCancelHandler = () => {
         setEditState(false);
         setBlockedState(false);
+        reset()
     };
 
-    const onSaveHandler = async () => {
+    const onSaveHandler = async (data) => {
         const newItem = {id: item.id};
-        newItem[valueName] = value;
+        newItem[valueName] = data[valueName];
         const response = await updateMutation.mutateAsync(newItem);
         setEditState(false);
         setBlockedState(false);
@@ -94,23 +95,26 @@ export const EditableTableRow = (props) => {
                     <TableCell>
                         <Controller
                             control={control}
-                            name={`${valueName}-${item.id}`}
+                            name={valueName}
                             render={({field}) => <TextField
                                                     {...field}
-                                                    error={!!errors[valueName]}
+                                                    error={!!errors[valueName]?.message}
+                                                    helperText={!!errors ? errors[valueName]?.message : ""}
                                                     key={item.id}
                                                     label={valueName}
-                                                    defaultValue={value}
+                                                    defaultValue={item[valueName]}
+                                                    value={field.value}
                                                     fullWidth
                                                     variant="standard"
                                                     autoFocus
                                                     margin="dense"
-                                                    onChange={(e)=> setValue(e.target.value)}
+                                                    onChange={field.onChange}
+                                                    onChangeText={field.onChange}
                                                 />}
                             rules={rules}
                             />
                     </TableCell>
-                    <SaveButtonCell onClick={onSaveHandler} />
+                    <SaveButtonCell onClick={handleSubmit(onSaveHandler)} />
                     <CancelButtonCell onClick={onCancelHandler}/>
                 </>
             ) : (
